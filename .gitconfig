@@ -1,0 +1,5 @@
+[user]
+	email = anon@anon.anon
+	name = anon
+[init]
+	defaultBranch = master
