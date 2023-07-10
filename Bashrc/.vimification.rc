@@ -1,0 +1,13 @@
+#!/bin/bash
+set -o vi	# Turn on vi mode
+
+alias :e="${EDITOR}"
+alias :q="exit"
+alias :qa="xdotool getactivewindow windowkill"
+
+function cdvim(){
+	cd $(dirname $1)
+	vim $(basename $1)
+}
+
+alias vimcd="cdvim"

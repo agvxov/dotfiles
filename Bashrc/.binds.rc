@@ -1,0 +1,2 @@
+bind -x '"\C-~": cd ~'
+#bind -x '"\C-h": history'
