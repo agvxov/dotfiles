@@ -1,0 +1,10 @@
+## DEFAULT APPLICATIONS ##
+	export EDITOR="vim"
+	export VISUAL="vim"
+	export BROWSER="firefox"
+	export PAGER="less"
+	export IMG_VIEWER="nomacs"
+
+## Favourites ##
+	export FAVCOL="green"
+	export FAVCHAR="♞"

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+## Favourites ##
+	export FAVCOL="gray"
+	export SECCOL="red"
+	export FAVCOLESC="\033[38;5;240m"
+	export SECCOLESC="\033[31m"
+	export FAVCOLNUM="240"
+	export SECCOLNUM="9"
+	export FAVCHAR="✎"
+
+export PS1="\[${SECCOLESC}\]#\[${FAVCOLESC}\]${USER}\[\033[0;1m\]:${SECCOLESC}[\[\033[0m\]${PWD}${SECCOLESC}\[\033[1m\]]\[${FAVCOLESC}\]${FAVCHAR}\[${SECCOLESC}\]>\[\033[0m\] "
+export PS2="\[${FAVCOLESC}\]  -\[\033[0m\]     "

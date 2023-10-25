@@ -1,0 +1,1 @@
+# [ -n "$XTERM_VERSION" ] && transset -a 0.75 &> /dev/null

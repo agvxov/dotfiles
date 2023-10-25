@@ -1,0 +1,19 @@
+# Set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+	xterm-color|*-256color) color_prompt=yes;;
+esac
+force_color_prompt=yes
+if [ -n "$force_color_prompt" ]; then
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		color_prompt=yes
+	else
+		color_prompt=
+	fi
+fi
+# Fancy prompts
+if [ "$color_prompt" = yes ]; then
+	prompt_color='\[\033[1;32m\]'
+fi
+PS1=$prompt_color' ─▶\[\033[0m\] '
+PS2=$prompt_color'  >\[\033[0m\]     '
+unset color_prompt force_color_prompt

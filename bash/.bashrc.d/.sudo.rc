@@ -1,0 +1,6 @@
+#alias sudo="sudo --preserve-env"
+function SudoAlias(){
+	\sudo -n true 2> /dev/null || ( pinentry-curses --ttyname $(tty) < <(echo GETPIN) | sed -n 2p | cut -d ' ' -f 2- | \sudo -S true 2> /dev/null ) && \sudo $@
+}
+
+alias sudo=SudoAlias
