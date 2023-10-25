@@ -1,0 +1,4 @@
+MM="/home/anon/Main"
+export CDPATH="${MM}"
+export PATH="${PATH}:${MM}/bin"
+export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"

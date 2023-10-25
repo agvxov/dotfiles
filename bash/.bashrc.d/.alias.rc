@@ -1,0 +1,51 @@
+#!/bin/bash
+alias xclip='xclip -selection clipboard'
+# Ease of use
+	# single char
+	alias c="cd"
+	alias g="egrep -i"
+	alias s='sudo'
+	alias l='ls'
+	alias v="${EDITOR}"
+	alias w="personal_watch"	# defined else where too
+	# Two char
+	alias wi="whereis"
+	# # #
+	alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
+	alias history='history | tail -n 10'
+	alias cls="clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
+	alias mkdir="mkdir -p"
+	alias hgrep="\\history | grep"
+	alias close="exit"
+	alias quit="exit"
+	alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
+	alias heavyDuty=". ${MM}/Bash/Bashrc/.heavyDutyrc"
+	alias locatei="locate -i"
+	alias resource="source /home/anon/.bashrc"
+	alias mysql="mysql --user=${USER} -p"
+	alias tmux="export LINES=${LINES}; export COLUMNS=${COLUMNS}; tmux new-session -t '0' || tmux"
+# Safety
+	alias wget='wget --restrict-file-names=windows,ascii'
+	alias rm='rm -I'
+	alias gpg='gpg -i --no-symkey-cache'
+	alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
+# Unsafety
+	alias curl='curl --insecure'
+# Quick access
+	alias tt="tt_with_high_score.sh"
+	alias txt="vim \"${MM}/C++/pufka.cdd\" \"${MM}/Personal/RANDOM.txt\" \"${MM}/Archive/text/a_self-made/quotes.txt\" \"${MM}/Peak/peak.cdd\" \"${MM}/s/процесс.log\"" 
+	# Files with editor
+		alias bashrc="${EDITOR} ${HOME}/.bashrc"
+		alias vimrc="${EDITOR} ${HOME}/.vimrc"
+		alias tmuxrc="${EDITOR} ${HOME}/.tmux.conf"
+		alias pufka="${EDITOR} ${MM}/pufka/pufka.cdd"
+		if [ "${MACHINE_NAME}" != "BATTLESTATION" ]; then
+			alias random="${EDITOR} ${MM}/Personal/RANDOM.outpost.txt"
+		else
+			alias random="${EDITOR} ${MM}/Personal/RANDOM.txt"
+		fi
+		alias msgbuffer="${EDITOR} ${MM}/Personal/Msg/msg.buf"
+	# Listas
+		for i in $(lista -l 2> /dev/null); do
+			alias $i="lista -s '$i'"
+		done

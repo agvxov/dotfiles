@@ -1,0 +1,7 @@
+#!/bin/bash
+## DEFAULT APPLICATIONS ##
+	export EDITOR="vim"
+	export VISUAL="vim"
+	export BROWSER="librewolf"
+	export PAGER="less"
+	export IMAGEVIEWER="nomacs"

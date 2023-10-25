@@ -1,0 +1,49 @@
+# Enable color support of ls, less and man, and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+	export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+	export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+	export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+	export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+	export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+	export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+
+### ALIAS BASED ###
+	# Core
+		alias ls='ls -a --color=auto'
+		alias ll='ls -l -F'
+		alias l='ls -CF'
+		alias cp='cp -v'
+		alias mv='mv -v'
+		alias grep='grep --color=auto'
+		alias fgrep='fgrep --color=auto'
+		alias egrep='egrep --color=auto'
+		alias echo='echo -e'
+		alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
+		alias dir='dir --color=auto'
+		alias vdir='vdir --color=auto'
+		alias lsblk='lsblk -o NAME,SIZE,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
+		alias df='df --print-type'
+		alias ip='ip --color=auto'
+	# GNU
+		alias cal='cal --monday'
+		alias tar='tar -v'
+		alias gzip='gzip -v'
+		alias gdb='gdb -q --tui'
+		alias less='less --use-color'
+	# Misc.
+		alias hexedit='hexedit --color'
+		alias bat='bat --paging=never --italic-text always'
+		alias tshark='tshark --color'
+		alias mycli="mycli --prompt \"${MYCLI_PS1}\""
+
+### VARIABLE BASED ###
+	# mysql #
+		export MYSQL_PS1=$(env echo -e "\033[1;32m#\033[34m\\U\033[0;1m:\033[32m[\033[0m\\d\033[1;32m]>\033[0m\\_")
+		MYCLI_PS1=${MYSQL_PS1//\\U/\\u}
+	# gcc #
+		export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+	# fzf #
+		export FZF_DEFAULT_OPTS="--multi --no-mouse --height=10 --layout=reverse"

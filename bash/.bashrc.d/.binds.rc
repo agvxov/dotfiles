@@ -1,0 +1,4 @@
+bind -x '"\C-p": $(qckcmd -i ~/.qckcmd)'
+#bind -x '"\C-p": eval $(qckcmd -i ~/.qckcmd)'
+#bind -x '"\C-~": cd ~'
+#bind -x '"\C-h": history'
