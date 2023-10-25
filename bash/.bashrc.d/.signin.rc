@@ -1,0 +1,4 @@
+#!/bin/bash
+function signin(){
+	\sudo -u $1 bash
+}

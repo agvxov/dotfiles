@@ -1,0 +1,13 @@
+# Sourced by alias "heavyDuty"
+clear
+date
+neofetch
+
+prompt_color='\033[;33m'
+info_color='\033[1;37m'
+prompt_symbol=♜
+export PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'#\[\033[0m\] '
+PS2=$prompt_color'>\[\033[0m\]'
+
+GRC_ALIASES=true
+[[ -s "/etc/profile.d/grc.sh" ]] && source /etc/profile.d/grc.sh

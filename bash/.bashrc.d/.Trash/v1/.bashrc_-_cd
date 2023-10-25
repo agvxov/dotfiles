@@ -1,0 +1,38 @@
+function mkdircd() {
+	mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+function cdUp() {
+	if [[ $# -eq 0 ]]; then
+		cd ..
+		return
+	fi
+	for ((i=0 ; i <= $# ; i++)); do
+		cd ..
+	done
+}
+function PushdAlias() {
+	\pushd "$@" > /dev/null && dirs
+}
+function PopdAlias() {
+	\popd "$@" > /dev/null && dirs
+}
+function DirsAlias() {
+	if [ $# == 0 ]; then
+		\dirs | awk -v ln=0 '{ for(i=1; i<=NF; i++) print " \033[1;36m" ln++  ":\033[0m "  $i }'
+	else
+		\dirs "$@"
+	fi
+}
+
+
+shopt -s cdspell		# If set, minor errors in the spelling of a directory component in a cd 
+			    		# command will be corrected. The errors checked for are transposed characters, 
+			    		# a missing character, and a character too many.
+
+
+alias cd="PushdAlias"
+alias cdh="cd ~"
+alias cdu="cdUp"
+alias pop="popd"
+alias popd="PopdAlias"
+alias dirs="DirsAlias"

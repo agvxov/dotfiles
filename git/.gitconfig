@@ -1,0 +1,13 @@
+[user]
+	email = anon@anon.anon
+	name = anon
+[init]
+	defaultBranch = master
+[merge]
+	tool = vimdiff
+[pull]
+	rebase = false
+
+[http "http://*.onion"]
+	sslVerify = false
+	proxy = "socks5h://127.0.0.1:9050"

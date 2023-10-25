@@ -1,0 +1,31 @@
+alias xclip='xclip -selection clipboard'
+# Ease of use
+	alias s='sudo'
+	alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
+	alias history='history | tail -n 10'
+	alias cls="clear"
+	alias mkdir="mkdir -p"
+	alias hgrep="\\history | grep"
+	alias close="exit"
+	alias quit="exit"
+	alias figlet="figlet -w 120 -d ~/mm/Fonts/figlet-fonts/"
+	alias heavyDuty=". ${MM}/Bash/Bashrc/.heavyDutyrc"
+	alias locatei="locate -i"
+	alias resource="source /home/anon/.bashrc"
+	alias mysql="mysql --user=${USER} -p"
+	alias tmux="export LINES=${LINES}; export COLUMNS=${COLUMNS}; tmux attach || tmux"
+# Safety
+	alias wget='wget --restrict-file-names=windows,ascii'
+	alias rm='rm -I'
+	alias gpg='gpg -i --no-symkey-cache'
+	alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
+# Quick access
+	alias tt="tt_with_high_score.sh"
+	alias txt="txt.txt.sh"
+	# Files with editor
+		alias bashrc="${EDITOR} ${HOME}/.bashrc"
+		alias vimrc="${EDITOR} ${HOME}/.vimrc"
+		alias tmuxrc="${EDITOR} .tmux.conf"
+		alias pufka="${EDITOR} ${MM}/C++/pufka.cdd"
+		alias random="${EDITOR} ${MM}/Personal/RANDOM.outpost.txt"
+		alias msgbuffer="${EDITOR} ${MM}/Personal/Msg/msg.buf"

@@ -1,0 +1,2 @@
+alias bc="bc -l"
+stty -ixon	# disable flow control and make ^S and ^Q available

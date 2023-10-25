@@ -1,0 +1,1 @@
+export FZF_DEFAULT_OPTS="--no-mouse --height=10 --layout=reverse -1"

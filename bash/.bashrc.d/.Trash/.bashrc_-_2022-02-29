@@ -1,0 +1,317 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+##########################################################################
+
+
+
+####################
+###   BUILTINS   ###
+####################
+enable -n echo
+## ## ## ## ## ##
+
+
+
+####################
+###   SETTINGS   ###
+####################
+
+## GLOBS ##
+	# With this set, the glob matches hidden files (".*") by default,
+	# but not the . or .. links.
+shopt -s dotglob
+	# If set, the pattern "**" used in a pathname expansion context will
+	# match all files and zero or more directories and subdirectories.
+shopt -s globstar
+	# Enable additional globs. Resulting in what is effectively a Regex
+	# language builtin to Bash.
+shopt -s extglob
+## ## ## ## ## ##
+
+	# check the window size after each command and, if necessary,
+	# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+	# If set, minor errors in the spelling of a directory component in a cd 
+    # command will be corrected. The errors checked for are transposed characters, 
+    # a missing character, and a character too many.
+shopt -s cdspell
+
+
+	# Make less more friendly for non-text input files, see lesspipe(1)
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+	# Set variable identifying the chroot you work in (used in the prompt below)
+#if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+#    debian_chroot=$(cat /etc/debian_chroot)
+#fi
+
+
+
+## PROMPT ##
+	# Set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+	# Uncomment for a colored prompt, if the terminal has the capability; turned
+	# off by default to not distract the user: the focus in a terminal window
+	# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+	# Deffault Kali shit. ?!
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+	# Fancy prompts
+if [ "$color_prompt" = yes ]; then
+    prompt_color='\[\033[;32m\]'
+    info_color='\[\033[1;34m\]'
+	# 🩓
+    prompt_symbol=♞
+    if [ "$EUID" -eq 0 ]; then # Change prompt colors for root user
+	prompt_color='\[\033[;94m\]'
+	info_color='\[\033[1;31m\]'
+    prompt_symbol=♛
+    fi
+    PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'\$\[\033[0m\] '
+	PS2=$prompt_color'>\[\033[0m\]'
+    # BackTrack red prompt
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+## ## ## ## ## ##
+
+
+
+### MISC LOOKS ###
+	# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+	# Enable color support of ls, less and man, and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+    export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+    export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+    export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+    export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
+    export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+    export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+    export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+fi
+	# Colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+## ## ## ## ## ##
+
+
+
+# Turn on vi mode
+set -o vi
+
+
+
+### HISTORY ###
+HISTCONTROL=erasedups			# remove duplicates
+shopt -s histappend				# append to the history file, don't overwrite it
+shopt -s lithist				# save multiline commands with embeded newlines
+HISTSIZE=1000
+HISTFILESIZE=2000
+HISTTIMEFORMAT='%y/%m/%d %T: '
+## ## ## ## ## ##
+
+### MISC ###
+# Do not imidietly exit on "<Ctrl> + d"
+IGNOREEOF=3
+## ## ## ## ## ##
+#########################
+
+
+
+
+
+
+
+#####################
+###   VARIABLES   ###
+#####################
+FOO="bar"
+
+export EDITOR="vim"
+export VISUAL="vim"
+BROWSER="firefox"
+
+export auto_resume=1
+
+export PATH="${PATH}:~/mm/bin"
+CDPATH="${HOME}/mm"
+export PYTHONPATH="${PYTHONPATH}~/mm/lib"
+
+export FFF_HIDDEN=1	# show hidden (how counterintuitive...)
+export FFF_LS_COLORS=1
+#export FFF_OPENER="openie"
+export FFF_FILE_FORMAT="    %f"
+export FFF_FAV1="${HOME}/mm/"
+export FFF_FAV2="${HOME}"
+#export FFF_FAV1="~/Deskop/minecraft\ mod/"
+export NNN_PRUG="p:preview-tabbed;o:organize"
+
+GPG_TTY=$(tty)
+export GPG_TTY
+export PINENTRY_USER_DATA="USE_CURSES=1"
+#########################
+
+
+
+
+
+
+
+###################
+###   ALIASES   ###
+###################
+#   Output controll:
+#		Core
+alias ls='ls -a --color=auto'
+alias ll='ls -l -F'
+alias l='ls -CF'
+alias cp='cp -v'
+alias mv='mv -v'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias echo='echo -e'
+alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
+alias hexedit='hexedit --color'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias df='df --print-type'
+alias ip='ip --color=auto'
+#		GNU
+alias tar='tar -v'
+alias gzip='gzip -v'
+alias gdb='gdb -q'
+#		PKG managment
+alias pacman='pacman --color=auto'
+alias yay='yay --color=auto'
+#		Misc.
+alias bat='bat --paging=never --italic-text always'
+#alias nnn='nnn -d -H -x'
+alias xclip='xclip -selection clipboard'
+alias tt="tt -t 60 -bold -n 120 -g 120 -nobackspace -noskip -oneshot -csv -blockcursor -theme slate"
+alias wget='wget --restrict-file-names=windows,ascii'
+alias tshark='tshark --color'
+
+#   Ease of use
+alias sudo='sudo '
+alias cls="clear"
+alias mkdir="mkdir -p"
+alias cdb="cd \"${OLDPWD}\""
+alias close="exit"
+alias quit="exit"
+alias figlet="figlet -w 120 -d ~/mm/Fonts/figlet-fonts/"
+alias heavyDuty=". ~/.heavyDutyrc"
+alias locatei="locate -i"
+
+#	Safety
+alias rm='rm -I'
+alias gpg='gpg -i --no-symkey-cache'
+#alias youtube-dl='youtube-dl --restrict-filenames --no-overwrites'
+alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
+#alias tar='tar --verify'
+
+#	Vimification
+alias :e="${EDITOR}"
+alias :q="exit"
+alias :qa="xdotool getactivewindow windowkill"
+
+#   Shortcuts
+alias bashrc="${EDITOR} ${HOME}/.bashrc"
+alias vimrc="${EDITOR} ${HOME}/.vimrc"
+alias pufka="${EDITOR} ${HOME}/mm/C++/pufka.cdd"
+alias owned-tech="${EDITOR} ${HOME}/mm/Personal/owned.db/tech.list"
+alias msgbuffer="${EDITOR} ${HOME}/mm/Personal/Msg/msg.buf"
+alias stibuffer="${EDITOR} ${HOME}/mm/Personal/Notes/short-term_ideas.buf"
+
+alias todo="cd ${HOME}/mm/God && ./todo; cd \"${OLDPWD}\""
+alias toget="cd ${HOME}/mm/God && ./toget; cd \"${OLDPWD}\""
+alias devl="cd ${HOME}/mm/God && ./devl; cd \"${OLDPWD}\""
+alias list="cd ${HOME}/mm/God && ./Lists; cd \"${OLDPWD}\""
+alias ach="cd ${HOME}/mm/God && ./Ach; cd \"${OLDPWD}\""
+alias god="cd ${HOME}/mm/God && ./God; cd \"${OLDPWD}\""
+alias diy="cd ${HOME}/mm/diy/.Idea_list && ./diy; cd \"${OLDPWD}\""
+alias cddpp="cdd_postprocessor.py"
+
+alias music="ls ${HOME}/Music | shuf -n 1 --random-source=/dev/urandom"
+alias mm="xdg-open ${HOME}/mm/."
+alias downloadstories-folder="xdg-open ${HOME}/mm/Python/bots/downloaders/instagram/."
+alias god-e="${EDITOR} ${HOME}/mm/C++/God/main.cpp"
+alias xmrig="sudo ${HOME}/mm/biz/monero/xmrig-6.9.0/xmrig"
+alias curlency="curl -X GET https://openexchangerates.org/api/latest.json?app_id=1b356f1e65e24ddb8d56a73c1da2d900"
+alias books="xdg-open ${HOME}/mm/Archive/text/books/"
+alias ekke="xdg-open ${HOME}/mm/házidolgozatok/EKKE"
+alias órarend="ristretto ~/mm/házidolgozatok/EKKE/órarend"
+alias xonotic="cd Xonotic; cd ./Xonotic; ./xonotic-linux64-sdl"
+
+
+#	Aliassed Scripts
+alias mkdirs="${HOME}/mm/Linux/Bash/Aliased_scripts/mkdirs.sh"
+alias txt="${HOME}/mm/Linux/Bash/Aliased_scripts/txt.txt.sh"
+alias downloadstories="python3 ${HOME}/mm/Python/bots/downloaders/instagram/story_dowloader.py"
+#########################
+
+
+
+#####################
+###   FUNCTIONS   ###
+#####################
+function mkdircd() { mkdir -p "$@" && eval cd "\"\$$#\""; }
+function cdu() {
+	if [[ $# -eq 0 ]]; then
+		cd ..
+		return
+	fi
+	for ((i=0 ; i <= $# ; i++)); do
+		cd ..
+	done
+}
+function f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
+#########################
+
+
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+#neofetch
+

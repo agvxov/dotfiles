@@ -1,0 +1,11 @@
+## Favourites ##
+	export FAVCOL="red"
+	export SECCOL="blue"
+	export FAVCOLESC="\033[31m"
+	export SECCOLESC="\033[34m"
+	export FAVCOLNUM="2"
+	export SECCOLNUM="9"
+	export FAVCHAR="♛"
+
+export PS1="\[\033[1m${FAVCOLESC}\]\h\[\033[1m${SECCOLESC}\] \w #\[\033[0m\] "
+export PS2=" \[${FAVCOLESC}\]>\[\033[0m\] "

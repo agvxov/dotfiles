@@ -1,0 +1,9 @@
+V: python -m venv venv
+v: vsource
+m: make
+t: make test
+T: sudo rc-service tor restart
+n: nnn
+N: sudo rc-service NetworkManager restart
+p: git push
+4: ssh root@192.168.0.144

@@ -1,0 +1,53 @@
+XTerm.termName: xterm-256color
+
+XTerm*VT100.geometry: 400x400
+
+XTerm*vt100.scrollBar: false
+XTerm*scrollTtyOutput: false
+xterm*toolBar: false
+xterm*menuBar: false
+xterm*mainMenu*menuBar: false
+xterm*vtMenu*menuBar: false
+
+XTerm*vt100.translations: #override \n\
+  Ctrl       <Key>-: smaller-vt-font()    \n\
+  Ctrl       <Key>+: larger-vt-font()     \n\
+  Ctrl       <Key>0: set-vt-font(d)       \n\
+  Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
+
+! The sole reason Im using this emulator
+xterm*decGraphicsID: 340
+
+! Durga Sar makes <Alt> work
+XTerm*eightBitInput:   false
+XTerm*eightBitOutput:  true
+
+!XTerm*pointerShape: left_ptr
+XTerm*pointerShape: crosshair
+
+! Font
+XTerm*faceName: DejaVu Sans Mono Regular
+XTerm*faceSize: 12
+
+! Color Scheme (Kali-Dark)
+xterm*background: #23252E
+
+xterm*foreground: #FFFFFF
+
+xterm*color0:  #1F2229
+xterm*color1:  #D41919
+xterm*color2:  #5EBDAB
+xterm*color3:  #FEA44C
+xterm*color4:  #367BF0
+xterm*color5:  #9755B3
+xterm*color6:  #49AEE6
+xterm*color7:  #E6E6E6
+
+xterm*color8:  #198386
+xterm*color9:  #EC0101
+xterm*color10: #47D4B9
+xterm*color11: #FF8A18
+xterm*color12: #277FFF
+xterm*color13: #962AC3
+xterm*color14: #05A1F7
+xterm*color15: #FFFFFF

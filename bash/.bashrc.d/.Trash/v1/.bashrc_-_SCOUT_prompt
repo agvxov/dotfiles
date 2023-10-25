@@ -1,0 +1,3 @@
+prompt_color='\[\033[1;32m\]'
+PS1=$prompt_color' ─▶\[\033[0m\] '
+PS2=$prompt_color'  >\[\033[0m\]     '
