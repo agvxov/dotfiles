@@ -4,8 +4,16 @@
 !_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
 !_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
 !_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
-!_TAG_PROC_CWD	/home/anon/	//
+!_TAG_PROC_CWD	/home/anon/Desktop/Master/pufka/	//
 !_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	//
+_STDC_PREDEF_H	/home/anon/.vim/plugin/HiTags//tags.i	/^#define _STDC_PREDEF_H /;"	d	file:
+__GENTOO_HAS_FEATURE	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __GENTOO_HAS_FEATURE(/;"	d	file:
+__GENTOO_NOT_FREESTANDING	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __GENTOO_NOT_FREESTANDING /;"	d	file:
+__STDC_IEC_559_COMPLEX__	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __STDC_IEC_559_COMPLEX__ /;"	d	file:
+__STDC_IEC_559__	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __STDC_IEC_559__ /;"	d	file:
+__STDC_IEC_60559_BFP__	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __STDC_IEC_60559_BFP__ /;"	d	file:
+__STDC_IEC_60559_COMPLEX__	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __STDC_IEC_60559_COMPLEX__ /;"	d	file:
+__STDC_ISO_10646__	/home/anon/.vim/plugin/HiTags//tags.i	/^#define __STDC_ISO_10646__ /;"	d	file:
