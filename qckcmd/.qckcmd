@@ -7,3 +7,4 @@ n: nnn
 N: sudo rc-service NetworkManager restart
 p: git push
 4: ssh root@192.168.0.144
+6: ssh 192.168.0.206
