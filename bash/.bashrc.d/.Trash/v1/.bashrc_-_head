@@ -1,9 +1,0 @@
-#neofetch
-
-case $- in			# If not running interactively, don't do anything
-    *i*) ;;
-      *) return;;
-esac
-
-
-#cd ~
