@@ -43,9 +43,6 @@ source ${SRCF}/bash_fzfind.rc
 source ${SRCF}/nnn.rc
 # Misc
 source ${SRCF}/python.rc
+source ${SRCF}/java.rc
 source ${SRCF}/binds.rc
 source ${SRCF}/xterm.rc
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
