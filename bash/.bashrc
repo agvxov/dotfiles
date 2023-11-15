@@ -9,7 +9,6 @@ BTS_L=192.168.0.206
 SRCF=~/.bashrc.d/
 MACHINE_NAME="$(cat ${SRCF}/MACHINE_NAME.val)"
 
-export PATH="$PATH:."
 
 # Personal
 source ${SRCF}/Personal/.${USER}_personal.rc

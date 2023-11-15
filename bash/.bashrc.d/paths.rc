@@ -1,10 +1,12 @@
 #!/bin/bash
-export MM="/home/anon/Master"
-export CDPATH="${MM}"
+export PATH="$PATH:."
 export PATH="${PATH}:~/go/bin/:~/.cargo/bin/:${MM}/bin"
+
+export MM="/home/anon/Master"
+
 export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"
 export QCKSWP_SAVES="${MM}/Qckswp/.qckswp.csv"
-export LISTAHOME="${MM}/Lista/.lista/data/"
+
 	# array of essential files
 export ESSENTIALS=(
 					"${MM}/pufka/pufka.cdd" 
@@ -13,6 +15,7 @@ export ESSENTIALS=(
 					"${MM}/Peak/peak.cdd"
 					"${MM}/s/процесс.log"
 					)
+
 	# array of personal config files/directories
 export RCCONFIG=(
 				"${MM}/Bash/Bashrc/"
@@ -25,5 +28,6 @@ export RCCONFIG=(
 				"$LISTAHOME"
 				"${MM}/Fonts/figlet-fonts/"
 				)
+
 	# start page for lynx and possibly other browsers
 export WWW_HOME="${HOME}/lynx_bookmarks.html"
