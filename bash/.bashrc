@@ -40,8 +40,12 @@ source ${SRCF}/neofetch.rc
 source ${SRCF}/w.rc			# watch (clock)
 source ${SRCF}/bash_fzfind.rc
 source ${SRCF}/nnn.rc
-# Misc
+# Languages
+source ${SRCF}/rust.rc
+source ${SRCF}/go.rc
+source ${SRCF}/perl.rc
 source ${SRCF}/python.rc
 source ${SRCF}/java.rc
+# Misc
 source ${SRCF}/binds.rc
 source ${SRCF}/xterm.rc

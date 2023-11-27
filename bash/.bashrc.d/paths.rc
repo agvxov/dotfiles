@@ -1,6 +1,6 @@
 #!/bin/bash
 export PATH="$PATH:."
-export PATH="${PATH}:~/go/bin/:~/.cargo/bin/:${MM}/bin"
+export PATH="${PATH}:${MM}/bin"
 
 export MM="/home/anon/Master"
 
