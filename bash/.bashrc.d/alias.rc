@@ -26,6 +26,7 @@ alias xclip='xclip -selection clipboard'
 	alias tmux="export LINES=${LINES}; export COLUMNS=${COLUMNS}; tmux new-session -t '0' || tmux"
 	alias wgetpaste="wgetpaste -s 0x0"
 	alias info="info --vi-keys"
+	alias less="less --mouse"
 # Safety
 	alias wget='wget --restrict-file-names=windows,ascii'
 	alias rm='rm -I'
