@@ -16,7 +16,6 @@ alias xclip='xclip -selection clipboard'
 	alias cls="clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
 	alias mkdir="mkdir -p"
 	alias hgrep="\\history | grep"
-	alias close="exit"
 	alias quit="exit"
 	alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
 	alias heavyDuty=". ${MM}/Bash/Bashrc/.heavyDutyrc"
@@ -48,7 +47,3 @@ alias xclip='xclip -selection clipboard'
 			alias random="${EDITOR} ${MM}/Personal/RANDOM.txt"
 		fi
 		alias msgbuffer="${EDITOR} ${MM}/Personal/Msg/msg.buf"
-	# Listas
-		for i in $(lista -l 2> /dev/null); do
-			alias $i="lista -s '$i'"
-		done
