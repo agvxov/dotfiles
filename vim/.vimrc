@@ -73,6 +73,8 @@
 
 	set keywordprg=:call\ ContextualMan()\ \"	" better 'K' help
 
+	set suffixes+=.info,.aux,.log,.dvi,.bbl,.out,.o,.lo,.obj	" ignore on completion
+
 " -----------------
 " ### Functions ###
 " -----------------
@@ -215,3 +217,5 @@ endif
 
 "" Souce VimScript9 settings
 "source ~/.vimrc9
+
+set formatoptions-=cro
