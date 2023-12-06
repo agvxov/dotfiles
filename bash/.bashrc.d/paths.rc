@@ -1,6 +1,7 @@
 #!/bin/bash
-export PATH="$PATH:."
-export PATH="${PATH}:${MM}/bin"
+export PATH="$PATH:./"
+export PATH="${PATH}:${HOME}/bin/"
+export PATH="${PATH}:${MM}/bin/"
 
 export MM="/home/anon/Master"
 
