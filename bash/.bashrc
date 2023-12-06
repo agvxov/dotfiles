@@ -4,14 +4,67 @@ case $- in
     *) return;;
 esac
 
+## Favourites ##
+export FAVCOL="green"
+export SECCOL="blue"
+export FAVCOLESC="\033[32m"
+export SECCOLESC="\033[34m"
+export FAVCOLNUM="2"
+export SECCOLNUM="4"
+export FAVCHAR="♞"
 
-BTS_L=192.168.0.206
+export BTS_L=192.168.0.206
+export ROOK_L=192.168.0.144
 SRCF=~/.bashrc.d/
-MACHINE_NAME="$(cat ${SRCF}/MACHINE_NAME.val)"
 
+if [[ -e ${SRCF}/MACHINE_NAME.val ]] && [[ -s ${SRCF}/MACHINE_NAME.val ]]; then
+	MACHINE_NAME="$(cat ${SRCF}/MACHINE_NAME.val)"
+
+	get_git_branch() {
+		branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+		if [ -n "$branch" ]; then
+			echo "$branch"
+		else
+			echo "none"
+		fi
+	}
+
+	case $MACHINE_NAME in
+		BATTLESTATION)
+			prompt_color="\[${FAVCOLESC}\]"
+			info_color="\[${SECCOLESC}\]"
+			BOLD="\[\033[1m\]"
+			NORMAL="\[\033[0m\]"
+			export PS1="$prompt_color┌──${BOLD}(${info_color}---${prompt_color}){${info_color}\u${FAVCHAR}\h${prompt_color}${BOLD}}${NORMAL}${prompt_color}@${BOLD}[${info_color}\w${prompt_color}]${NORMAL}\n"
+			export PS1+="${prompt_color}└<${info_color}${BOLD}\$${NORMAL} "
+			export PS2="${prompt_color} >\[\033[0m\]"
+			unset color_prompt info_color BOLD NORMAL
+			;;
+		SCOUT)
+			prompt_color="\[\033[31;1m\]"
+			PS1="$prompt_color[\$?] ("'$(get_git_branch)'") #:\[\033[0m\] "
+			PS2="$prompt_color  >\[\033[0m\]     "
+			PROMPT_COMMAND="PS1="'$PS1'
+			#prompt_color="\[\033[1m${FAVCOLESC}\]"
+			#PS1="$prompt_color ─▶\[\033[0m\] "
+			#PS2="$prompt_color  >\[\033[0m\]     "
+			unset color_prompt
+			;;
+		ROOK)
+			N='\[\033[0m\]'
+			B='\[\033[1m\]'
+			R="\[\033[31;1m\]"
+			G="\[\033[92;1m\]"
+			PS1="${R}<("'${USER}@${HOSTNAME}'")>${G}-[${N}${B}"'${PWD}'"${G}]${N}$ "
+			PS2="${R}<${N} "
+
+			[[ screen != "$TERM" ]] && screen -R -d
+			neofetch
+			;;
+	esac
+fi
 
 # Personal
-source ${SRCF}/Personal/.${USER}_personal.rc
 source ${SRCF}/def_apps.rc
 source ${SRCF}/paths.rc
 # Bash behaviour setting
@@ -46,6 +99,11 @@ source ${SRCF}/go.rc
 source ${SRCF}/perl.rc
 source ${SRCF}/python.rc
 source ${SRCF}/java.rc
+source ${SRCF}/csharp.rc
 # Misc
 source ${SRCF}/binds.rc
 source ${SRCF}/xterm.rc
+
+function ffgrep() {
+	fgrep "$1" ./**/* 2> /dev/null
+}
