@@ -1,4 +1,8 @@
-bind -x '"\C-p": $(qckcmd -i ~/.qckcmd)'
+function qckcmd_wrapper(){
+	READLINE_LINE="$(qckcmd -i ~/.qckcmd)"
+	READLINE_POINT="${#READLINE_LINE}"
+}
+bind -x '"\C-p": qckcmd_wrapper'
 #bind -x '"\C-p": eval $(qckcmd -i ~/.qckcmd)'
 #bind -x '"\C-~": cd ~'
 #bind -x '"\C-h": history'
