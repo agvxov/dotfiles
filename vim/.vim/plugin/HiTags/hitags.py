@@ -68,6 +68,10 @@ targets = [
 		'out': hi('Type')
 	},
 	{
+		'type': 'c',
+		'out': hi('Type')
+	},
+	{
 		'type': 'd',
 		'out': hi('Constant')
 	},
@@ -96,7 +100,7 @@ def mimetype(filename):
 	# cmd = "file -i {input_}".format(input_=filename)
 	cmd = "mimetype {input_}".format(input_=filename)
 	r = run(cmd, shell=True, stdout=PIPE)
-	r = r.stdout.decode('ascii').split(' ')[1].strip()
+	r = r.stdout.decode('ascii', errors='replace').split(' ')[1].strip()
 	return r
 
 def preprocessfile(filename):
