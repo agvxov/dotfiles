@@ -61,6 +61,9 @@ if [[ -e ${SRCF}/MACHINE_NAME.val ]] && [[ -s ${SRCF}/MACHINE_NAME.val ]]; then
 			[[ screen != "$TERM" ]] && screen -R -d
 			neofetch
 			;;
+		BLUE)
+			export PS1='\[\033[1;34m\]████:\[\033[0m\] \[\033[34m\]'
+			;;
 	esac
 fi
 
