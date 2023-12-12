@@ -20,7 +20,7 @@ alias xclip='xclip -selection clipboard'
 	alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
 	alias heavyDuty=". ${MM}/Bash/Bashrc/.heavyDutyrc"
 	alias locatei="locate -i"
-	alias resource="source /home/anon/.bashrc"
+	alias resource="source ~/.bashrc"
 	alias mysql="mysql --user=${USER} -p"
 	alias tmux="export LINES=${LINES}; export COLUMNS=${COLUMNS}; tmux new-session -t '0' || tmux"
 	alias wgetpaste="wgetpaste -s 0x0"
