@@ -1,0 +1,20 @@
+### LOOKS ###
+	# do not trash my screen with ^[char]s
+	set echo-control-characters off
+	# Color suggestions apropriate for filetype (see $LS_COLORS)
+	set colored-stats on
+	# Briefly highlight matching parenthesies
+	set blink-matching-paren on
+	# Do not page completion suggestions
+	set page-completions off
+
+### VIMIFICATION ###
+	# Vim like bindings for autocompleation from history
+	"\C-p":history-search-backward
+	"\C-n":history-search-forward
+
+### COMPLEATION
+	# case sensitivity off
+	set completion-ignore-case on
+	# '-' == '_'
+	set completion-map-case on
