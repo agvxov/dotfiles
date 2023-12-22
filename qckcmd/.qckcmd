@@ -9,3 +9,4 @@ p: git push
 4: ssh root@192.168.0.144
 6: ssh 192.168.0.206
 c: clifm
+D: export DEBUG=1
