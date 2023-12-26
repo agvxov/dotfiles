@@ -1,3 +1,4 @@
 *.tags
 *.i
 vim/.vim/.netrwhist
+cache.db
