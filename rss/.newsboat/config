@@ -1,0 +1,31 @@
+# General
+reload-threads 100
+
+# Vimification
+unbind-key j
+unbind-key k
+unbind-key J
+unbind-key K
+
+bind-key j down
+bind-key k up
+bind-key l open
+bind-key h quit
+
+# Colors
+color background			default		default
+color listnormal			blue		default
+color listnormal_unread		cyan		default
+color listfocus				default		magenta	 bold
+color listfocus_unread		default		magenta	 bold
+color title					white		yellow	 bold
+color article				default		default
+color info					default		yellow	 bold
+color hint-key				default		yellow	 bold
+color hint-keys-delimiter	default		yellow
+color hint-separator		default		yellow	bold
+color hint-description		default		yellow
+color end-of-text-marker	blue		default
+
+# Format
+feedlist-format "%?T?%4i %n %8u %T & %-7t ═════════════════════════════════════════════════════?"

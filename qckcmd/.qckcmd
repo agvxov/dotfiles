@@ -10,3 +10,4 @@ p: git push
 6: ssh 192.168.0.206
 c: clifm
 D: export DEBUG=1
+b: newsboat
