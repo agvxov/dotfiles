@@ -72,6 +72,18 @@ targets = [
 		'out': hi('Type')
 	},
 	{
+		'type': 'e',
+		'out': hi('Type')
+	},
+	{
+		'type': 'u',
+		'out': hi('Type')
+	},
+    {
+		'type': 'g',
+		'out': hi('Type')
+	},
+	{
 		'type': 'd',
 		'out': hi('Constant')
 	},
