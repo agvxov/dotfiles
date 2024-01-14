@@ -380,7 +380,7 @@ function signin(){
 	\sudo -u $1 bash
 }
 alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
-alias resource='source /home/anon/.bashrc'
+alias resource='source ~/.bashrc'
 alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'
 #pragma endregion
