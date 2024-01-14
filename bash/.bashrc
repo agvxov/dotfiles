@@ -75,7 +75,7 @@ export BLUE=192.168.0.227
 #pragma endregion
 ### Rig Machine selection ###
 #pragma region
-RIGF=~/.bashrc.d/
+RIGF="${HOME}/.bashrc.d/"
 if [[ -e ${RIGF}/MACHINE_NAME.val ]] && [[ -s ${RIGF}/MACHINE_NAME.val ]]; then
 	MACHINE_NAME="$(cat ${RIGF}/MACHINE_NAME.val)"
 
@@ -153,7 +153,7 @@ shopt -s lithist					# save multiline commands with embeded newlines
 HISTSIZE=10000
 HISTFILESIZE=20000
 HISTTIMEFORMAT='%y/%m/%d %T: '
-HISTFILE="${MM}/Bash/History/.bash_history"
+HISTFILE="${HOME}/stow/.cache/.bash_history"
 PROMPT_COMMAND="\history -a;$PROMPT_COMMAND"
 #pragma endregion
 ### Charification ###
@@ -308,7 +308,7 @@ trap nnn_cd EXIT
 alias n="nnn"
 ##### qckcmd ####
 function qckcmd_wrapper(){
-	READLINE_LINE="$(qckcmd -i ~/.qckcmd)"
+	READLINE_LINE="$(qckcmd -i ${HOME}/.qckcmd)"
 	READLINE_POINT="${#READLINE_LINE}"
 }
 bind -x '"\C-p": qckcmd_wrapper'
@@ -345,7 +345,7 @@ alias tmux='tmux new-session -t '0' || tmux'
 #pragma region
 ### Go ###
 #pragma region
-export PATH="${PATH}:~/go/bin/"
+export PATH="${PATH}:${HOME}/go/bin/"
 #pragma endregion
 ### Perl ###
 #pragma region
@@ -367,7 +367,7 @@ export MCS_COLORS='brightwhite,red'
 #pragma endregion
 ### Pust ###
 #pragma region
-export PATH="${PATH}:~/.cargo/bin/"
+export PATH="${PATH}:${HOME}/.cargo/bin/"
 #pragma endregion
 #pragma endregion
 
@@ -387,7 +387,7 @@ alias tt='tt_with_high_score.sh'
 
 
 # Plugins
-SRCF=~/.bashrc.d/
+SRCF="${HOME}/.bashrc.d/"
 source ${SRCF}/w.rc			# watch (clock)
 source ${SRCF}/cd.rc
 source ${SRCF}/sudo.rc
