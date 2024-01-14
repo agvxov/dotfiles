@@ -75,6 +75,12 @@
 
 	set suffixes+=.info,.aux,.log,.dvi,.bbl,.out,.o,.lo,.obj	" ignore on completion
 
+	set foldopen-=hor " do not unfold on horizontal movement
+
+	" always respect # pragma region
+	set foldmarker=#pragma\ region,#pragma\ endregion
+	set foldmethod=marker
+
 " -----------------
 " ### Functions ###
 " -----------------
