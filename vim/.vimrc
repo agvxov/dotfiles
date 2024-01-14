@@ -48,11 +48,11 @@
 " ### EASSE_OF_USE ###
 " --------------------
 	set bs=2
-	set undodir=/home/anon/Master/un/
+	set undodir=/home/anon/stow/.cache/
 	set undofile
 
-	set directory=/home/anon/Master/un/
-	set backupdir=/home/anon/Master/un/
+	set directory=/home/anon/stow/.cache/
+	set backupdir=/home/anon/stow/.cache/
 
 	set autoindent
 
