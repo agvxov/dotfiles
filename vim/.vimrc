@@ -185,6 +185,8 @@
 		  map <F9>	miggVG"+y'izz
 		  " F12: reload file
 		  map <F12>	:e!<CR>
+"	Tagbar_plugin:
+		nmap <C-W>m :TagbarToggle<CR>
 
 "------------------
 " ### VARIABLES ###
