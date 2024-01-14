@@ -1,2 +1,0 @@
-alias ipython="ipython -i ${MM}/Python/Pythonrc/init.py"
-alias vsource="source ./venv/bin/activate"
