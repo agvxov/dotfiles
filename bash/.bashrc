@@ -353,7 +353,8 @@ export PERL5LIB="$PERL5LIB:."
 #pragma endregion
 ### Python ###
 #pragma region
-alias ipython="ipython -i ${MM}/Python/Pythonrc/init.py"
+export PYTHONSTARTUP="${HOME}/.pythonrc"
+alias ipython="ipython -i '${PYTHONSTARTUP}'"
 alias vsource='source ./venv/bin/activate'
 #pragma endregion
 ### Java ###
