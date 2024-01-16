@@ -280,7 +280,7 @@ alias mkdir='mkdir -p'
 alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
 alias hgrep='\history | grep'
 alias history='history | tail -n 10'
-alias clear="clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
+alias clear="\clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
 alias cal='cal --monday'
 alias nmap='nmap --stats-every 5s'
 #pragma endregion
