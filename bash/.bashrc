@@ -374,13 +374,16 @@ export PATH="${PATH}:${HOME}/.cargo/bin/"
 # Custom Additions
 #pragma region
 function ffgrep() {
-	fgrep "$1" ./**/* 2> /dev/null
+	WHERE='.'
+	[ "$2" != "" ] && WHERE="$2"
+	[ -d "$WHERE" ] && WHERE="${WHERE}/**/*"
+	fgrep "$1" ${WHERE} 2> /dev/null
 }
 function signin(){
 	\sudo -u $1 bash
 }
 alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
-alias resource='source ~/.bashrc'
+alias resource='unalias -a; source ~/.bashrc'
 alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'
 #pragma endregion
