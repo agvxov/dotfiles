@@ -48,7 +48,7 @@ export VISUAL="vim"
 export BROWSER="librewolf"
 export PAGER="less"
 export IMAGEVIEWER="nomacs"
-export MANPAGER='recursivelyExpandedAlias less'
+export MANPAGER='less --mouse'
 #pragma endregion
 ### Quick Access ###
 #pragma region
