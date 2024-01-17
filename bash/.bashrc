@@ -252,16 +252,6 @@ alias bat='bat --italic-text always'
 alias hexedit='hexedit --color'
 alias less='less --use-color'
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-if [ -x /usr/bin/dircolors ]; then
-	[ -n "$LS_COLORS" ] || (test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)")
-	export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
-	export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
-	export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-	export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
-	export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-	export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-	export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-fi
 #pragma endregion
 ### Safety ###
 #pragma region
@@ -396,7 +386,8 @@ source ${SRCF}/w.rc			# watch (clock)
 source ${SRCF}/cd.rc
 source ${SRCF}/sudo.rc
 source ${SRCF}/fzfind.rc
-source ${SRCF}/ls_colors.rc
+[[ -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
 
 
 if [ "$USER" == "root" ]; then
