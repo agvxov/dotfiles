@@ -3,6 +3,7 @@
 	set echo-control-characters off
 	# Color suggestions apropriate for filetype (see $LS_COLORS)
 	set colored-stats on
+	set colored-completion-prefix on
 	# Briefly highlight matching parenthesies
 	set blink-matching-paren on
 	# Do not page completion suggestions
