@@ -5,10 +5,6 @@
 	"set titlestring=Vim
 	set iconstring=Vim
 
-	set tabstop=4
-	set shiftwidth=4
-	set expandtab
-
 	set listchars=tab:<·>,eol:¬,space:·,nbsp:⎵
 
 	syntax on
@@ -66,8 +62,6 @@
 
 	set confirm 		"when quiting an unsaved filed, do not fail, instead ask back whether the buffer shall be saved, not saved, or cancel the operation
 
-	set noexpandtab
-
 	set mouse=a
 	nnoremap <LeftMouse> <nop>
 
@@ -80,6 +74,12 @@
 	" always respect # pragma region
 	set foldmarker=#pragma\ region,#pragma\ endregion
 	set foldmethod=marker
+
+	" tabs/spaces
+	set tabstop=4
+	set shiftwidth=4
+	set expandtab
+	set softtabstop=4
 
 " -----------------
 " ### Functions ###
