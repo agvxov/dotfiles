@@ -88,8 +88,13 @@
 		let word = expand('<cword>')
 		let cmd  = ":silent !"
 
+		if &filetype == "vim"
+			:help word
+			return
+		endif
+
 		if &filetype == "cpp"
-			let cmd .= "man 3 " . word . "; [ $? == 16 ] && cppman "
+			let cmd .= "man -s 3,2 " . word . "; [ $? == 16 ] && cppman "
 		elseif &filetype == "python"
 			let cmd .= "pydoc "
 		else
@@ -114,8 +119,10 @@
 		endif
 	endfunction
 
-	let s:drawit_boolean = 0
 	function! Drawit_toggle()
+		if !exists("s:drawit_boolean")
+			let s:drawit_boolean = 0
+		endif
 		if s:drawit_boolean
 			DIstop
 			let s:drawit_boolean = 0
@@ -125,25 +132,30 @@
 		endif
 	endfunction
 
-	let s:acp_boolean = 0
-	function! Acp_toggle()
-		if s:drawit_boolean
+	function! Programming_mode_toggle()
+		if !exists("s:programming_mode_boolean")
+			let s:programming_mode_boolean = 0
+		endif
+
+		if s:programming_mode_boolean
+			let s:programming_mode_boolean = 0
 			AcpDisable
-			let s:drawit_boolean = 0
 		else
+			let s:programming_mode_boolean = 1
 			AcpEnable
-			let s:drawit_boolean = 1
 		endif
 	endfunction
 
-	let s:spell_boolean = 0
 	function! Spell_toggle()
-		if s:drawit_boolean
+		if !exists("s:spell_boolean")
+			let s:spell_boolean = 0
+		endif
+		if s:spell_boolean
 			set nospell
-			let s:drawit_boolean = 0
+			let s:spell_boolean = 0
 		else
 			set spell spelllang=en_us
-			let s:drawit_boolean = 1
+			let s:spell_boolean = 1
 		endif
 	endfunction
 
@@ -157,9 +169,10 @@
 		endif
 "	Complete_on_tab:
 		inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
-		inoremap <expr> <CR> pumvisible() ? "\<C-g>u\<CR>" : "\<C-g>u\<CR>"
+		inoremap <expr> <CR>  pumvisible() ? "\<C-g>u\<CR>" : "\<C-g>u\<CR>"
 		inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "<C-j>"
 		inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "<C-k>"
+
 " 	Function_keys:
 		" ### Visibility island
 		  " F1: toggle whitespace visibility
@@ -170,29 +183,35 @@
 		  map <F3> 	:call Signcolumn_toggle()<CR>
 		  " F4: unhighligh highlighted text
 		  map <F4> 	:noh<CR>
+
 		" ### Feature island
-		  " F5: toggle spell check
-		  "map <F5> 	:!aspell check %<CR>:e! %<CR>
-		  map <F5> 	:call Spell_toggle()<CR>
-		  " F6: reload ctags and its highlighting
-		  map <f6>	:call Cpp_tags_run()<CR>
-		  " F7: toggle DrawIt plugin mode
-		  map <F7> 	:call Drawit_toggle()<CR>
+		  " F5: Display Turbo Menu
+          map <F5> 	:call quickui#menu#open()<CR>
+		  " F6: compile with bake
+		  map <f6>	:!bake %:p<CR>
+		  " F7:
+		  	" NOTHING YET
 		  " F8: toggle acp (auto suggest) plugin mode
-		  map <F8> 	:call Acp_toggle()<CR>
+		  map <F8> 	:call Programming_mode_toggle()<CR>
+
 		" ### Call once in a while island
 		  " F9: copy file contents to clipboard
 		  map <F9>	miggVG"+y'izz
+		  " F10:
+		  	" NOTHING YET
+		  " F11:
+		  	" NOTHING YET
 		  " F12: reload file
 		  map <F12>	:e!<CR>
+
 "	Tagbar_plugin:
 		nmap <C-W>m :TagbarToggle<CR>
 
 "------------------
 " ### VARIABLES ###
 "------------------
-	let $BASH_ENV = "/home/jacob/Desktop/minecraft mod/Linux/Vim/bash_aliases"
 	let g:hitags_events = ["BufWrite"]
+	let g:sigs_events   = ["BufWrite"]
 
 " -------------
 " ### NETRW ###
@@ -244,3 +263,11 @@ endif
 "source ~/.vimrc9
 
 set formatoptions-=cro
+
+" TEMP:
+highlight DiffChange ctermbg=3
+
+" AI notes:
+"  <C-W>v<C-W>l
+"  :new
+"  :windo diffthis
