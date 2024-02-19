@@ -202,6 +202,23 @@
 	"let g:netrw_browse_split = 2
 	let g:netrw_liststyle = 3
 
+" ---------------
+" ### QUICKUI ###
+" ---------------
+call quickui#menu#install('&Edit', [
+            \ [ '&Drawit', ':call Drawit_toggle()'],
+            \ [ '&Expandtab', ':set expandtab!'],
+            \ ])
+call quickui#menu#install('&Option', [
+            \ [ '&Spell', ':call Spell_toggle()'],
+            \ [ '&Netrw', ':Lex'],
+            \ [ '&Diff',  ':diffthis'],
+            \ ])
+call quickui#menu#install('&Development', [
+            \ [ '&Ascii Escape', ':ShowEscapeDictionary'],
+            \ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
+            \ ])
+
 " ------------
 " ### TMUX ###
 " ------------
