@@ -1,14 +1,7 @@
-import os
-import atexit
-import readline
+from sys import *
+from subprocess import *
+from shlex import *
+from numpy import *
+from time import *
+import re
 
-histfile = os.path.join(os.environ['HOME'], "mm/Python/Pythonrc", '.python_history')
-
-try:
-    readline.read_history_file(histfile)
-except IOError:
-	print('I/O Error while reading history file "' + histfile + '"')
-
-atexit.register(readline.write_history_file, histfile)
-
-del os, histfile, readline
