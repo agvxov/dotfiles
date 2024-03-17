@@ -14,3 +14,20 @@ function! ShowEscapeDictionary()
 endfunction
 
 command! ShowEscapeDictionary call ShowEscapeDictionary()
+
+
+let s:makeKeys   = ['target', 'star', 'first pre.', 'all new pre.', 'all pre.', 'uniq all pre.', 'basename target']
+let s:makeValues = [     '@',    '%',          '<',            '?',        '+',             '^',               '*']
+
+function! s:MakeSelected(id, result)
+    let val = '$' . s:makeValues[a:result-1]
+    exec 'normal! i' . val
+endfunction
+
+function! ShowMakeDictionary()
+    call popup_menu(s:makeKeys, #{
+        \ callback: 's:MakeSelected',
+        \ })
+endfunction
+
+command! ShowMakeDictionary call ShowMakeDictionary()

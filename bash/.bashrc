@@ -321,6 +321,7 @@ alias gpg='gpg -i --no-symkey-cache'
 ##### Lynx ####
 export WWW_HOME="${HOME}/lynx_bookmarks.html"
 ##### locate ####
+alias locate='locate --regexp'
 alias locatei='locate -i'
 ##### figlet ####
 alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
@@ -328,6 +329,14 @@ alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
 export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
 ##### tmux ####
 alias tmux='tmux new-session -t '0' || tmux'
+##### stat ####
+function statAlias() {
+	\stat $@ | perl -pe 's/(.*?): (.*)/\033[33;1m$1:\033[0m $2/'
+	du -h -s "$1"
+}
+alias stat="statAlias"
+##### tgpt ####
+alias tgpt="\tmux resize-window -x 80; tgpt -m"
 #pragma endregion
 #pragma endregion
 
@@ -373,7 +382,14 @@ function ffgrep() {
 function signin(){
 	\sudo -u $1 bash
 }
+function testscript() {
+	[ -n "$1" ] && SUFFIX=".$1"
+	I=$(mktemp --tmpdir=$(realpath ~/Swap/tests/) --suffix="${SUFFIX}" XXXX)
+	echo "\033[31;1m${I}\033[0m"
+	$EDITOR $I
+}
 alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
+alias dmake='make --debug --trace --warn-undefined-variables'
 alias resource='unalias -a; source ~/.bashrc'
 alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'

@@ -63,3 +63,6 @@ if exists("b:current_syntax") && b:current_syntax == "cdd"
 	hi def Purple				ctermfg=5
 	hi def Gray					ctermfg=7
 endif
+
+" Temp
+hi SpellBad ctermbg=9
