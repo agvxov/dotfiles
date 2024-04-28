@@ -2,3 +2,6 @@
 link-style=blue
 active-link-style=yellow,bold
 match-style=green
+
+#info
+\r select-reference-this-line
