@@ -186,7 +186,8 @@ endfunction
 call TextEnableCodeSnip('html')
 call TextEnableCodeSnip('php')
 call TextEnableCodeSnip('sql')
-"call TextEnableCodeSnip('sh')	" this breaks some highlighting
+call TextEnableCodeSnip('sh')	" this breaks some highlighting
+call TextEnableCodeSnip('python')	" this breaks some highlighting
 
 
 

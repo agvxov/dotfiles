@@ -9,27 +9,31 @@ input_filename = ''
 preprocessor='clang -fdirectives-only -E {input_} -o {output}'
 tags_filename = 'vim.tags'
 polution_directory = './'
+action = 'hi'
 
 def print2(s):
 	print(s, file=sys.stderr)
 
 def usage(name, x):
-	print2("Usage: {0} <options>".format(name))
+	print2("Usage: {0} <options> <verb>".format(name))
 	print2("\t-h")
-	print2("\t-i <file>")
-	print2("\t-p <cmd>")
-	print2("\t-t <path>")
+	print2("\t-i <file> : input")
+	print2("\t-p <cmd>  : preprocessor (e.g.: 'clang -fdirectives-only -E {input_} -o {output}')")
+	print2("\t-t <path> : polution directory")
+	print2("\t---")
+	print2("\thi")
+	print2("\tsig")
 	exit(x)
 
 def opts(args):
-	global input_filename, preprocessor, polution_directory
+	global input_filename, preprocessor, polution_directory, action
 
 	try:
 		i = args.index("--help") if "--help" in args else -1
 		if i != -1:
 			usage(args[0], 1)
 		else:
-			for idx, arg in enumerate(args[1:]):
+			for idx, arg in enumerate(args[1:]): # this is terrible
 				if arg in ("-h", "--help"):
 					usage(args[0], 0)
 				elif arg == "-i":
@@ -38,6 +42,10 @@ def opts(args):
 					preprocessor = args[idx + 2]
 				elif arg == "-t":
 					polution_directory = args[idx + 2]
+				elif arg == "hi":
+					action = "hi"
+				elif arg == "sig":
+					action = "sig"
 	except IndexError:
 		usage(args[0], 1)
 	if input_filename == '':
@@ -79,7 +87,7 @@ targets = [
 		'type': 'u',
 		'out': hi('Type')
 	},
-    {
+	{
 		'type': 'g',
 		'out': hi('Type')
 	},
@@ -92,15 +100,16 @@ targets = [
 		'out': hi('Identifier')
 	},
 ]
-PATTERN_INDEX = 1 - 1
-TYPE_INDEX = 4 - 1
+NAME_INDEX	= (1) - 1
+PATTERN_INDEX = (3) - 1
+TYPE_INDEX	= (4) - 1
 
 def do_ignore(row):
 	IGNORE_IF_BEGINS_WITH = '!_'
 	for i in IGNORE_IF_BEGINS_WITH:
 		if row[0][0] == i:
 			return True
-	if row[PATTERN_INDEX].find('operator') != -1:
+	if row[NAME_INDEX].find('operator') != -1:
 		return True
 	return False
 
@@ -131,7 +140,7 @@ def file2tags(filename, flags):
 
 def tags2hi(filename):
 	output = set()
-	print2(filename)
+	#print2(filename)
 	try:
 		with open(filename) as f:
 			csv_reader = csv.reader(f, delimiter='\t')
@@ -141,12 +150,39 @@ def tags2hi(filename):
 				for t in targets:
 					try:
 						if t['type'] == row[TYPE_INDEX]:
-							output.add(render(t, re.escape(row[PATTERN_INDEX])))
+							output.add(render(t, re.escape(row[NAME_INDEX])))
 					except:
-						print2(row)
+						#print2(row)
+						pass
 	except FileNotFoundError as e:
 		print2(sys.argv[0] + ": No such file or directory '{0}'.".format(filename))
 		exit(1)
+	return output
+
+def pattern2signature(name, pattern):
+	start = pattern.find(name)
+	if pattern.find(')') != -1:
+		end = pattern.find(')') + 1
+	else:
+		end = pattern.find('$')
+	return pattern[start : end]
+
+has_signature = ['f', 'p']
+
+def tags2sigs(filename):
+	output = dict()
+	#print2(filename)
+	with open(filename) as f:
+		csv_reader = csv.reader(f, delimiter='\t')
+		for row in csv_reader:
+			if do_ignore(row):
+				continue
+			if row[TYPE_INDEX] in has_signature:
+				signature = pattern2signature(row[NAME_INDEX], row[PATTERN_INDEX])
+				if row[NAME_INDEX] in output:
+					output[row[NAME_INDEX]].append(signature)
+				else:
+					output[row[NAME_INDEX]] = [signature]
 	return output
 
 def main(argv):
@@ -162,9 +198,12 @@ def main(argv):
 	if language != '':
 		input_filename = preprocessfile(input_filename)
 		flags += ' --language-force={0} '.format(language)
-	output = tags2hi(file2tags(input_filename, flags))
-	output = sorted(output)
-	output = '\n'.join(output)
+	if action == 'hi':
+		output = tags2hi(file2tags(input_filename, flags))
+		output = sorted(output)
+		output = '\n'.join(output)
+	elif action == 'sig':
+		output = "let signatures = " + str(tags2sigs(file2tags(input_filename, flags)))
 	print(output)
 
 if __name__ == '__main__':

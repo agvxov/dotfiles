@@ -48,7 +48,7 @@ export VISUAL="vim"
 export BROWSER="librewolf"
 export PAGER="less"
 export IMAGEVIEWER="nomacs"
-export MANPAGER='recursivelyExpandedAlias less'
+export MANPAGER='less --mouse'
 #pragma endregion
 ### Quick Access ###
 #pragma region
@@ -252,16 +252,6 @@ alias bat='bat --italic-text always'
 alias hexedit='hexedit --color'
 alias less='less --use-color'
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-if [ -x /usr/bin/dircolors ]; then
-	[ -n "$LS_COLORS" ] || (test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)")
-	export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
-	export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
-	export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-	export LESS_TERMCAP_so=$'\E[01;33m'    # begin reverse video
-	export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-	export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-	export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-fi
 #pragma endregion
 ### Safety ###
 #pragma region
@@ -280,7 +270,7 @@ alias mkdir='mkdir -p'
 alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
 alias hgrep='\history | grep'
 alias history='history | tail -n 10'
-alias clear="clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
+alias clear="\clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
 alias cal='cal --monday'
 alias nmap='nmap --stats-every 5s'
 #pragma endregion
@@ -331,6 +321,7 @@ alias gpg='gpg -i --no-symkey-cache'
 ##### Lynx ####
 export WWW_HOME="${HOME}/lynx_bookmarks.html"
 ##### locate ####
+alias locate='locate --regexp'
 alias locatei='locate -i'
 ##### figlet ####
 alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
@@ -338,6 +329,14 @@ alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
 export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
 ##### tmux ####
 alias tmux='tmux new-session -t '0' || tmux'
+##### stat ####
+function statAlias() {
+	\stat $@ | perl -pe 's/(.*?): (.*)/\033[33;1m$1:\033[0m $2/'
+	du -h -s "$1"
+}
+alias stat="statAlias"
+##### tgpt ####
+alias tgpt="\tmux resize-window -x 80; tgpt -m"
 #pragma endregion
 #pragma endregion
 
@@ -353,7 +352,8 @@ export PERL5LIB="$PERL5LIB:."
 #pragma endregion
 ### Python ###
 #pragma region
-alias ipython="ipython -i ${MM}/Python/Pythonrc/init.py"
+export PYTHONSTARTUP="${HOME}/.pythonrc"
+alias ipython="ipython -i '${PYTHONSTARTUP}'"
 alias vsource='source ./venv/bin/activate'
 #pragma endregion
 ### Java ###
@@ -374,13 +374,23 @@ export PATH="${PATH}:${HOME}/.cargo/bin/"
 # Custom Additions
 #pragma region
 function ffgrep() {
-	fgrep "$1" ./**/* 2> /dev/null
+	WHERE='.'
+	[ "$2" != "" ] && WHERE="$2"
+	[ -d "$WHERE" ] && WHERE="${WHERE}/**/*"
+	fgrep "$1" ${WHERE} 2> /dev/null
 }
 function signin(){
 	\sudo -u $1 bash
 }
+function testscript() {
+	[ -n "$1" ] && SUFFIX=".$1"
+	I=$(mktemp --tmpdir=$(realpath ~/Swap/tests/) --suffix="${SUFFIX}" XXXX)
+	echo "\033[31;1m${I}\033[0m"
+	$EDITOR $I
+}
 alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
-alias resource='source ~/.bashrc'
+alias dmake='make --debug --trace --warn-undefined-variables'
+alias resource='unalias -a; source ~/.bashrc'
 alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'
 #pragma endregion
@@ -392,7 +402,8 @@ source ${SRCF}/w.rc			# watch (clock)
 source ${SRCF}/cd.rc
 source ${SRCF}/sudo.rc
 source ${SRCF}/fzfind.rc
-source ${SRCF}/ls_colors.rc
+[[ -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
 
 
 if [ "$USER" == "root" ]; then
