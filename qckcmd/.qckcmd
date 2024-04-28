@@ -6,8 +6,8 @@ T: sudo rc-service tor restart
 n: nnn
 N: sudo rc-service NetworkManager restart
 p: git push
-4: ssh root@192.168.0.144
-6: ssh 192.168.0.206
+4: ssh root@${ROOK}
+6: ssh ${BTS}
 c: clifm
 D: export DEBUG=1
 b: newsboat
