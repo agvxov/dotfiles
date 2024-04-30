@@ -393,6 +393,8 @@ alias dmake='make --debug --trace --warn-undefined-variables'
 alias resource='unalias -a; source ~/.bashrc'
 alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'
+alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
+alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
 #pragma endregion
 
 
