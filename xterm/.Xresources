@@ -29,11 +29,9 @@ XTerm*pointerShape: crosshair
 XTerm*faceName: DejaVu Sans Mono Regular
 XTerm*faceSize: 12
 
+#include ".xTheme"
+
 ! Color Scheme (Kali-Dark)
-xterm*background: #23252E
-
-xterm*foreground: #FFFFFF
-
 xterm*color0:  #1F2229
 xterm*color1:  #D41919
 xterm*color2:  #5EBDAB
