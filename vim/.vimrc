@@ -111,6 +111,15 @@
         redraw!
     endfunction
 
+    function! ToUnicodeMathNotation(range)
+        let superscript_table = {'\^0': '⁰', '\^1': '¹', '\^2': '²', '\^3': '³', '\^4': '⁴', '\^5': '⁵', '\^6': '⁶', '\^7': '⁷', '\^8': '⁸', '\^9': '⁹'}
+        let subscript_table = {'ˇ0': '₀', 'ˇ1': '₁', 'ˇ2': '₂', 'ˇ3': '₃', 'ˇ4': '₄', 'ˇ5': '₅', 'ˇ6': '₆', 'ˇ7': '₇', 'ˇ8': '₈', 'ˇ9': '₉'}
+        let replace_table = extend(superscript_table, subscript_table)
+        for [key, value] in items(replace_table)
+            execute ":" . a:range . "s/" . key . "/" . value . "/g"
+        endfor
+    endfunction
+
     function! Signcolumn_toggle()
         if &signcolumn == 'no'
             set signcolumn=yes
