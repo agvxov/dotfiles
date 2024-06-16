@@ -125,6 +125,10 @@ if [[ -e ${RIGF}/MACHINE_NAME.val ]] && [[ -s ${RIGF}/MACHINE_NAME.val ]]; then
 			;;
 	esac
 fi
+
+if [[ -n "$SSH_CLIENT" ]]; then
+  PS1="(ssh) ${PS1}"
+fi
 #pragma endregion
 #pragma endregion
 
