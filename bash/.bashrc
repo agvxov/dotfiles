@@ -409,6 +409,7 @@ alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
 alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
 #pragma endregion
 
+export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
 
 # Plugins
 SRCF="${HOME}/.bashrc.d/"
