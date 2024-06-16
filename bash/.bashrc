@@ -199,6 +199,7 @@ stty -ixon	# disable flow control and make ^S and ^Q available
 export PATH="$PATH:./"
 export PATH="${PATH}:${HOME}/bin/"
 export PATH="${PATH}:${MM}/bin/"
+export PATH="${PATH}:/usr/local/texlive/2024/bin/x86_64-linux/"  # fucking genious TexLive, make my bashrc self-depricating!
 
 export MM="/home/anon/Master"
 
