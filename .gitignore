@@ -5,3 +5,5 @@ cache.db
 .cache/*
 tags.vim
 sigs.vim
+*.sqlite
+python/.ipython/profile_default/startup/README

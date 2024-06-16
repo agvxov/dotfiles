@@ -5,3 +5,5 @@ from numpy import *
 from time import *
 import re
 
+#try: import colored_traceback.auto
+#except ImportError: pass
