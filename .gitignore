@@ -7,3 +7,5 @@ tags.vim
 sigs.vim
 *.sqlite
 python/.ipython/profile_default/startup/README
+rss/.newsboat/history.cmdline
+rss/.newsboat/urls
