@@ -328,7 +328,14 @@ export WWW_HOME="${HOME}/lynx_bookmarks.html"
 alias locate='locate --regexp'
 alias locatei='locate -i'
 ##### figlet ####
-alias figlet="figlet -w 120 -d ${MM}/Fonts/figlet-fonts/"
+export FIGLET_FONTDIR="${MM}/Fonts/figlet-fonts/"
+alias figlet="figlet -w 120"
+function figtest() {
+    IFS=$'\n'
+    for i in $(figlist); do
+        figlet -f "$i" $@
+    done
+}
 ##### fzf ####
 export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
 ##### tmux ####
