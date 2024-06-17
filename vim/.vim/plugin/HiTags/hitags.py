@@ -11,6 +11,8 @@ tags_filename = 'vim.tags'
 polution_directory = './'
 action = 'hi'
 
+# --- Console
+#pragma region
 def print2(s):
 	print(s, file=sys.stderr)
 
@@ -50,7 +52,10 @@ def opts(args):
 		usage(args[0], 1)
 	if input_filename == '':
 		usage(args[0], 1)
+#pragma endregion
 
+# --- Highlighting
+#pragma region
 def hi(group):
 	return 'syn keyword\t\tHiTag{group} {{kw}}'.format(group=group)
 
@@ -100,9 +105,15 @@ targets = [
 		'out': hi('Identifier')
 	},
 ]
-NAME_INDEX	= (1) - 1
+#pragma endregion
+
+# --- Ctags
+#pragma region
+NAME_INDEX	  = (1) - 1
 PATTERN_INDEX = (3) - 1
-TYPE_INDEX	= (4) - 1
+TYPE_INDEX	  = (4) - 1
+
+has_signature = ['f', 'p']
 
 def do_ignore(row):
 	IGNORE_IF_BEGINS_WITH = '!_'
@@ -116,25 +127,10 @@ def do_ignore(row):
 def render(target, pattern):
 	return target['out'].format(kw=pattern)
 
-def mimetype(filename):
-	# Totally broken, it's left here as a reminder to not do this:
-	# cmd = "file -i {input_}".format(input_=filename)
-	cmd = "mimetype {input_}".format(input_=filename)
-	r = run(cmd, shell=True, stdout=PIPE)
-	r = r.stdout.decode('ascii', errors='replace').split(' ')[1].strip()
-	return r
-
-def preprocessfile(filename):
-	global preprocessor, polution_directory
-	output = polution_directory + "/" + "tags.i"
-	run(preprocessor.format(input_=filename, output=output), shell=True)
-	return output
-
 def file2tags(filename, flags):
 	global tags_filename, polution_directory
-	ctags_command = "ctags --recurse --extras=+F --kinds-C=+px {extras} -o {output} {input_}"
 	output = polution_directory + "/" + tags_filename
-	cmd = ctags_command.format(extras=flags, output=output, input_=filename)
+	cmd = f"ctags --recurse --extras=+F --kinds-C=+px {flags} -o {output} {filename}"
 	run(cmd, shell=True)
 	return output
 
@@ -167,8 +163,6 @@ def pattern2signature(name, pattern):
 		end = pattern.find('$')
 	return pattern[start : end]
 
-has_signature = ['f', 'p']
-
 def tags2sigs(filename):
 	output = dict()
 	#print2(filename)
@@ -184,20 +178,43 @@ def tags2sigs(filename):
 				else:
 					output[row[NAME_INDEX]] = [signature]
 	return output
+#pragma endregion
 
-def main(argv):
-	global input_filename
-	opts(argv)
-	mime = mimetype(input_filename)
-	language = ''
+# --- Misc. helper
+#pragma region
+def mimetype(filename):
+	# NOTE: `file` is totally broken,
+	# this left here as a reminder to not do this:
+	# cmd = "file -i {input_}".format(input_=filename)
+	cmd = "mimetype {input_}".format(input_=filename)	# I hope you are on gentoo, bud
+	r = run(cmd, shell=True, stdout=PIPE)
+	r = r.stdout.decode('ascii', errors='replace').split(' ')[1].strip()
+	return r
+
+def prepare(file):
+	mime = mimetype(file)
+	language = None
 	flags = ''
 	if mime == 'text/x-csrc' or mime == 'text/x-chdr':
 		language = 'C'
 	elif mime == 'text/x-c++src' or mime == 'text/x-c++hdr':
 		language = 'C++'
-	if language != '':
-		input_filename = preprocessfile(input_filename)
+	if language != None:
+		file = preprocessfile(file)
 		flags += ' --language-force={0} '.format(language)
+	return file, flags
+
+def preprocessfile(filename):
+	global preprocessor, polution_directory
+	output = polution_directory + "/" + "tags.i"
+	run(preprocessor.format(input_=filename, output=output), shell=True)
+	return output
+#pragma endregion
+
+def main(argv):
+	global input_filename
+	opts(argv)
+	input_filename, flags = prepare(input_filename)
 	if action == 'hi':
 		output = tags2hi(file2tags(input_filename, flags))
 		output = sorted(output)
