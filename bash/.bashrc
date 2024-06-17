@@ -48,7 +48,7 @@ export VISUAL="vim"
 export BROWSER="librewolf"
 export PAGER="less"
 export IMAGEVIEWER="nomacs"
-export MANPAGER='less --mouse'
+export MANPAGER='less --mouse --use-color'
 #pragma endregion
 ### Quick Access ###
 #pragma region
