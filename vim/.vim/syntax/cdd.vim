@@ -182,16 +182,14 @@ function! TextEnableCodeSnip(filetype) abort	" credits to 'Ivan Tishchenko' on t
 		\ ' end="@end=' . a:filetype . '@"'
 		\ ' contains=@' . group
 endfunction
-"call TextEnableCodeSnip('javascript') " this breaks all highlighting, if the buffer has to load data not initially in memory; i literally cant even
+call TextEnableCodeSnip('javascript')
 call TextEnableCodeSnip('html')
 call TextEnableCodeSnip('php')
 call TextEnableCodeSnip('sql')
-call TextEnableCodeSnip('sh')	" this breaks some highlighting
-call TextEnableCodeSnip('python')	" this breaks some highlighting
+call TextEnableCodeSnip('sh')
+call TextEnableCodeSnip('python')
 
-
-
-
+syn iskeyword clear
 
 " vim:set sw=2:
 "hi def Strike				term=strikethrough cterm=strikethrough gui=strikethrough

@@ -237,6 +237,9 @@ export RCCONFIG=(
 alias cp='cp -v'
 alias mv='mv -v'
 alias rm='rm -v'
+alias chmod='chmod -v'
+alias chown='chown -v'
+alias mkdir='mkdir -v'
 alias tar='tar -v'
 alias gzip='gzip -v'
 alias bc='bc -q'
@@ -365,6 +368,8 @@ export PERL5LIB="$PERL5LIB:."
 ### Python ###
 #pragma region
 export PYTHONSTARTUP="${HOME}/.pythonrc"
+export BETTER_EXCEPTIONS=1
+export FORCE_COLOR=1    # ?!?!?
 alias ipython="ipython -i '${PYTHONSTARTUP}'"
 alias vsource='source ./venv/bin/activate'
 #pragma endregion

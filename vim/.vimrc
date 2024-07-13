@@ -168,6 +168,13 @@
         endif
     endfunction
 
+    function! Decancer()
+        :%s/\n\W*{/ {/
+        :%s/public /public\n/
+        :%s/override /override\n/
+        :%s/static /static\n/
+    endfunction
+
 " --------------
 " ### REMAPS ###
 " --------------
@@ -211,8 +218,8 @@
           " F11:
             noremap <F11> <Nop>
           " F12: reload file
-          "map <F12> :e!<CR>
-            noremap <F12> <Nop>
+          map <F12> :e!<CR>
+          "noremap <F12> <Nop>
 
 "   Tagbar_plugin:
         nmap <C-W>m :TagbarToggle<CR>
@@ -247,6 +254,7 @@ call quickui#menu#install('&View', [
 call quickui#menu#install('&Modify', [
             \ [ '&Remove trailing', ':%s/\s\+$//g'],
             \ [ '&Retab', ':retab!'],
+            \ [ 'De&cancer', ':call Decancer()'],
             \ ])
 call quickui#menu#install('&Development', [
             \ [ '&Ascii Escape', ':ShowEscapeDictionary'],
