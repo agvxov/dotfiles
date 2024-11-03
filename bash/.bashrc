@@ -211,20 +211,6 @@ export ESSENTIALS=(
 					"${MM}/Peak/peak.cdd"
 					"${MM}/s/процесс.log"
 					)
-
-	# array of personal config files/directories
-export RCCONFIG=(
-				"${MM}/Bash/Bashrc/"
-				"${MM}/Vim/Vimrc/"
-				"${MM}/Tmux/Tmuxrc/.tmux.conf"
-				"${MM}/ImageBoards/Storage/"
-				"${MM}/Personal/Wallpaper/"
-				"$MKTEMPLATE_HOME"
-				"$QCKSWP_SAVES"
-				"$LISTAHOME"
-				"${MM}/Fonts/figlet-fonts/"
-				)
-
 #pragma endregion
 
 # Programs
