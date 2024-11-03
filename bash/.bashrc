@@ -435,3 +435,39 @@ if [ "$USER" == "root" ]; then
 	          
 \033[0m"
 fi
+
+# So i have this problem,
+#  where i want expensive to load features from my shell,
+#  but i cant stand slow load times.
+# Especially because in my workflow,
+#  im constantly opening and closing shells,
+#  quite often for a single command that runs
+#  under miliseconds.
+#
+# Feature examples that do not work out:
+# + GRC
+# + gigabloated highlighing from scripts
+#
+# Back in the day i had this idea that
+#  i would explicitly initialize "heavy duty" features
+#  if i knew the shell would persist for some time.
+# This is the script .heavyDutyrc
+#     # Sourced by alias "heavyDuty"
+#     clear
+#     date
+#     neofetch
+#     
+#     prompt_color='\033[;33m'
+#     info_color='\033[1;37m'
+#     prompt_symbol=♜
+#     export PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'#\[\033[0m\] '
+#     PS2=$prompt_color'>\[\033[0m\]'
+#     
+#     GRC_ALIASES=true
+#     [[ -s "/etc/profile.d/grc.sh" ]] && source /etc/profile.d/grc.sh
+#
+# The thing is, i dont think i ever sourced it.
+#  Very similarly how i have a "programming mode"
+#  for Vim, which i NEVER enter.
+#
+#  XXX: the above comment shall persist until i find a sane solution
