@@ -67,11 +67,12 @@ alias msgbuffer="${EDITOR} ${MM}/Personal/Msg/msg.buf"
 
 # Rig
 #pragma region
-### Rig local IPs ###
+### Rig addresses ###
 #pragma region
 export BTS=192.168.0.206
 export ROOK=192.168.0.144
 export BLUE=192.168.0.227
+export BIS64="bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
 #pragma endregion
 ### Rig Machine selection ###
 #pragma region
