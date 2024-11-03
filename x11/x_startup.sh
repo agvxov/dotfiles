@@ -2,5 +2,5 @@
 
 xset s off
 xset r rate 150 50
-setxkbmap -layout hu -variant nodeadkeys
+setxkbmap -layout hu,ru -variant nodeadkeys,phonetic -option grp:alt_caps_toggle
 setxkbmap -option caps:swapescape
