@@ -195,14 +195,15 @@ alias vimcd="cdvim"
 stty -ixon	# disable flow control and make ^S and ^Q available
 #pragma endregion
 
-# Path
+# Paths
 #pragma region
+export MM="/home/anon/Master"
+
 export PATH="$PATH:./"
 export PATH="${PATH}:${HOME}/bin/"
-export PATH="${PATH}:${MM}/bin/"
+export PATH="${PATH}:${HOME}/stow/.bin/"
+export PATH="${PATH}:${MM}/bin/" # XXX tidy this up
 export PATH="${PATH}:/usr/local/texlive/2024/bin/x86_64-linux/"  # fucking genious TexLive, make my bashrc self-depricating!
-
-export MM="/home/anon/Master"
 
 export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"
 export QCKSWP_SAVES="${MM}/Qckswp/.qckswp.csv"
@@ -338,7 +339,9 @@ function statAlias() {
 }
 alias stat="statAlias"
 ##### tgpt ####
-alias tgpt="\tmux resize-window -x 80; tgpt -m"
+alias tgpt="\tmux resize-window -x 80; tgpt --provider opengpts -m"
+##### locate ####
+alias updatedb="sudo updatedb"
 #pragma endregion
 #pragma endregion
 
@@ -380,8 +383,7 @@ export PATH="${PATH}:${HOME}/.cargo/bin/"
 function ffgrep() {
 	WHERE='.'
 	[ "$2" != "" ] && WHERE="$2"
-	[ -d "$WHERE" ] && WHERE="${WHERE}/**/*"
-	fgrep "$1" ${WHERE} 2> /dev/null
+	fgrep -d recurse "$1" ${WHERE} 2> /dev/null
 }
 function signin(){
 	\sudo -u $1 bash
