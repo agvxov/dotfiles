@@ -416,6 +416,8 @@ source ${SRCF}/fzfind.rc
 HISTUICMD="histui tui --execute --caseless --fuzzy --group"
 source <(histui enable)
 
+alias make='make.sh CC=cc.sh'
+
 if [ "$USER" == "root" ]; then
 	printf "${FAVCOLESC}
 	    ()    
