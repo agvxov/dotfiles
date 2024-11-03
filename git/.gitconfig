@@ -9,5 +9,7 @@
 	rebase = false
 
 [http "http://*.onion"]
-	sslVerify = false
+	proxy = "socks5h://127.0.0.1:9050"
+
+[http "https://*.onion"]
 	proxy = "socks5h://127.0.0.1:9050"
