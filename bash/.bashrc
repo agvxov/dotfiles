@@ -162,11 +162,7 @@ PROMPT_COMMAND="\history -a;$PROMPT_COMMAND"
 #pragma endregion
 ### Charification ###
 #pragma region
-alias c="cd"
-alias g="egrep -i"
 alias s='sudo'
-alias l='ls'
-alias v="${EDITOR}"
 alias w="personal_watch"	# defined elsewhere too
 alias wi="whereis"
 alias cls="clear"
