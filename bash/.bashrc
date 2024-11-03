@@ -319,7 +319,7 @@ export WWW_HOME="${HOME}/lynx_bookmarks.html"
 alias locate='locate --regexp'
 alias locatei='locate -i'
 ##### figlet ####
-export FIGLET_FONTDIR="${MM}/Fonts/figlet-fonts/"
+export FIGLET_FONTDIR="${HOME}/stow/.data/figlet/"
 alias figlet="figlet -w 120"
 function figtest() {
     IFS=$'\n'
