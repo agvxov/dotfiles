@@ -48,7 +48,11 @@ export VISUAL="vim"
 export BROWSER="librewolf"
 export PAGER="less"
 export IMAGEVIEWER="nomacs"
-export MANPAGER='less --mouse --use-color'
+if $(\which manpager &> /dev/null) ; then
+    export MANPAGER='manpager --mouse'
+else
+    export MANPAGER='less --mouse --use-color'
+fi
 #pragma endregion
 ### Quick Access ###
 #pragma region
