@@ -290,7 +290,7 @@ alias info='info --vi-keys'
 #pragma region
 ##### ls ####
 alias ls='ls -aF --color=auto'
-alias ll='l -l'
+alias ll='ls -l'
 ##### bc ####
 alias bc='bc -l'
 ##### nnn ####
