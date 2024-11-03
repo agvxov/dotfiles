@@ -8,6 +8,6 @@ N: sudo rc-service NetworkManager restart
 p: git push
 4: ssh root@${ROOK}
 6: ssh ${BTS}
-c: clifm
+c: clear; make clean; make
 D: export DEBUG=1
 b: newsboat
