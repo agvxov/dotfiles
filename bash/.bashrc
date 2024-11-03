@@ -412,6 +412,9 @@ source ${SRCF}/fzfind.rc
 [[ -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 
+# XXX
+HISTUICMD="histui tui --execute --caseless --fuzzy --group"
+source <(histui enable)
 
 if [ "$USER" == "root" ]; then
 	printf "${FAVCOLESC}
@@ -432,4 +435,3 @@ if [ "$USER" == "root" ]; then
 	          
 \033[0m"
 fi
-
