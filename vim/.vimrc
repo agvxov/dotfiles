@@ -150,19 +150,30 @@
         endif
     endfunction
 
+    let s:programming_mode_boolean = 0
     function! Programming_mode_toggle()
-        if !exists("s:programming_mode_boolean")
-            let s:programming_mode_boolean = 0
-        endif
-
-        if s:programming_mode_boolean
-            let s:programming_mode_boolean = 0
-            AcpDisable
-        else
+        if !s:programming_mode_boolean
             let s:programming_mode_boolean = 1
-            AcpEnable
+
+            set completeopt=menu,menuone,noselect
+            augroup ProgrammingModeGroup
+                autocmd InsertCharPre * call timer_start(100, {->pumvisible() ? '' : feedkeys("\<C-n>", 'n')})
+            augroup END
+        else
+            let s:programming_mode_boolean = 0
+
+            augroup ProgrammingModeGroup
+              autocmd!
+            augroup END
         endif
     endfunction
+    autocmd BufReadPost,BufNewFile *
+          \ if line2byte(1000) > 0 || &filetype ==# 'cpp' |
+          \     let s:programming_mode_boolean = 1 |
+          \     call Programming_mode_toggle() |
+          \ elseif !s:programming_mode_boolean |
+          \     call Programming_mode_toggle() |
+          \ endif
 
     function! Spell_toggle()
         if !exists("s:spell_boolean")
@@ -225,8 +236,8 @@
           map <f6>  :!bake %:p<CR>
           " F7:
             " NOTHING YET
-          " F8: toggle acp (auto suggest) plugin mode
-          map <F8>  :call Programming_mode_toggle()<CR>
+          " F8
+            " NOTHING YET
 
         " ### Call once in a while island
           " F9: copy file contents to clipboard
@@ -281,6 +292,7 @@ call quickui#menu#install('&Development', [
             \ [ '&Ascii Escape', ':ShowEscapeDictionary'],
             \ [ '&Make special', ':ShowMakeDictionary'],
             \ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
+            \ [ '&Completion',   ':call Programming_mode_toggle()'],
             \ ])
 
 " ------------
