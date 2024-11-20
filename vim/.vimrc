@@ -184,6 +184,13 @@
         :%s/static /static\n/
     endfunction
 
+    function! GitBlame()
+      let l:filename    = expand('%')
+      let l:line_number = line('.')
+      execute 'silent !git blame -L ' . l:line_number . ',' . l:line_number . ' ' . l:filename
+      redraw!
+    endfunction
+
 " --------------
 " ### REMAPS ###
 " --------------
@@ -232,6 +239,9 @@
 
 "   Tagbar_plugin:
         nmap <C-W>m :TagbarToggle<CR>
+
+"   Misc:
+        nnoremap gb :call GitBlame()<CR>
 
 "------------------
 " ### VARIABLES ###
