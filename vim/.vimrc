@@ -45,11 +45,17 @@
 " ### EASSE_OF_USE ###
 " --------------------
     set bs=2
-    set undodir=/home/anon/stow/.cache/
-    set undofile
 
-    set directory=/home/anon/stow/.cache/
-    set backupdir=/home/anon/stow/.cache/
+    set undofile
+    if isdirectory("/home/anon/")
+        set undodir=/home/anon/stow/.cache/
+        set directory=/home/anon/stow/.cache/
+        set backupdir=/home/anon/stow/.cache/
+    else
+        set undodir=/tmp/
+        set directory=/tmp/
+        set backupdir=/tmp/
+    endif
 
     set autoindent
 
