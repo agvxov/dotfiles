@@ -44,7 +44,7 @@
 " --------------------
 " ### EASSE_OF_USE ###
 " --------------------
-    set bs=2
+    set backspace=2
 
     set undofile
     if isdirectory("/home/anon/")
