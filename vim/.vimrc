@@ -2,7 +2,6 @@
 " ### LOOKS ###
 " -------------
     set title
-    "set titlestring=Vim
     set iconstring=Vim
 
     set listchars=tab:<·>,eol:¬,space:·,nbsp:⎵
@@ -18,7 +17,7 @@
     set ruler
     "set statusline+=%l,%c%V%=%P
 
-    set visualbell      "flash instead of beeping; im not sure whether thats great or annoying
+    set visualbell      "flash instead of beeping
 
     "autocmd InsertEnter * silent !echo -ne "\e[1 q"
     "autocmd InsertLeave * silent !echo -ne "\e[0 q"
@@ -32,7 +31,7 @@
 
     se nostartofline    "Do not jump to first char of line when scolling
 
-    set colorcolumn=100 " pseudo margin at 80
+    set colorcolumn=100 " visual pseudo-margin on the right
 
     colorscheme knight
 
@@ -280,11 +279,8 @@ if exists('$TMUX')
     "set title          " already called
 endif
 
-"---###NOTES###---
-    "https://vimawesome.com/plugin/syntastic#introduction
+" ------------------
 
-"" Souce VimScript9 settings
-"source ~/.vimrc9
 
 set formatoptions-=cro
 
