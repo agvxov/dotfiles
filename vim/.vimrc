@@ -199,11 +199,13 @@
             map <C-p>   :diffput<CR>
             map <C-n>   :diffget<CR>
         endif
+
 "   Complete_on_tab:
         inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
         inoremap <expr> <CR>  pumvisible() ? "\<C-g>u\<CR>" : "\<C-g>u\<CR>"
         inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "<C-j>"
         inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "<C-k>"
+        inoremap <S-Tab> <C-N>
 
 "   Function_keys:
         " ### Visibility island
