@@ -100,16 +100,18 @@
             return
         endif
 
-        if &filetype == "cpp"
+        if &filetype == "c"
+            let cmd .= "man -s 3,2 "
+        elseif &filetype == "cpp"
             let cmd .= "man -s 3,2 " . word . "; [ $? == 16 ] && cppman "
         elseif &filetype == "python"
             let cmd .= "pydoc "
+        elseif &filetype == "tcl"
+            let cmd .= "man n "
+        elseif &filetype == "bash" || &filetype == "sh"
+            let cmd .= "man 1 "
         else
-            if &filetype == "bash" || &filetype == "sh"
-                let cmd .= "man 1 "
-            else
-                let cmd .= "man 3 "
-            endif
+            let cmd .= "man 3 "
         endif
 
         let cmd .= word
