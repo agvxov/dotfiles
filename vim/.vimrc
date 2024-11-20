@@ -6,6 +6,8 @@
 
     set listchars=tab:<·>,eol:¬,space:·,nbsp:⎵
 
+    filetype on
+
     syntax on
 
     set nowrap          "do not wrap lines not fitting the screen
