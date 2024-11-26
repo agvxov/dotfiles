@@ -394,6 +394,10 @@ function testscript() {
 	echo "\033[31;1m${I}\033[0m"
 	$EDITOR $I
 }
+function disass() {
+    [ "$1" == "" ] && echo 'Nothing to disassemble.' && return
+    objdump --disassemble-all --disassembler-color=extended --visualize-jumps=extended-color bin/ppstep "$1" | less
+}
 alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
 alias dmake='make --debug --trace --warn-undefined-variables'
 alias resource='unalias -a; source ~/.bashrc'
