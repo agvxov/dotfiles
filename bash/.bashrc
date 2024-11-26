@@ -385,7 +385,7 @@ function ffgrep() {
 	[ "$2" != "" ] && WHERE="$2"
 	fgrep -d recurse "$1" ${WHERE} 2> /dev/null
 }
-function signin(){
+function signin() {
 	\sudo -u $1 bash
 }
 function testscript() {
