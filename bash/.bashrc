@@ -388,12 +388,6 @@ function ffgrep() {
 function signin() {
 	\sudo -u $1 bash
 }
-function testscript() {
-	[ -n "$1" ] && SUFFIX=".$1"
-	I=$(mktemp --tmpdir=$(realpath ~/Swap/tests/) --suffix="${SUFFIX}" XXXX)
-	echo "\033[31;1m${I}\033[0m"
-	$EDITOR $I
-}
 function disass() {
     [ "$1" == "" ] && echo 'Nothing to disassemble.' && return
     objdump --disassemble-all --disassembler-color=extended --visualize-jumps=extended-color bin/ppstep "$1" | less
