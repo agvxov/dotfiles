@@ -339,7 +339,7 @@ function statAlias() {
 }
 alias stat="statAlias"
 ##### tgpt ####
-alias tgpt="\tmux resize-window -x 80; tgpt --provider opengpts -m"
+alias tgpt="\tmux resize-window -x 80; tgpt --provider duckduckgo -m"
 ##### locate ####
 alias updatedb="sudo updatedb"
 #pragma endregion
