@@ -13,10 +13,9 @@ action = 'hi'
 
 # --- Console
 #pragma region
-def print2(s):
-	print(s, file=sys.stderr)
+def print2(s): print(s, file=sys.stderr)
 
-def usage(name, x):
+def usage(name : str, exit_code : int):
 	print2("Usage: {0} <options> <verb>".format(name))
 	print2("\t-h")
 	print2("\t-i <file> : input")
@@ -25,39 +24,29 @@ def usage(name, x):
 	print2("\t---")
 	print2("\thi")
 	print2("\tsig")
-	exit(x)
+	exit(exit_code)
 
 def opts(args):
 	global input_filename, preprocessor, polution_directory, action
 
+	if "--help" in args: usage(args[0], 1)
+
 	try:
-		i = args.index("--help") if "--help" in args else -1
-		if i != -1:
-			usage(args[0], 1)
-		else:
-			for idx, arg in enumerate(args[1:]): # this is terrible
-				if arg in ("-h", "--help"):
-					usage(args[0], 0)
-				elif arg == "-i":
-					input_filename = args[idx + 2]
-				elif arg == "-p":
-					preprocessor = args[idx + 2]
-				elif arg == "-t":
-					polution_directory = args[idx + 2]
-				elif arg == "hi":
-					action = "hi"
-				elif arg == "sig":
-					action = "sig"
-	except IndexError:
-		usage(args[0], 1)
-	if input_filename == '':
-		usage(args[0], 1)
+		for idx, arg in enumerate(args[1:]): # this is terrible
+			if arg in ("-h", "--help"): usage(args[0], 0)
+			elif arg == "-i":  input_filename = args[idx + 2]
+			elif arg == "-p":  preprocessor = args[idx + 2]
+			elif arg == "-t":  polution_directory = args[idx + 2]
+			elif arg == "hi":  action = "hi"
+			elif arg == "sig": action = "sig"
+	except IndexError: usage(args[0], 1)
+
+	if input_filename == '': usage(args[0], 1)
 #pragma endregion
 
 # --- Highlighting
 #pragma region
-def hi(group):
-	return 'syn keyword\t\tHiTag{group} {{kw}}'.format(group=group)
+def hi(group : str) -> str: return 'syn keyword\t\tHiTag{group} {{kw}}'.format(group=group)
 
 targets = [
 	{
@@ -124,8 +113,6 @@ def do_ignore(row):
 		return True
 	return False
 
-def render(target, pattern):
-	return target['out'].format(kw=pattern)
 
 def file2tags(filename, flags):
 	global tags_filename, polution_directory
@@ -135,6 +122,8 @@ def file2tags(filename, flags):
 	return output
 
 def tags2hi(filename):
+	def render(target : {}, pattern : str): return target['out'].format(kw=pattern)
+
 	output = set()
 	#print2(filename)
 	try:
@@ -155,15 +144,15 @@ def tags2hi(filename):
 		exit(1)
 	return output
 
-def pattern2signature(name, pattern):
-	start = pattern.find(name)
-	if pattern.find(')') != -1:
-		end = pattern.find(')') + 1
-	else:
-		end = pattern.find('$')
-	return pattern[start : end]
 
 def tags2sigs(filename):
+	def pattern2signature(name, pattern):
+		start = pattern.find(name)
+		if pattern.find(')') != -1:
+			end = pattern.find(')') + 1
+		else:
+			end = pattern.find('$')
+		return pattern[start : end]
 	output = dict()
 	#print2(filename)
 	with open(filename) as f:
