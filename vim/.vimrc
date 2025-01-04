@@ -262,6 +262,8 @@
     let g:hitags_events = ["BufWrite"]
     let g:sigs_events   = ["BufWrite"]
 
+    let g:errtags_events = ["BufEnter", "BufWrite"]
+
 " -------------
 " ### NETRW ###
 " -------------
