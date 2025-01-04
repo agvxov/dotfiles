@@ -26,7 +26,7 @@ endif
 "  However, it has the major advantage that it will only warn on missing
 "  headers and not error. Meaning a tool chain using '-I' doesn't break
 "  everything.
-let s:preprocessor = "fcpp -LL {input_} {output}"
+let s:preprocessor = "fcpp -I/usr/local/include -LL {input_} {output}"
 
 " --- --------------------------- ---
 " ---          Don't Touch        ---
