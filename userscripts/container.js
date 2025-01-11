@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Container
+// @name        Container (ctrl+p)
 // @namespace   Violentmonkey Scripts
 // @match       *://*/*
 // @grant       none
