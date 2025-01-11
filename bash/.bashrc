@@ -417,6 +417,7 @@ HISTUICMD="histui tui --execute --caseless --fuzzy --group"
 source <(histui enable)
 
 alias make='make.sh CC=cc.sh'
+export ERRTAGS_CACHE_FILE="${HOME}/stow/.cache/errtags.tags"
 
 if [ "$USER" == "root" ]; then
 	printf "${FAVCOLESC}
