@@ -30,6 +30,7 @@
     set showmatch       "highlight pair of paranthesies
     set hlsearch        "highlight search
     set wildmenu        "visual command auto complete
+    set pumheight=10
 
     se nostartofline    "Do not jump to first char of line when scolling
 
