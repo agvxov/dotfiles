@@ -61,11 +61,11 @@ alias vimrc="${EDITOR} ${HOME}/.vimrc"
 alias tmuxrc="${EDITOR} ${HOME}/.tmux.conf"
 alias pufka="${EDITOR} ${MM}/pufka/pufka.cdd"
 if [ "${MACHINE_NAME}" != "BATTLESTATION" ]; then
-	alias random="${EDITOR} ${MM}/Personal/RANDOM.outpost.txt"
+	alias random="${EDITOR} ${MM}/RANDOM.outpost.txt"
 else
-	alias random="${EDITOR} ${MM}/Personal/RANDOM.txt"
+	alias random="${EDITOR} ${MM}/RANDOM.txt"
 fi
-alias msgbuffer="${EDITOR} ${MM}/Personal/Msg/msg.buf"
+alias msgbuffer="${EDITOR} ${MM}/msg.buf"
 #pragma endregion
 #pragma endregion
 
@@ -171,6 +171,9 @@ alias s='sudo'
 alias w="personal_watch"	# defined elsewhere too
 alias wi="whereis"
 alias cls="clear"
+function wie() {
+    ${EDITOR} "$(whereis $1)"
+}
 #pragma endregion
 ### Vimification ###
 #pragma region
@@ -325,6 +328,7 @@ alias figlet="figlet -w 120"
 function figtest() {
     IFS=$'\n'
     for i in $(figlist); do
+        echo "${i}:"
         figlet -f "$i" $@
     done
 }
