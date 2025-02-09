@@ -45,7 +45,7 @@ hi Identifier            ctermfg=123
 hi Constant   cterm=Bold ctermfg=129
 
 " Cdd_specific:
-if exists("b:current_syntax") && b:current_syntax == "cdd"
+"if exists("b:current_syntax") && b:current_syntax == "cdd"
 	hi Yeah ctermfg=46
 	hi Nah ctermfg=9
 	" Pure:
@@ -62,7 +62,7 @@ if exists("b:current_syntax") && b:current_syntax == "cdd"
 	hi def Green				ctermfg=2
 	hi def Purple				ctermfg=5
 	hi def Gray					ctermfg=7
-endif
+"endif
 
 " Temp
 hi SpellBad ctermbg=9
