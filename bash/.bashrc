@@ -279,12 +279,12 @@ alias info='info --vi-keys'
 #pragma endregion
 ### Per program ###
 #pragma region
-##### ls ####
+##### ls #####
 alias ls='ls -aF --color=auto'
 alias ll='ls -l'
-##### bc ####
+##### bc #####
 alias bc='bc -l'
-##### nnn ####
+##### nnn #####
 nnn_cd() {
     if ! [ -z "$NNN_PIPE" ]; then
         printf "%s\0" "0c${PWD}" > "${NNN_PIPE}" !&
@@ -292,34 +292,34 @@ nnn_cd() {
 }
 trap nnn_cd EXIT
 alias n="nnn"
-##### qckcmd ####
+##### qckcmd #####
 function qckcmd_wrapper(){
 	READLINE_LINE="$(qckcmd -i ${HOME}/.qckcmd)"
 	READLINE_POINT="${#READLINE_LINE}"
 }
 bind -x '"\C-p": qckcmd_wrapper'
 #bind -x '"\C-p": eval $(qckcmd -i ~/.qckcmd)'
-##### whereis ####
+##### whereis #####
 function whereisAlias(){
 	\whereis $@ | awk -F ': ' -v OFS="" '{$1=""; print}'
 }
 alias whereis='whereisAlias'
-##### Mysql ####
+##### Mysql #####
 export MYSQL_PS1=$(env echo -e "\033[1;32m#\033[34m\\U\033[0;1m:\033[32m[\033[0m\\d\033[1;32m]>\033[0m\\_")
 MYCLI_PS1=${MYSQL_PS1//\\U/\\u}
 alias mycli="mycli --prompt \"${MYCLI_PS1}\""
 alias mysql="mysql --user=${USER} -p"
-##### gpg ####
+##### gpg #####
 GPG_TTY=$(tty)
 export GPG_TTY
 export PINENTRY_USER_DATA='USE_CURSES=1'
 alias gpg='gpg -i --no-symkey-cache'
-##### Lynx ####
+##### Lynx #####
 export WWW_HOME="${HOME}/lynx_bookmarks.html"
-##### locate ####
+##### locate #####
 alias locate='locate --regexp'
 alias locatei='locate -i'
-##### figlet ####
+##### figlet #####
 export FIGLET_FONTDIR="${HOME}/stow/.data/figlet/"
 alias figlet="figlet -w 120"
 function figtest() {
@@ -328,19 +328,19 @@ function figtest() {
         figlet -f "$i" $@
     done
 }
-##### fzf ####
+##### fzf #####
 export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
 ##### tmux ####
 alias tmux='tmux new-session -t '0' || tmux'
-##### stat ####
+##### stat #####
 function statAlias() {
 	\stat $@ | perl -pe 's/(.*?): (.*)/\033[33;1m$1:\033[0m $2/'
 	du -h -s "$1"
 }
 alias stat="statAlias"
-##### tgpt ####
+##### tgpt #####
 alias tgpt="\tmux resize-window -x 80; tgpt --provider duckduckgo -m"
-##### locate ####
+##### locate #####
 alias updatedb="sudo updatedb"
 #pragma endregion
 #pragma endregion
