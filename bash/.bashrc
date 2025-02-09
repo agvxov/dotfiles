@@ -342,6 +342,9 @@ alias stat="statAlias"
 alias tgpt="\tmux resize-window -x 80; tgpt --provider duckduckgo -m"
 ##### locate #####
 alias updatedb="sudo updatedb"
+##### vimdir #####
+alias vimdir='vimdir -r -p -o'
+export VIMDIRRM='gio trash'
 #pragma endregion
 #pragma endregion
 
