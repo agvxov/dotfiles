@@ -34,7 +34,7 @@ endfunction
 
 function AddErrtagsNotices(notices)
     for l:notice in a:notices
-        if l:notice['fname'] == expand('%:t')
+        if fnamemodify(l:notice['fname'], ':t') == expand('%:t')
             call AddErrtagsNotice(l:notice.lnum, l:notice.col, l:notice.text)
         endif
     endfor
@@ -47,10 +47,10 @@ function! ParseErrtagsNotices(lines)
         let l:fields = split(l:line, ':')
 
         if len(l:fields) >= 2
-            let l:filename = l:fields[0]
-            let l:line_number = l:fields[1]
+            let l:filename      = l:fields[0]
+            let l:line_number   = l:fields[1]
             let l:column_number = l:fields[2]
-            let l:message = join(l:fields[3:], ':')
+            let l:message       = join(l:fields[3:], ':')
 
             call add(l:errors, {
             \ 'fname': l:filename,
