@@ -29,6 +29,33 @@ function recursivelyExpandedAlias() {
 }
 alias alias="recursivelyExpandedAlias"
 
+# Paths
+#pragma region
+    # Virtual home; stuff that i keep relative to *my* home
+if [[ $EUID -eq 0 && -d /home/anon ]]; then
+    VHOME="/home/anon"
+else
+    VHOME="$HOME"
+fi
+    # ---
+export MM="/home/anon/Master"
+
+export PATH="$PATH:./"
+export PATH="${PATH}:${VHOME}/bin/"
+export PATH="${PATH}:${VHOME}/stow/.bin/"
+
+export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"
+export QCKSWP_SAVES="${MM}/Qckswp/.qckswp.csv"
+
+	# array of essential files
+export ESSENTIALS=(
+					"${MM}/pufka/pufka.cdd" 
+					"${MM}/quotes.txt"
+					"${MM}/Peak/peak.cdd"
+					"${MM}/s/процесс.log"
+					)
+#pragma endregion
+
 # Personal Preferences
 #pragma region
 ### Favourites ###
@@ -57,8 +84,8 @@ fi
 ### Quick Access ###
 #pragma region
 alias bashrc="${EDITOR} ${HOME}/.bashrc"
-alias vimrc="${EDITOR} ${HOME}/.vimrc"
-alias tmuxrc="${EDITOR} ${HOME}/.tmux.conf"
+alias vimrc="${EDITOR} ${VHOME}/.vimrc"
+alias tmuxrc="${EDITOR} ${VHOME}/.tmux.conf"
 alias pufka="${EDITOR} ${MM}/pufka/pufka.cdd"
 if [ "${MACHINE_NAME}" != "BATTLESTATION" ]; then
 	alias random="${EDITOR} ${MM}/RANDOM.outpost.txt"
@@ -80,14 +107,15 @@ export BIS64="bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
 #pragma endregion
 ### Rig Machine selection ###
 #pragma region
-RIGF="${HOME}/.bashrc.d/"
+RIGF="${VHOME}/.bashrc.d/"
 if [[ -e ${RIGF}/MACHINE_NAME.val ]] && [[ -s ${RIGF}/MACHINE_NAME.val ]]; then
 	MACHINE_NAME="$(cat ${RIGF}/MACHINE_NAME.val)"
 
 	get_git_branch() {
 		branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 		if [ -n "$branch" ]; then
-			echo "$branch"
+            [ -n "$(git status --porcelain)" ] && s="*"
+			echo "$branch$s"
 		else
 			echo "none"
 		fi
@@ -124,6 +152,8 @@ if [[ -e ${RIGF}/MACHINE_NAME.val ]] && [[ -s ${RIGF}/MACHINE_NAME.val ]]; then
 
 			[[ screen != "$TERM" ]] && screen -R -d
 			neofetch
+
+            unset N B R G
 			;;
 		BLUE)
 			export PS1='\[\033[1;34m\]████:\[\033[0m\] \[\033[34m\]'
@@ -135,6 +165,31 @@ if [[ -n "$SSH_CLIENT" ]]; then
   PS1="(ssh) ${PS1}"
 fi
 #pragma endregion
+#pragma endregion
+
+# User
+#pragma region
+if [ "$USER" == "root" ]; then
+	printf "\033[31m
+	    ()    
+	 .-:--:-. 
+	  \____/  
+	  {====}  
+	   )__(   
+	  /____\  
+	   |  |   
+	   |  |   
+	   |  |   
+	   |  |   
+	  /____\  
+	 (======) 
+	 }======{ 
+	(________)
+	          
+\033[0m"
+
+    export PS1="\033[31m###\033[0m: "
+fi
 #pragma endregion
 
 # Shell
@@ -162,7 +217,7 @@ shopt -s lithist					# save multiline commands with embeded newlines
 HISTSIZE=10000
 HISTFILESIZE=20000
 HISTTIMEFORMAT='%y/%m/%d %T: '
-HISTFILE="${HOME}/stow/.cache/.bash_history"
+HISTFILE="${VHOME}/stow/.cache/.bash_history"
 PROMPT_COMMAND="\history -a;$PROMPT_COMMAND"
 #pragma endregion
 ### Charification ###
@@ -196,29 +251,6 @@ alias vimcd="cdvim"
 #pragma region
 # [ -n "$XTERM_VERSION" ] && transset -a 0.75 &> /dev/null
 stty -ixon	# disable flow control and make ^S and ^Q available
-#pragma endregion
-
-# Paths
-#pragma region
-export MM="/home/anon/Master"
-
-export PATH="$PATH:./"
-export PATH="${PATH}:${HOME}/bin/"
-export PATH="${PATH}:${HOME}/stow/.bin/"
-export PATH="${PATH}:${MM}/bin/" # XXX tidy this up
-export PATH="${PATH}:/usr/local/texlive/2024/bin/x86_64-linux/"  # fucking genious TexLive, make my bashrc self-depricating!
-
-export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"
-export QCKSWP_SAVES="${MM}/Qckswp/.qckswp.csv"
-
-	# array of essential files
-export ESSENTIALS=(
-					"${MM}/pufka/pufka.cdd" 
-					"${MM}/Personal/quotes.txt"
-					"${MM}/Personal/Notes/jelszo"
-					"${MM}/Peak/peak.cdd"
-					"${MM}/s/процесс.log"
-					)
 #pragma endregion
 
 # Programs
@@ -287,17 +319,9 @@ alias ls='ls -aF --color=auto'
 alias ll='ls -l'
 ##### bc #####
 alias bc='bc -l'
-##### nnn #####
-nnn_cd() {
-    if ! [ -z "$NNN_PIPE" ]; then
-        printf "%s\0" "0c${PWD}" > "${NNN_PIPE}" !&
-    fi  
-}
-trap nnn_cd EXIT
-alias n="nnn"
 ##### qckcmd #####
 function qckcmd_wrapper(){
-	READLINE_LINE="$(qckcmd -i ${HOME}/.qckcmd)"
+	READLINE_LINE="$(qckcmd -i ${VHOME}/.qckcmd)"
 	READLINE_POINT="${#READLINE_LINE}"
 }
 bind -x '"\C-p": qckcmd_wrapper'
@@ -317,13 +341,11 @@ GPG_TTY=$(tty)
 export GPG_TTY
 export PINENTRY_USER_DATA='USE_CURSES=1'
 alias gpg='gpg -i --no-symkey-cache'
-##### Lynx #####
-export WWW_HOME="${HOME}/lynx_bookmarks.html"
 ##### locate #####
 alias locate='locate --regexp'
 alias locatei='locate -i'
 ##### figlet #####
-export FIGLET_FONTDIR="${HOME}/stow/.data/figlet/"
+export FIGLET_FONTDIR="${VHOME}/stow/.data/figlet/"
 alias figlet="figlet -w 120"
 function figtest() {
     IFS=$'\n'
@@ -346,6 +368,9 @@ alias stat="statAlias"
 alias tgpt="\tmux resize-window -x 80; tgpt --provider duckduckgo -m"
 ##### locate #####
 alias updatedb="sudo updatedb"
+##### histui #####
+HISTUICMD="histui tui --execute --caseless --fuzzy --group"
+source <(histui enable)
 ##### vimdir #####
 alias vimdir='vimdir -r -p -o'
 export VIMDIRRM='gio trash'
@@ -355,34 +380,26 @@ export VIMDIRRM='gio trash'
 # Languages
 #pragma region
 ### Go ###
-#pragma region
 export PATH="${PATH}:${HOME}/go/bin/"
-#pragma endregion
 ### Perl ###
-#pragma region
 export PERL5LIB="$PERL5LIB:."
-#pragma endregion
 ### Python ###
-#pragma region
-export PYTHONSTARTUP="${HOME}/.pythonrc"
+export PYTHONSTARTUP="${VHOME}/.pythonrc"
 export BETTER_EXCEPTIONS=1
 export FORCE_COLOR=1    # ?!?!?
 alias ipython="ipython -i '${PYTHONSTARTUP}'"
 alias vsource='source ./venv/bin/activate'
-#pragma endregion
 ### Java ###
-#pragma region
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-#pragma endregion
+export SDKMAN_DIR="${HOME}/.sdkman"
+[[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
 ### C# ###
-#pragma region
 export MCS_COLORS='brightwhite,red'
-#pragma endregion
 ### Pust ###
-#pragma region
 export PATH="${PATH}:${HOME}/.cargo/bin/"
-#pragma endregion
+### LaTeX ###
+    # fucking genious TexLive, make my bashrc self-depricating!
+#export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
+#export PATH="${PATH}:/usr/local/texlive/2024/bin/x86_64-linux/"
 #pragma endregion
 
 # Custom Additions
@@ -406,12 +423,11 @@ alias xclip='xclip -selection clipboard'
 alias tt='tt_with_high_score.sh'
 alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
 alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
+alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
 #pragma endregion
 
-export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
-
 # Plugins
-SRCF="${HOME}/.bashrc.d/"
+SRCF="${VHOME}/.bashrc.d/"
 source ${SRCF}/w.rc			# watch (clock)
 source ${SRCF}/cd.rc
 source ${SRCF}/sudo.rc
@@ -420,32 +436,8 @@ source ${SRCF}/fzfind.rc
     . /usr/share/bash-completion/bash_completion
 
 # XXX
-HISTUICMD="histui tui --execute --caseless --fuzzy --group"
-source <(histui enable)
-
 alias make='make.sh CC=cc.sh'
-export ERRTAGS_CACHE_FILE="${HOME}/stow/.cache/errtags.tags"
-alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
-
-if [ "$USER" == "root" ]; then
-	printf "${FAVCOLESC}
-	    ()    
-	 .-:--:-. 
-	  \____/  
-	  {====}  
-	   )__(   
-	  /____\  
-	   |  |   
-	   |  |   
-	   |  |   
-	   |  |   
-	  /____\  
-	 (======) 
-	 }======{ 
-	(________)
-	          
-\033[0m"
-fi
+export ERRTAGS_CACHE_FILE="${VHOME}/stow/.cache/errtags.tags"
 
 # So i have this problem,
 #  where i want expensive to load features from my shell,
