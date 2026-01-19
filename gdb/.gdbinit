@@ -1,6 +1,7 @@
 set startup-quietly on
 
 set history save on
+set history remove-duplicates 1
 
 set auto-load safe-path /
 
