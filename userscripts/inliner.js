@@ -9,6 +9,15 @@
 // ==/UserScript==
 
 (function() {
+    const urlList = [
+        "https://rentry.org/",
+        /* "LibreWolf Can’t Open This Page"
+         * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+         * I HATE THE ANTICHRIST
+         */
+        //"https://pastebin.com/",
+    ];
+
     window.inliner_main = () => {
         // Convert text links to <a> links
         var iterator = document.createNodeIterator(
@@ -19,27 +28,49 @@
 
         var nodeList = [];
         var currentNode;
-        const regex = /https:\/\/rentry.org\/\w*/
+        const regexList = urlList.map(url => new RegExp(url + "\\w*"));
+        //const regex = /https:\/\/rentry.org\/\w*/;
         while ((currentNode = iterator.nextNode())) {
-            const match = regex.exec(currentNode.nodeValue);
-            if (match == null) { continue; }
-            nodeList.push(currentNode);
+            //const match = regex.exec(currentNode.nodeValue);
+            //if (match == null) { continue; }
+            //nodeList.push(currentNode);
+            for (const regex of regexList) {
+                const match = regex.exec(currentNode.nodeValue);
+                if (match) {
+                    nodeList.push({ node: currentNode, match: match });
+                    break;
+                }
+            }
         }
 
         console.log(`--- indexer # found ${nodeList.length} links`);
 
-        for (var i of nodeList) {
-            const match = regex.exec(i.nodeValue);
+        //for (var i of nodeList) {
+        //    const match = regex.exec(i.nodeValue);
 
-            var tempDiv = document.createElement('div');
+        //    var tempDiv = document.createElement('div');
+        //    tempDiv.innerHTML = 
+        //        i.nodeValue.replace(
+        //            match[0],
+        //            `<a href="${match[0]}">` + match[0] + '</a>'
+        //        )
+        //    ;
+
+        //    i.replaceWith(tempDiv);
+        //}
+
+        for (const item of nodeList) {
+            const { node, match } = item;
+
+            const tempDiv = document.createElement('div');
             tempDiv.innerHTML = 
-                i.nodeValue.replace(
+                node.nodeValue.replace(
                     match[0],
-                    `<a href="${match[0]}">` + match[0] + '</a>'
+                    `<a href="${match[0]}">${match[0]}</a>`
                 )
             ;
 
-            i.replaceWith(tempDiv);
+            node.replaceWith(tempDiv);
         }
 
         // Actual inlining
@@ -48,7 +79,7 @@
         links.forEach(link => {
             const href = link.getAttribute('href');
             
-            if (href && href.startsWith('https://rentry.org/')) {
+            if (href && urlList.some(url => href.startsWith(url))) {
                 const iframeHTML = `
                     <iframe
                         src="${href}"
