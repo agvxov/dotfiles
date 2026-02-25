@@ -1,0 +1,29 @@
+#!/bin/bash
+# Re-encode a video with Null's recommended command.
+# (https://kiwifarms.st/threads/archival-tools.6561/)
+
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <file>+"
+    echo "  Re-encode a video with Null's recommended ffmpeg command."
+    exit 1
+fi
+
+while [ "$#" -gt 0 ]; do
+    input="$1"
+
+    if [ ! -f "$input" ]; then
+        echo "File not found: $input"
+        shift
+        continue
+    fi
+
+    base="${input%.*}"
+    output="${base}-kiwicompressed.mp4"
+
+    echo "Processing: $input -> $output"
+    ffmpeg -hwaccel auto -i "$input" -c:v libx264 -pix_fmt yuv420p -profile:v baseline \
+        -level 3.0 -crf 22 -preset medium -c:a aac -strict experimental -movflags +faststart -threads 0 \
+        "${output}"
+
+    shift
+done

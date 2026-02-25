@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+sub usage {
+    print "Usage: bytes <number>[unit]\n";
+    print "Example: bytes 1K, bytes 10MiB\n";
+    exit 1;
+}
+
+@ARGV or usage();
+my $input = $ARGV[0];
+
+my %byte_conversion_table = (
+    b   => 1,
+    kb  => 1_000,
+    kib => 1_024,
+    mb  => 1_000_000,
+    mib => 1_048_576,
+    gb  => 1_000_000_000,
+    gib => 1_073_741_824,
+    tb  => 1_000_000_000_000,
+    tib => 1_099_511_627_776,
+);
+
+if (not $input =~ /^(\d+(?:\.\d+)?)([a-zA-Z]*)$/) {
+    print "Invalid input: $input\n";
+    usage();
+}
+
+my ($num, $unit) = ($1, lc($2 || 'b'));
+
+if (not exists $byte_conversion_table{$unit}) {
+    print "Unknown unit: $unit\n";
+    usage();
+}
+
+my $bytes = $num * $byte_conversion_table{$unit};
+
+printf "\033[32mInput:\033[0m $num %s\n", uc($unit);
+print "\033[32mEquivalent to:\033[0m\n";
+foreach my $key (sort { $byte_conversion_table{$a} <=> $byte_conversion_table{$b} } keys %byte_conversion_table) {
+    my $amount = $bytes / $byte_conversion_table{$key};
+    printf "  \033[0;36m%8d\033[0;1m %s\n", $amount, uc($key);
+}

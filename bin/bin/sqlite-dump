@@ -1,0 +1,17 @@
+#!/bin/sh
+
+shopt -s nullglob
+
+if [ "$#" -gt 0 ]; then
+    FILES=("$@")
+else
+    FILES=( *.sqlite* *.db )
+fi
+
+[ "${#FILES[@]}" -eq 0 ] && exit 0
+
+for i in $FILES; do
+sqlite3 $i <<EOF
+.dump
+EOF
+done
