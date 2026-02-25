@@ -227,4 +227,18 @@ if status is-interactive
     bind \cp qckcmd_wrapper
 
     bind \e\[Z 'complete --do-complete (commandline); commandline --function repaint'
+
+
+    function disass
+        if test -z "$argv[1]"
+            echo 'Nothing to disassemble.'
+            return
+        end
+
+        objdump \
+            --disassemble-all \
+            --disassembler-color=extended \
+            --visualize-jumps=extended-color \
+            $argv[1] | less
+    end
 end
