@@ -47,6 +47,7 @@ export MM="/home/anon/Master"
 export PATH="$PATH:./"
 export PATH="${PATH}:${VHOME}/bin/"
 export PATH="${PATH}:${VHOME}/stow/.bin/"
+export PATH="$PATH:${HOME}/.local/bin/"
 
 export MKTEMPLATE_HOME="${MM}/Templates/mktemplate_home/"
 export QCKSWP_SAVES="${MM}/Qckswp/.qckswp.csv"
@@ -78,7 +79,8 @@ export EDITOR="vim"
 export VISUAL="vim"
 export BROWSER="librewolf"
 export PAGER="less"
-export IMAGEVIEWER="nomacs"
+export IMAGEVIEWER="nsxiv"
+export VIDEOPLAYER="mpv --pause --keep-open"
 if $(\which manpager &> /dev/null) ; then
     export MANPAGER='manpager --mouse'
 else
@@ -91,12 +93,12 @@ alias bashrc="${EDITOR} ${HOME}/.bashrc"
 alias vimrc="${EDITOR} ${VHOME}/.vimrc"
 alias tmuxrc="${EDITOR} ${VHOME}/.tmux.conf"
 alias pufka="${EDITOR} ${MM}/pufka/pufka.cdd"
+alias gateway="${EDITOR} ${MM}/gateway/gateway.cdd"
 if [ "${MACHINE_NAME}" != "BATTLESTATION" ]; then
 	alias random="${EDITOR} ${MM}/RANDOM.outpost.txt"
 else
 	alias random="${EDITOR} ${MM}/RANDOM.txt"
 fi
-alias msgbuffer="${EDITOR} ${MM}/msg.buf"
 #pragma endregion
 #pragma endregion
 
@@ -192,7 +194,7 @@ if [ "$USER" == "root" ]; then
 	          
 \033[0m"
 
-    export PS1="\033[31m###\033[0m: "
+    export PS1="\[\033[31m\]###\[\033[0m\]: "
 fi
 #pragma endregion
 
@@ -227,7 +229,6 @@ PROMPT_COMMAND="\history -a;$PROMPT_COMMAND"
 ### Charification ###
 #pragma region
 alias s='sudo'
-alias w="personal_watch"	# defined elsewhere too
 alias wi="whereis"
 alias cls="clear"
 function wie() {
@@ -294,6 +295,7 @@ alias wget='wget --restrict-file-names=windows,ascii'
 alias rm='rm -I'
 alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
 alias wgetpaste='wgetpaste -s 0x0'
+alias sudo=doas
 #pragma endregion
 ### Unsafety ###
 #pragma region
@@ -303,8 +305,6 @@ alias mkdir='mkdir -p'
 #### Formatting ####
 #pragma region
 alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
-alias hgrep='\history | grep'
-alias history='history | tail -n 10'
 alias clear="\clear; env echo -e \"${FAVCOLESC}###\033[0m\"; dirs"
 alias cal='cal --monday'
 alias nmap='nmap --stats-every 5s'
@@ -319,12 +319,12 @@ alias info='info --vi-keys'
 ### Per program ###
 #pragma region
 ##### ls #####
-alias ls='ls -aF --color=auto'
+alias ls='ls -aFh --color=auto'
 alias ll='ls -l'
 ##### bc #####
 alias bc='bc -l'
 ##### qckcmd #####
-function qckcmd_wrapper(){
+function qckcmd_wrapper() {
 	READLINE_LINE="$(qckcmd -i ${VHOME}/.qckcmd)"
 	READLINE_POINT="${#READLINE_LINE}"
 }
@@ -369,12 +369,12 @@ function statAlias() {
 }
 alias stat="statAlias"
 ##### tgpt #####
-alias tgpt="\tmux resize-window -x 80; tgpt --provider duckduckgo -m"
+alias tgpt="\tmux resize-window -x 100; tgpt --provider gemini --key "$(cat /home/anon/.gemini-key)" -m"
 ##### locate #####
 alias updatedb="sudo updatedb"
 ##### histui #####
 HISTUICMD="histui tui --execute --caseless --fuzzy --group"
-source <(histui enable)
+#source <(histui enable)
 ##### vimdir #####
 alias vimdir='vimdir -r -p -o'
 export VIMDIRRM='gio trash'
@@ -412,6 +412,7 @@ export PATH="${PATH}:${HOME}/.cargo/bin/"
     # fucking genious TexLive, make my bashrc self-depricating!
 #export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
 #export PATH="${PATH}:/usr/local/texlive/2024/bin/x86_64-linux/"
+unset TEXINPUTS # I HATE LATEX I HATE LATEX I HATE LATEX
 #pragma endregion
 
 # Custom Additions
@@ -436,20 +437,28 @@ alias tt='tt_with_high_score.sh'
 alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
 alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
 alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
+alias is-diff='\diff -q'
 #pragma endregion
 
 # Plugins
 SRCF="${VHOME}/.bashrc.d/"
-source ${SRCF}/w.rc			# watch (clock)
+source ${SRCF}/w.rc.sh
 source ${SRCF}/cd.rc
 source ${SRCF}/sudo.rc
 source ${SRCF}/fzfind.rc
 [[ -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 
-# XXX
-alias make='make.sh CC=cc.sh'
+#alias make='make --no-builtin-rules'
 export ERRTAGS_CACHE_FILE="${VHOME}/stow/.cache/errtags.tags"
+function clone-my-repo() {
+    git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/anon/${1}.git"
+}
+function notify-end() {
+    notify-send --urgency "normal" "Command finished (with $?)." "--"
+}
+
+alias git-recurse='git submodule update --init --recursive'
 
 # So i have this problem,
 #  where i want expensive to load features from my shell,
