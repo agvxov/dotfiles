@@ -3,7 +3,7 @@
 
 # Collect image files
 set items {}
-foreach pattern {*.jpg *.png} {
+foreach pattern {*.jpg *.jpeg *.png *.gif *.webp} {
     foreach file [glob -nocomplain $pattern] {
         lappend items $file
     }
