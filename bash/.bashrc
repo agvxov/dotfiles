@@ -4,6 +4,10 @@ case $- in
     *) return;;
 esac
 
+if [[ ! "${FORCE_BASH:-}" || "$FORCE_BASH" == 0 ]]; then
+    exec fish
+fi
+
 # Recursively expand alias definitions to allow for appending
 ## Original behaviour
 #   $ alias ls="ls -a"
