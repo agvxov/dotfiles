@@ -37,23 +37,30 @@ while {[llength $items] > 0} {
     exec xdotool click 1
 
     # Print listing
-    puts "$current:"
+    puts "\033\[34m$current:\033\[0m"
     set h 1
     foreach d $dirs {
-        puts " $h) $d"
+        puts [format " %3d) %s" $h $d]
         incr h
     }
 
     # Handle choice
-    gets stdin choice
+    set try_input 1
+    while {$try_input} {
+        gets stdin choice
 
-    set h 1
-    foreach d $dirs {
-        if {$choice == $h} {
-            file rename $current $d/
-            break
+        set h 1
+        foreach d $dirs {
+            if {$choice == $h} {
+                # make move to . a nop
+                if {$h != 1} {
+                    file rename $current $d/
+                }
+                set try_input 0
+                break
+            }
+            incr h
         }
-        incr h
     }
 
     catch {exec kill $pid}
