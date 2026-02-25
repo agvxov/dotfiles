@@ -13,6 +13,7 @@ sigs.vim
 python/.ipython/profile_default/startup/README
 
 rss/.newsboat/history.cmdline
+rss/.newsboat/history.search
 rss/.newsboat/urls
 
 Wallpaper/
