@@ -387,6 +387,14 @@ export VIMDIRRM='gio trash'
 export PATH="${PATH}:${HOME}/go/bin/"
 ### Perl ###
 export PERL5LIB="$PERL5LIB:."
+ # --- cpan installation
+PATH="/home/anon/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/anon/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/anon/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/anon/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/anon/perl5"; export PERL_MM_OPT;
+ # --- 
+export PERLDOC_PAGER="$MANPAGER"
 ### Python ###
 export PYTHONSTARTUP="${VHOME}/.pythonrc"
 export BETTER_EXCEPTIONS=1
