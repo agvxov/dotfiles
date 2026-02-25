@@ -25,7 +25,7 @@ if status is-interactive
     functions -c alias __original_alias
     function alias
         # In fish alias is implemented as a function that creates functions
-        # Any alias with the description 'alias .*' is listed by alias as an alias.
+        # Any function with the description 'alias .*' is listed by alias as an alias.
         set -f argc (count $argv)
 
         if test $argc -eq 0 || string match -q -- '-*' $argv[1] || test $argc -gt 2
@@ -52,7 +52,7 @@ if status is-interactive
         set -f cmd  (string trim -c "'\"" -- $cmd)
         set -f cmd1 (string split ' '     -- $cmd)[1]
 
-        set -l blacklist echo cd mkdir
+        set -l blacklist echo cd mkdir ls
         if contains $cmd1 $blacklist
             __original_alias $name="$cmd"
             return
@@ -93,10 +93,10 @@ if status is-interactive
         set --export PATH "/home/anon/bin/:$PATH"
         set --export PATH "$PATH:$HOME/go/bin/"
         set --export PATH "$PATH:.bashrc.d/"
-        set --export PATH "$PATH:stow/.bin/" # XXX
+        set --export PATH "$PATH:/home/anon/perl5/bin"
+        set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
         set --export PERL5LIB "$PERL5LIB:."
         set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
-        set PATH "/home/anon/perl5/bin:$PATH"; export PATH;
         #PERL_LOCAL_LIB_ROOT="/home/anon/perl5${PERL_LOCAL_LIB_ROOT:+:$PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
         #PERL_MB_OPT="--install_base \"/home/anon/perl5\""; export PERL_MB_OPT;
         #PERL_MM_OPT="INSTALL_BASE=/home/anon/perl5"; export PERL_MM_OPT;
@@ -106,10 +106,8 @@ if status is-interactive
         #export FORCE_COLOR=1    # ?!?!?
         #export SDKMAN_DIR="$HOME/.sdkman"
         #export MCS_COLORS='brightwhite,red'
-        set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
         #export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
         #export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux/"
-        #set --export CC cc.sh
         #export ERRTAGS_CACHE_FILE="$VHOME/stow/.cache/errtags.tags"
         #     export PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'#\[\033[0m\] '
     end
@@ -141,7 +139,6 @@ if status is-interactive
     alias tar='tar -v'
     alias gzip='gzip -v'
     alias bc='bc -q'
-    alias gdb='gdb -q'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -166,7 +163,7 @@ if status is-interactive
     alias clear="command clear; dirs"
     alias cal='cal --monday'
     alias nmap='nmap --stats-every 5s'
-    alias gdb='gdb --tui'
+    alias gdb='gdb -q --tui'
     alias bat='bat --paging=never'
     alias less='less --mouse'
     alias info='info --vi-keys'
@@ -195,7 +192,6 @@ if status is-interactive
     alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
     alias is-diff='\diff -q'
     alias make='make --no-builtin-rules'
-    #alias make='make.sh CC=cc.sh'
     alias git-recurse='git submodule update --init --recursive'
 
     # --- END OF DUMP ---
