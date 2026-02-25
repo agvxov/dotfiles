@@ -109,6 +109,8 @@
             let cmd .= "pydoc "
         elseif &filetype == "tcl"
             let cmd .= "man n "
+        elseif &filetype == "perl"
+            let cmd .= "perldoc "
         elseif &filetype == "bash" || &filetype == "sh"
             let cmd .= "man 1 "
         else
@@ -323,6 +325,9 @@ set formatoptions-=cro
 
 " TEMP:
 highlight DiffChange ctermbg=3
+
+:command Pufka e /home/anon/Master/pufka/pufka.cdd
+:command Gateway e /home/anon/Master/gateway/gateway.cdd
 
 " AI notes:
 "  <C-W>v<C-W>l
