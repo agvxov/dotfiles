@@ -1,0 +1,20 @@
+#!/bin/bash
+
+t=""
+mimetype(){
+	local type="$(file -b --mime-type "$1")"
+	if [[ "$type" == 'inode/symlink' ]]; then
+		\mimetype "$(\readlink -f "$1")"
+	fi
+	t=$(\echo "${type}" | \sed 's/\/.*//')
+}
+
+while read i; do
+	\mimetype "$i"
+	if [[ $t == "text" ]]; then
+		\bat --paging=never "$i"
+	fi
+done <<< $(\locate -i "$1")
+
+# v1.0 :
+#locate $1 | xargs -i bat --paging=never ""{}""

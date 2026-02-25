@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for file in "$@"; do
+    \curl -F "file=@./$file" https://up.chud.cyou/
+done

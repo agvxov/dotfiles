@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Remove empty folders from ${@} recursively
+# Directories containing only empty directories are considered empty (NOTE: this definition is recursive)
+
+DIR="${@}"
+while [ -n "$(find "$DIR" -type d -empty)" ]; do
+	find "$DIR" -type d -empty -exec rmdir "{}" \;
+done

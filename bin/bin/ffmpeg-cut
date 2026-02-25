@@ -1,0 +1,50 @@
+#!/bin/bash
+# Utility wrapper for ffmpeg providing a simpler cutting interface.
+input_file=
+from=
+to=
+output_file=
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --from)
+            from="$2"
+            shift 2
+            ;;
+        --to)
+            to="$2"
+            shift 2
+            ;;
+        *)
+            if [[ -z "$input_file" ]]; then
+                input_file="$1"
+            else
+                echo "Unexpected argument: $1"
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+if [[ -z "$from" ]]; then
+    from='00:00:00'
+fi
+
+if [[ -n "$to" ]]; then
+    to="-to $to"
+fi
+
+if [[ -z "$input_file" ]]; then
+    echo "Usage: ffmpeg-cut (--from <timestamp>) (--to <timestamp>) <file>"
+    echo "  Cut a video using ffmpeg with no re-encoding."
+    echo "  The output will be saved with the '-cut' name postfix."
+    exit 1
+fi
+
+output_file="${input_file%.*}-cut.${input_file##*.}"
+
+command='ffmpeg -hide_banner -ss "$from" -i "$input_file" $to -c copy "$output_file"'
+
+eval "echo Command: "$command
+
+eval $command && echo "Output written to: $output_file"

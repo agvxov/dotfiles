@@ -1,0 +1,28 @@
+#!/bin/bash
+# Strip audio from input file.
+
+if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <file>+"
+    echo "  Strip audio from input files using ffmpeg with no re-encoding."
+    echo "  The outputs will be saved with the -muted name postfix."
+    exit 1
+fi
+
+while [ "$#" -gt 0 ]; do
+    input="$1"
+
+    if [ ! -f "$input" ]; then
+        echo "File not found: $input"
+        shift
+        continue
+    fi
+
+    base="${input%.*}"
+    ext="${input##*.}"
+    output="${base}-muted.${ext}"
+
+    echo "Processing: $input -> $output"
+    ffmpeg -i "$input" -c copy -an "$output"
+
+    shift
+done

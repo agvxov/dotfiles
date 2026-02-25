@@ -1,0 +1,8 @@
+#!/bin/python3
+
+# Return innertext of html passed to stdin
+
+import sys
+import bs4
+
+print(bs4.BeautifulSoup(sys.stdin, 'html.parser').get_text())

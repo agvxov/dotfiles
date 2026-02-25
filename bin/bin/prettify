@@ -1,0 +1,34 @@
+#!/bin/python3
+
+# Prettify* HTML documents
+
+from sys import argv
+from pathlib import Path
+from bs4 import BeautifulSoup
+
+def prettify_html_file(file_path: Path) -> str:
+	text = file_path.read_text(encoding="utf-8")
+	return BeautifulSoup(text, "html.parser").prettify()
+
+def usage() -> None:
+	print(f"Usage: prettify file.html")
+
+def main() -> int:
+	if len(argv) != 2 or argv[1] == "-h" or argv[1] == "--help":
+		usage()
+		return 1
+
+	input_file = Path(argv[1])
+	
+	if not input_file.is_file():
+		print(f"File not found: {input_file}")
+		return 1
+
+	try:
+		print(prettify_html_file(input_file))
+	except:
+		print("I/O error")
+		return 1
+
+if __name__ == "__main__":
+	exit(main())
