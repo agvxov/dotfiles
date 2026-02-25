@@ -3,11 +3,12 @@ v: vsource
 m: make
 t: make test
 T: sudo rc-service tor restart
-n: nnn
 N: sudo rc-service NetworkManager restart
 p: git push
 4: ssh root@${ROOK}
 6: ssh ${BTS}
 c: clear; make clean; make
 D: export DEBUG=1
-b: newsboat
+B: export FORCE_BASH=1
+n: newsboat
+.: thunar .
