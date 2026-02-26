@@ -49,6 +49,15 @@ while {[llength $items] > 0} {
     while {$try_input} {
         gets stdin choice
 
+        # skip command
+        if {[regexp {^skip[[:space:]]+([0-9]+)$} $choice -> n]} {
+            # Clamp N to list length
+            catch { set items [lrange $items $n end] }
+            set try_input 0
+            break
+        }
+
+        # choice
         set h 1
         foreach d $dirs {
             if {$choice == $h} {
