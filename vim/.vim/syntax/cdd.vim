@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language: ???
 " Current Maintainer: SilentOcapi
-" Last Change: 2021 Okt 10
+" Last Change: 2026 Jan 20
 " TODO:
 "	>nodes
 "	>4chan syntax
@@ -116,7 +116,7 @@ syn keyword cppOperator		top bottom AT BELOW ABOVE
 syn region markdownH1Title matchgroup=markdownH1 start="###" end="###" 		oneline
 syn region markdownH2Title matchgroup=markdownH2 start="####" end="####"	oneline
 syn region markdownH2Title matchgroup=markdownH2 start="#####" end="#####"	oneline
-hi link markdownH1	SpecialComment
+hi link markdownH1 SpecialComment
 hi link markdownH2 markdownH1
 hi link markdownH3 markdownH1
 hi def markdownH1Title			ctermfg=14 cterm=bold
@@ -133,8 +133,8 @@ hi def markdownH2Title			ctermfg=14
 "################
 " Pure_cdd:
 "	PostProcessor:
-syn match cdd_pp_hidden "^\s*#hidden"
-syn match cdd_pp_neddin "^\s*#neddin"
+syn match cdd_pp_hidden "^\s*#skip"
+syn match cdd_pp_neddin "^\s*#piks"
 "	Nodes:
 syn match cdd_node			"^\s*>"
 syn match cdd_father_node	"^\s*-"
@@ -188,6 +188,8 @@ call TextEnableCodeSnip('php')
 call TextEnableCodeSnip('sql')
 call TextEnableCodeSnip('sh')
 call TextEnableCodeSnip('python')
+call TextEnableCodeSnip('perl')
+call TextEnableCodeSnip('tex')
 
 syn iskeyword clear
 
