@@ -9,6 +9,6 @@ p: git push
 6: ssh ${BTS}
 c: clear; make clean; make
 D: export DEBUG=1
-B: export FORCE_BASH=1
+B: export FORCE_BASH=1; bash
 n: newsboat
 .: thunar .
