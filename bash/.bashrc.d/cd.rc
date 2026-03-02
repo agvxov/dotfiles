@@ -66,8 +66,7 @@ function DirsAlias() {
 }
 
 
-shopt -s cdspell		# If set, minor errors in the spelling of a directory component in a cd 
-			    		# command will be corrected. The errors checked for are transposed characters, 
-			    		# a missing character, and a character too many.
-
-
+# This is also a great way to recursively delete a dir by accident
+#shopt -s cdspell		# If set, minor errors in the spelling of a directory component in a cd 
+#			    		# command will be corrected. The errors checked for are transposed characters, 
+#			    		# a missing character, and a character too many.
