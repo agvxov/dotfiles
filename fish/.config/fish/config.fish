@@ -1,7 +1,11 @@
 if status is-interactive
     #set --export HISTFILE /home/anon/.local/share/fish/fish_history
     set VHOME "/home/anon"
-    set --unexport CC
+    set BTS  192.168.0.206
+    set ROOK 192.168.0.144
+    set BLUE 192.168.0.227
+    set BIS64 "bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
+
 
     function fish_greeting
     end
@@ -97,9 +101,6 @@ if status is-interactive
         set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
         set --export PERL5LIB "$PERL5LIB:."
         set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
-        #PERL_LOCAL_LIB_ROOT="/home/anon/perl5${PERL_LOCAL_LIB_ROOT:+:$PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
-        #PERL_MB_OPT="--install_base \"/home/anon/perl5\""; export PERL_MB_OPT;
-        #PERL_MM_OPT="INSTALL_BASE=/home/anon/perl5"; export PERL_MM_OPT;
         set --export PERLDOC_PAGER $MANPAGER
         #set --export PYTHONSTARTUP "$VHOME/.pythonrc"
         #export BETTER_EXCEPTIONS=1
@@ -197,26 +198,7 @@ if status is-interactive
     # --- END OF DUMP ---
 
     set HISTUICMD "histui" "tui" "--execute" "--caseless" "--fuzzy" "--group"
-    #eval (histui enable)
-    function _histui_run;
-        set COMMANDFILE "$XDG_CACHE_HOME/histui_command.txt";
-
-        if not set -q HISTUICMD;
-            set -f HISTUICMD "histui" "tui";
-        end;
-
-        if not set -q HISTFILE;
-            set HISTFILE "$HOME/.local/share/fish/fish_history";
-        end;
-
-        env HISTFILE=$HISTFILE $HISTUICMD --input (commandline) 3> $COMMANDFILE;
-
-        commandline --replace -- (cat "$COMMANDFILE");
-        commandline --function repaint
-    end;
-
-    bind \e\[A _histui_run;
-    bind \cr   _histui_run;
+    eval (histui enable)
     # --
 
     function qckcmd_wrapper
@@ -242,3 +224,5 @@ if status is-interactive
             $argv[1] | less
     end
 end
+
+source ~/stow/fish/cd.fish
