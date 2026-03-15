@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+exe="$1"
+out="record_$(date +%Y%m%d_%H%M%S).mkv"
+
+"$exe" &
+pid=$!
+
+echo "Waiting for window..."
+while true; do
+    wid=$(xdotool search --pid $pid 2>/dev/null | head -n1)
+    if [[ -n "$wid" ]]; then
+        echo "Found window ID: $wid"
+        break
+    fi
+    sleep 0.1
+done
+
+eval $(xdotool getwindowgeometry --shell $wid)
+echo "Recording window: $WIDTH x $HEIGHT at $X,$Y"
+ffmpeg -y \
+    -f x11grab -video_size "${WIDTH}x${HEIGHT}" \
+    -i "$DISPLAY+$X,$Y" \
+    -framerate 30 \
+    "$out" &
+rec_pid=$!
+
+wait $pid
+echo "Target exited, stopping capture..."
+
+kill -INT $rec_pid
+wait $rec_pid
+
+echo "Saved: $out"
