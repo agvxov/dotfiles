@@ -4,7 +4,7 @@ case $- in
     *) return;;
 esac
 
-if [[ ! "${FORCE_BASH:-}" || "$FORCE_BASH" == 0 ]]; then
+if [[ ${FORCE_BASH:-0} == 0 ]] && command -v fish &> /dev/null; then
     exec fish
 fi
 
