@@ -17,7 +17,7 @@ if status is-interactive
             set WHERE $argv[2]
         end
 
-        fgrep -d recurse $argv[1] $WHERE ^/dev/null
+        fgrep -d recurse $argv[1] $WHERE 2> /dev/null
     end
 
     if command -q manpager
@@ -94,7 +94,7 @@ if status is-interactive
         #export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
         set --export VIMDIRRM 'gio trash'
         set --export PATH ".:$PATH"
-        set --export PATH "/home/anon/bin/:$PATH"
+        set --export PATH "/home/anon/bin:$PATH"
         set --export PATH "$PATH:$HOME/go/bin/"
         set --export PATH "$PATH:.bashrc.d/"
         set --export PATH "$PATH:/home/anon/perl5/bin"
@@ -173,8 +173,7 @@ if status is-interactive
     alias bc='bc -l'
     #alias whereis='whereisAlias'
     alias gpg='gpg -i --no-symkey-cache'
-    alias locate='locate --regexp'
-    alias locatei='locate -i'
+    alias locate='locate --ignore-case --regex'
     alias figlet="figlet -w 120"
     alias tmux='tmux new-session -t '0' || tmux'
     alias stat="statAlias"
@@ -198,7 +197,9 @@ if status is-interactive
     # --- END OF DUMP ---
 
     set HISTUICMD "histui" "tui" "--execute" "--caseless" "--fuzzy" "--group"
-    eval (histui enable)
+    if type -q histui
+        eval (histui enable)
+    end
     # --
 
     function qckcmd_wrapper
