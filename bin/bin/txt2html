@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+use File::Slurp 'slurp';
+
+if (scalar @ARGV != 1) {
+    print STDERR "$0 <txt-file>";
+    exit 1;
+}
+
+my $input = slurp($ARGV[0]);
+
+$input =~ s/</&lt;/g;
+$input =~ s/>/&gt;/g;
+
+$input = "<pre><code>" . $input . "</pre></code>";
+
+print $input;
