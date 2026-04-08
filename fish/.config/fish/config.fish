@@ -1,3 +1,5 @@
+set --export EDITOR vim
+
 if status is-interactive
     #set --export HISTFILE /home/anon/.local/share/fish/fish_history
     set VHOME "/home/anon"
@@ -155,7 +157,8 @@ if status is-interactive
     alias wget='wget --restrict-file-names=windows,ascii'
     alias rm='rm -I'
     alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
-    alias wgetpaste='wgetpaste -s 0x0'
+    #alias wgetpaste='wgetpaste -s 0x0'
+    alias wgetpaste='wgetpaste -s bpaste'
     alias sudo=doas
     alias curl='curl --insecure'
     alias mkdir='mkdir -p'
@@ -193,6 +196,9 @@ if status is-interactive
     alias is-diff='\diff -q'
     alias make='make --no-builtin-rules'
     alias git-recurse='git submodule update --init --recursive'
+    alias rsync='rsync --progress'
+
+    alias calrc='vim ~/stow/.data/dates.cfg'
 
     # --- END OF DUMP ---
 
