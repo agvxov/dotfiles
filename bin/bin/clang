@@ -1,13 +1,13 @@
 #!/bin/bash
 self=$(readlink -f "$0")
-next_gpp=$(
-    which -a g++ |
+next_clang=$(
+    which -a clang |
     while IFS= read -r p; do
         [ "$(readlink -f "$p")" != "$self" ] && { echo "$p"; break; }
     done
 )
 
-$next_gpp -fdiagnostics-color=always "$@" 2>&1 \
+$next_clang -fdiagnostics-color=always "$@" 2>&1 \
 | tee >(\
         sed -e 's/\x1b\[[0-9;]*m//g' -e 's/\x1b\[K//g' \
         | errtags
