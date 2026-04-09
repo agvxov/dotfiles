@@ -1,5 +1,12 @@
 #!/bin/bash
 # Utility wrapper for ffmpeg providing a simpler cutting interface.
+
+usage() {
+    echo "Usage: ffmpeg-cut (--from <timestamp>) (--to <timestamp>) <file>"
+    echo "  Cut a video using ffmpeg with no re-encoding."
+    echo "  The output will be saved with the '-cut' name postfix."
+}
+
 input_file=
 from=
 to=
@@ -15,6 +22,10 @@ while [[ $# -gt 0 ]]; do
             to="$2"
             shift 2
             ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
         *)
             if [[ -z "$input_file" ]]; then
                 input_file="$1"
@@ -26,6 +37,7 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
 if [[ -z "$from" ]]; then
     from='00:00:00'
 fi
@@ -35,9 +47,7 @@ if [[ -n "$to" ]]; then
 fi
 
 if [[ -z "$input_file" ]]; then
-    echo "Usage: ffmpeg-cut (--from <timestamp>) (--to <timestamp>) <file>"
-    echo "  Cut a video using ffmpeg with no re-encoding."
-    echo "  The output will be saved with the '-cut' name postfix."
+    usage
     exit 1
 fi
 
