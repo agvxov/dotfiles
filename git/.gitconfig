@@ -19,3 +19,9 @@
 
 [http "https://*.onion"]
 	proxy = "socks5h://127.0.0.1:9050"
+
+[safe]
+	directory = /home/anon/mnt/home/gorillanest/gorillanest/repositories/*
+	directory = /home/gorillanest/gorillanest/repositories/*
+[http "https://192.168.0.144:3000"]
+	sslVerify = false
