@@ -80,6 +80,10 @@ if status is-interactive
 
     alias fd='fd -u'
 
+    function clone-my-repo
+        git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/$argv[1].git"
+    end
+
     set --export PYTHON_HISTORY "$HOME/.local/share/.python_history"
     set --export CARGO_HOME "$HOME/.local/share/"
     # NOTE: everything below was grep'd out of my .bashrc
@@ -233,3 +237,19 @@ if status is-interactive
 end
 
 source ~/stow/fish/cd.fish
+
+# ----
+source /home/anon/Swap/term-hitmarkers/hitmarkers.fish
+# ----
+source /home/anon/Swap/termmon/poketerm.fish
+# ----
+
+#fish_vi_key_bindings
+#set fish_cursor_insert block
+#set fish_cursor_default line
+#
+bind ctrl-e edit_command_buffer # XXX does not work!
+
+alias mpv-chud 'mpv https://radio.chud.cyou/'
+
+alias sbcl 'rlwrap sbcl'
