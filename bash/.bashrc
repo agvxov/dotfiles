@@ -452,7 +452,7 @@ source ${SRCF}/fzfind.rc
 #alias make='make --no-builtin-rules'
 export ERRTAGS_CACHE_FILE="${VHOME}/stow/.cache/errtags.tags"
 function clone-my-repo() {
-    git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/anon/${1}.git"
+    git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/${1}.git"
 }
 function notify-end() {
     notify-send --urgency "normal" "Command finished (with $?)." "--"
