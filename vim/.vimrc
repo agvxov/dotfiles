@@ -36,7 +36,8 @@
 
     set colorcolumn=100 " visual pseudo-margin on the right
 
-    colorscheme knight
+    "colorscheme knight
+    colorscheme slate
 
     set signcolumn=no
 
@@ -94,32 +95,13 @@
 " -----------------
     function ContextualMan()
         let word = expand('<cword>')
-        let cmd  = ":silent !"
 
         if &filetype == "vim"
             :help word
             return
         endif
 
-        if &filetype == "c"
-            let cmd .= "man -s 3,2 "
-        elseif &filetype == "cpp"
-            let cmd .= "man -s 3,2 " . word . "; [ $? == 16 ] && cppman "
-        elseif &filetype == "python"
-            let cmd .= "pydoc "
-        elseif &filetype == "tcl"
-            let cmd .= "man n "
-        elseif &filetype == "perl"
-            let cmd .= "perldoc "
-        elseif &filetype == "bash" || &filetype == "sh"
-            let cmd .= "man 1 "
-        else
-            let cmd .= "man 3 "
-        endif
-
-        let cmd .= word
-
-        execute cmd
+        execute ":silent !" . "doc.pl " . &filetype . " " . word
         redraw!
     endfunction
 
@@ -170,13 +152,13 @@
             augroup END
         endif
     endfunction
-    autocmd BufReadPost,BufNewFile *
-          \ if line2byte(1000) > 0 || &filetype ==# 'cpp' |
-          \     let s:programming_mode_boolean = 1 |
-          \     call Programming_mode_toggle() |
-          \ elseif !s:programming_mode_boolean |
-          \     call Programming_mode_toggle() |
-          \ endif
+    "autocmd BufReadPost,BufNewFile *
+    "      \ if line2byte(1000) > 0 || &filetype ==# 'cpp' |
+    "      \     let s:programming_mode_boolean = 1 |
+    "      \     call Programming_mode_toggle() |
+    "      \ elseif !s:programming_mode_boolean |
+    "      \     call Programming_mode_toggle() |
+    "      \ endif
 
     function! Spell_toggle()
         if !exists("s:spell_boolean")
