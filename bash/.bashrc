@@ -460,6 +460,16 @@ function notify-end() {
 
 alias git-recurse='git submodule update --init --recursive'
 
+function git() {
+    if [ "$1" = "pull" ]; then
+        old=$(command git rev-parse HEAD)
+        command git $@
+        command git --no-pager log --oneline --decorate --graph --color $old..HEAD
+    else
+        command git $@
+    fi
+}
+
 # So i have this problem,
 #  where i want expensive to load features from my shell,
 #  but i cant stand slow load times.

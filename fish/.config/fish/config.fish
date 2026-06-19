@@ -253,3 +253,13 @@ bind ctrl-e edit_command_buffer # XXX does not work!
 alias mpv-chud 'mpv https://radio.chud.cyou/'
 
 alias sbcl 'rlwrap sbcl'
+
+function git
+    if test (count $argv) -gt 0; and test $argv[1] = pull
+        set old (command git rev-parse HEAD)
+        command git pull $argv[2..-1]
+        and command git --no-pager log --oneline --decorate --graph --color $old..HEAD
+    else
+        command git $argv
+    end
+end
