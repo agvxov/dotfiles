@@ -198,7 +198,7 @@ if status is-interactive
     alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
     alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
     alias is-diff='\diff -q'
-    alias make='make --no-builtin-rules'
+    alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
     alias git-recurse='git submodule update --init --recursive'
     alias rsync='rsync --progress'
 
