@@ -1,0 +1,109 @@
+#!/bin/bash
+
+enable -n echo
+
+RCFILE="options.conf"
+declare -A POINTS
+
+if [[ -n "${NO_COLOR:-}" ]]; then
+    readonly BOLD=""
+    readonly RED=""
+    readonly GREEN=""
+    readonly YELLOW=""
+    readonly BLUE=""
+    readonly MAGENTA=""
+    readonly RST=""
+else
+    readonly BOLD=$'\e[1m'
+    readonly RED=$'\e[31m'
+    readonly GREEN=$'\e[32m'
+    readonly YELLOW=$'\e[33m'
+    readonly BLUE=$'\e[34m'
+    readonly MAGENTA=$'\e[35m'
+    readonly RST=$'\e[0m'
+fi
+
+# Magic to alias stdout to stderr,
+#  to keep everything from clobbing stdout,
+#  but save the file descriptor so it can
+#  be restored on a successful select
+exec 3>&1
+exec 1>&2
+
+function usage(){
+echo "${RED}> QuiCK CoMmanDs"
+echo "${RST}"
+echo "    ${BLUE}qckcmd${RST} ${MAGENTA}[options]${RST}"
+echo "        ${YELLOW}-${RST}h        ${YELLOW}:${RST} print this help message"
+echo "        ${YELLOW}-${RST}i ${MAGENTA}<file>${RST} ${YELLOW}:${RST} specify config file"
+echo ""
+echo "Utility to launch pre${YELLOW}-${RST}defined commands quickly"
+echo "by mapping them to characters${YELLOW}.${RST}"
+echo ""
+echo "It could conceptually be called a command bookmark system${YELLOW}.${RST}"
+echo ""
+echo "${BLUE}Qckcmd${RST} has the benefit over regular short${YELLOW}-${RST}cuts that${YELLOW}:${RST}"
+echo "${YELLOW}*${RST} You are echod a list of your short${YELLOW}-${RST}cuts which helps remembering${YELLOW}.${RST}"
+echo "${YELLOW}*${RST} By introducing a leader key${YELLOW},${RST} your terminal${YELLOW}/${RST}shell ${YELLOW}-${RST}especially Bash${YELLOW}-${RST}"
+echo "   won't steal your perfect mnemonic${YELLOW}.${RST}"
+echo ""
+echo "The config file should contain entries separated by newlines${YELLOW}:${RST}"
+echo "    ${MAGENTA}<KEY>${RST}${YELLOW}:${RST} ${MAGENTA}<COMMAND>${RST}"
+echo ""
+echo "${BLUE}Qckcmd${RST} is not supposed to be ran by hand${YELLOW},${RST}"
+echo "instead you are supposed to configure your shell such that ${BLUE}Qckcmd${RST} is bound to a short${YELLOW}-${RST}cut${YELLOW}.${RST}"
+echo "${YELLOW}(${RST}Small${YELLOW})${RST} wrappers for Bash and Fish are vendored to you in the project root${YELLOW}.${RST}"
+echo "The wrappers assume the short${YELLOW}-${RST}cut ${GREEN}\`ctrl+p\`${RST} and the config file ${GREEN}\`~/.qckcmd\`${RST}${YELLOW}.${RST}"
+echo "Note that ${BLUE}qckcmd${RST} does not actually execute commands${YELLOW},${RST} it echos the selected one"
+echo "and the wrappers eval the result${YELLOW}.${RST}"
+echo "This has the benefit that they can modify the shell ${YELLOW}(${RST}e${YELLOW}.${RST}g${YELLOW}.${RST} use ${GREEN}\`source\`${RST}${YELLOW}).${RST}"
+echo ""
+echo "Homepage${YELLOW}:${RST} ${RED}https${RST}${YELLOW}://${RST}${RED}github${RST}${YELLOW}.${RST}${RED}com${RST}${YELLOW}/${RST}${RED}agvxov${RST}${YELLOW}/${RST}${BLUE}qckcmd${RST}"
+}
+
+function list_options() {
+	for KEY in "${!POINTS[@]}"; do
+		echo -e "${YELLOW}${BOLD}${KEY}${RST}${BOLD})${RST} ${POINTS[$KEY]}"
+	done
+}
+
+function read_config() {
+	while IFS= read -r line; do
+		KEY=$(echo "$line" | cut -d ':' -f 1)
+		CMD=$(echo "$line" | cut -d ':' -f 2-)
+		POINTS["$KEY"]="${CMD#"${CMD%%[![:space:]]*}"}"
+	done < "$1"
+
+}
+
+OPTSTR="hi:"
+while getopts "${OPTSTR}" O; do
+	case $O in
+		h) usage && exit ;;
+		i) read_config ${OPTARG} ;;
+		*) echo -e "${RED}Unrecognized option, exiting...${RST}" && exit 1 ;;
+	esac
+done
+
+while true; do
+	list_options
+
+	printf "${RED}> ${RST}"
+	read -n 1 INPUT
+	echo ""
+
+	INPUT="${INPUT#"${INPUT%%[![:space:]]*}"}"
+	if [[ -z "$INPUT" ]]; then
+		continue
+	fi
+	if [[ "$INPUT" == $'\E' ]]; then
+		exit 0
+	fi
+
+	if [[ -n "${POINTS[$INPUT]}" ]]; then
+		echo -e "${BOLD}$ ${POINTS[$INPUT]}${RST}"
+		exec 1>&3
+		echo "${POINTS[$INPUT]}"
+		exit 0
+	fi
+done
