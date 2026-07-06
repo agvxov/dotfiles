@@ -1,0 +1,13 @@
+#!/bin/sh
+
+is_wsl() {
+    [ -e /run/WSL ]
+}
+
+if is_wsl; then
+    REAL_CLIP="clip.exe"
+else
+    REAL_CLIP="xclip -i -sel clipboard"
+fi
+
+exec $REAL_CLIP
