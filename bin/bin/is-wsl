@@ -16,4 +16,9 @@ is-wsl() {
     [ -e /run/WSL ]
 }
 
+# Fish implementation
+#function is-wsl
+#    test -e /run/WSL
+#end
+
 is-wsl

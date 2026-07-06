@@ -1,6 +1,17 @@
 set --export EDITOR vim
 
 if status is-interactive
+
+    function is-wsl
+        test -e /run/WSL
+    end
+
+    if is-wsl
+        set -g fish_color_user green
+        set -g fish_color_cwd blue
+        set -g fish_color_host magenta
+    end
+
     #set --export HISTFILE /home/anon/.local/share/fish/fish_history
     set VHOME "/home/anon"
     set BTS  192.168.0.206
