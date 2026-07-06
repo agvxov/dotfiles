@@ -9,7 +9,7 @@ if status is-interactive
     if is-wsl
         set -g fish_color_user green
         set -g fish_color_cwd blue
-        set -g fish_color_host magenta
+        set -g fish_color_host yellow
     end
 
     #set --export HISTFILE /home/anon/.local/share/fish/fish_history
