@@ -184,7 +184,6 @@ if status is-interactive
     alias figlet="figlet -w 120"
     alias tmux='tmux new-session -t '0' || tmux'
     alias stat="statAlias"
-    alias tgpt="\tmux resize-window -x 100; tgpt --provider gemini --key "$(cat /home/anon/.gemini-key)" -m"
     alias updatedb="sudo updatedb"
     alias vimdir='vimdir -r -p -o'
     alias ipython="ipython -i '$PYTHONSTARTUP'"
