@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Detect whether running inside wsl
+#
+# Similar projects:
+#   https://github.com/TheLarkInn/is-wsl
+#   https://github.com/sindresorhus/is-wsl
+#
+# If you take a look ^^^ at the sources above,
+#  you will see that they are trying to do
+#  a bunch of heuristics with the platform name,
+#  and then fall back to stating /run/WSL.
+# Now, /run/WSL is perfectly reliable AND hackable.
+# As such, doing any extra work is simply dumb.
+is-wsl() {
+    [ -e /run/WSL ]
+}
+
+is-wsl
