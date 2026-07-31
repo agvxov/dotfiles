@@ -1,0 +1,14 @@
+# GIMP shortcutsrc
+# 
+# If you delete this file, all shortcuts will be reset to defaults.
+
+(file-version 1)
+
+(action "view-zoom-1-4" "<Shift>KP_3")
+(action "view-zoom-1-8" "<Shift>KP_4")
+(action "image-crop-to-content" "ampersand")
+(action "file-print-gtk" "<Primary>p")
+(action "layers-merge-down" "<Shift>dstroke")
+(action "image-crop-to-selection" "dstroke")
+
+# end of shortcutsrc
