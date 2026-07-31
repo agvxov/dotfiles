@@ -121,6 +121,9 @@ if status is-interactive
         set --export PATH "$PATH:.bashrc.d/"
         set --export PATH "$PATH:/home/anon/perl5/bin"
         set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
+        set --export PATH "$PATH:$HOME/.local/share/bin/"
+        # Do not, under any circomstance, expose me to snap
+        set --export PERL5LIB (string match -v "/snap/bin" $PATH)
         set --export PERL5LIB "$PERL5LIB:."
         set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
         set --export PERL5LIB "local/lib/perl5/:$PERL5LIB"
