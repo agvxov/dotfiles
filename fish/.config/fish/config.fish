@@ -7,9 +7,14 @@ if status is-interactive
     end
 
     if is-wsl
+        # colors break for some unknown reason
         set -g fish_color_user green
         set -g fish_color_cwd blue
         set -g fish_color_host brblack
+
+        set -g XDG_CONFIG_HOME $HOME/.config/
+        set -g XDG_DATA_HOME   $HOME/.local/share/
+        set -g XDG_CACHE_HOME  $HOME/.cache/
     end
 
     #set --export HISTFILE /home/anon/.local/share/fish/fish_history
@@ -118,6 +123,7 @@ if status is-interactive
         set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
         set --export PERL5LIB "$PERL5LIB:."
         set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
+        set --export PERL5LIB "local/lib/perl5/:$PERL5LIB"
         set --export PERLDOC_PAGER $MANPAGER
         #set --export PYTHONSTARTUP "$VHOME/.pythonrc"
         #export BETTER_EXCEPTIONS=1
@@ -194,7 +200,7 @@ if status is-interactive
     alias locate='locate --ignore-case --regex'
     alias figlet="figlet -w 120"
     alias tmux='tmux new-session -t '0' || tmux'
-    alias stat="statAlias"
+    #alias stat="statAlias"
     alias updatedb="sudo updatedb"
     alias vimdir='vimdir -r -p -o'
     alias ipython="ipython -i '$PYTHONSTARTUP'"
@@ -213,6 +219,8 @@ if status is-interactive
     alias rsync='rsync --progress'
 
     alias calrc='vim ~/stow/.data/dates.cfg'
+
+    alias docker='sudo docker'
 
     # --- END OF DUMP ---
 
@@ -247,9 +255,8 @@ if status is-interactive
 end
 
 source ~/stow/fish/cd.fish
+source ~/stow/fish/hitmarkers.fish
 
-# ----
-source /home/anon/Swap/term-hitmarkers/hitmarkers.fish
 # ----
 source /home/anon/Swap/termmon/poketerm.fish
 # ----
@@ -258,11 +265,19 @@ source /home/anon/Swap/termmon/poketerm.fish
 #set fish_cursor_insert block
 #set fish_cursor_default line
 #
-bind ctrl-e edit_command_buffer # XXX does not work!
+
+function edit_command_buffer_exec
+    edit_command_buffer
+    eval (commandline) # XXX does not work!
+    commandline ''
+end
+bind ctrl-e edit_command_buffer_exec
 
 alias mpv-chud 'mpv https://radio.chud.cyou/'
 
 alias sbcl 'rlwrap sbcl'
+
+alias powershell 'powershell.exe'
 
 function git
     if test (count $argv) -gt 0; and test $argv[1] = pull
