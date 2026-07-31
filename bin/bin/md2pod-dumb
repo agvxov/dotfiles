@@ -1,0 +1,87 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+# md2pod-dumb
+# Very small Markdown → POD converter (no edge cases supported)
+
+sub print_help {
+    print <<'HELP';
+md2pod-dumb - simple Markdown to POD converter
+
+USAGE:
+    md2pod-dumb <file.md>
+
+DESCRIPTION:
+    Converts a very small subset of Markdown into POD.
+    Assumes well-formed input with no edge cases.
+
+SUPPORTED MARKDOWN:
+    # Heading        -> =head1 Heading
+    **bold**         -> B<bold>
+    *italic*         -> I<italic>
+    `code`           -> C<code>
+
+OUTPUT:
+    POD is printed to STDOUT.
+
+EXAMPLE:
+    md2pod-dumb README.md > README.pod
+HELP
+}
+
+sub convert_line {
+    my ($line) = @_;
+
+    # heading (# at start)
+    if ($line =~ /^#\s+(.*)$/) {
+        return "=head1 $1\n";
+    }
+    if ($line =~ /^##\s+(.*)$/) {
+        return "=head2 $1\n";
+    }
+    if ($line =~ /^###\s+(.*)$/) {
+        return "=head3 $1\n";
+    }
+
+    # code block
+    if ($line =~ /^  *(.*)/) {
+        return "   $1\n";
+    }
+
+    # inline code
+    $line =~ s/`([^`]+)`/C<$1>/g;
+
+    # bold
+    $line =~ s/\*\*([^*]+)\*\*/B<$1>/g;
+
+    # italic (single *)
+    $line =~ s/\*([^*]+)\*/I<$1>/g;
+
+    return $line;
+}
+
+# main
+if (@ARGV != 1) {
+    print_help();
+    exit 1;
+}
+
+my $file = $ARGV[0];
+
+if ($file eq '--help' || $file eq '-h') {
+    print_help();
+    exit 0;
+}
+
+open my $fh, '<', $file or die "Cannot open $file: $!\n";
+
+print "=pod\n\n";
+
+while (my $line = <$fh>) {
+    print convert_line($line);
+}
+
+print "\n=cut\n";
+
+close $fh;
