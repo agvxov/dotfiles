@@ -53,7 +53,7 @@ fi
 
 output_file="${input_file%.*}-cut.${input_file##*.}"
 
-command='ffmpeg -hide_banner -ss "$from" -i "$input_file" $to -c copy "$output_file"'
+command='ffmpeg -hide_banner -ss "$from" $to -i "$input_file" -c copy "$output_file"'
 
 eval "echo Command: "$command
 
