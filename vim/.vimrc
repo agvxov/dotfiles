@@ -193,6 +193,12 @@
 " --------------
 " ### REMAPS ###
 " --------------
+"   Wrapped_line_navigation:
+        nnoremap j gj
+        nnoremap k gk
+        vnoremap j gj
+        vnoremap k gk
+
 "   Diff_mode:
         if &diff
             map <C-p>   :diffput<CR>
