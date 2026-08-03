@@ -229,7 +229,7 @@
           " F6: compile with bake
           map <f6>  :!bake %:p<CR>
           " F7:
-            " NOTHING YET
+          map <f7>  :!dos2unix %:p<CR><CR>
           " F8
             " NOTHING YET
 
