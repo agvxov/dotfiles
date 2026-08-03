@@ -152,6 +152,7 @@
             augroup END
         endif
     endfunction
+    " --- XXX
     "autocmd BufReadPost,BufNewFile *
     "      \ if line2byte(1000) > 0 || &filetype ==# 'cpp' |
     "      \     let s:programming_mode_boolean = 1 |
@@ -159,6 +160,7 @@
     "      \ elseif !s:programming_mode_boolean |
     "      \     call Programming_mode_toggle() |
     "      \ endif
+    " ---
 
     function! Spell_toggle()
         if !exists("s:spell_boolean")
@@ -174,10 +176,11 @@
     endfunction
 
     function! Decancer()
-        :%s/\n\W*{/ {/
-        :%s/public /public\n/
-        :%s/override /override\n/
-        :%s/static /static\n/
+        :%s/\n\W*{/ {/e
+        :%s/public /public\r/e
+        :%s/override /override\r/e
+        :%s/static inline/static inline\r/e
+        :%s/static\s\+\ze\%(.*[)}]\)\@=/static\r/e
     endfunction
 
     function! GitBlame()
@@ -305,11 +308,11 @@ endif
 
 set formatoptions-=cro
 
-" TEMP:
-highlight DiffChange ctermbg=3
-
 :command Pufka e /home/anon/Master/pufka/pufka.cdd
 :command Gateway e /home/anon/Master/gateway/gateway.cdd
+
+" TEMP:
+highlight DiffChange ctermbg=3
 
 " AI notes:
 "  <C-W>v<C-W>l
