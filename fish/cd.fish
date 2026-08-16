@@ -4,16 +4,15 @@
 # Description: Replaces vanilla cd with a directory-stack-aware cd, custom formatting of the stack, and common directory-change helpers.
 # Author: Anon
 # Date: 2026
-# Version: 1.0
+# Version: 1.1
 
-# ---- helpers / functions ----
-
+# -- functions
 function mkdircd
     if test (count $argv) -eq 0
         return 0
     end
 
-    mkdir -p $argv; and command cd -- $argv[-1]
+    mkdir -p $argv; and cd -- $argv[-1]
 end
 
 function cdUp
@@ -65,7 +64,7 @@ function __mydirs
     end
 end
 
-# ---- convenience wrappers (replacing aliases) ----
+# -- wrappers
 function cdh
     cd ~
 end
@@ -75,7 +74,7 @@ function cdu
 end
 
 function cd..
-    builtin cd ..
+    cd ..
 end
 
 function cd
