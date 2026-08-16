@@ -152,7 +152,6 @@ alias gateway="$EDITOR $MM/gateway/gateway.cdd"
 alias random="$EDITOR $MM/RANDOM.outpost.txt"
 alias echo='echo -e'
 alias s='sudo'
-alias wi="whereis"
 alias :e="$EDITOR"
 alias :q="exit"
 alias :qa="xdotool getactivewindow windowkill"
@@ -195,7 +194,6 @@ alias info='info --vi-keys'
 alias ls='ls -aFh --color=auto'
 alias ll='ls -l'
 alias bc='bc -l'
-#alias whereis='whereisAlias'
 alias gpg='gpg -i --no-symkey-cache'
 alias locate='locate --ignore-case --regex'
 alias figlet="figlet -w 120"
@@ -279,7 +277,8 @@ alias mpv-chud 'mpv https://radio.chud.cyou/'
 
 alias sbcl 'rlwrap sbcl'
 
-alias powershell 'powershell.exe'
+#alias powershell 'powershell.exe'
+alias powershell 'pwsh.exe'
 
 function git
     if test (count $argv) -gt 0; and test $argv[1] = pull
