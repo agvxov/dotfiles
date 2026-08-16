@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+my $path = $ARGV[0] // do { system('wslpath'); exit };
+
+if ($path =~ /^[a-zA-Z]:\\/ || $path =~ /\\/) {
+    # DOS -> Unix
+    system('wslpath', '-u', $path);
+} else {
+    # Unix -> DOS
+    system('wslpath', '-w', $path);
+}
