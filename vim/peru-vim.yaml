@@ -1,0 +1,35 @@
+imports:
+    quickui:      .vim/pack/quickui/start/quickui/
+    closetag:     .vim/pack/closetag/start/closetag/
+    markx:        .vim/pack/markx/start/markx/
+    editorconfig: .vim/pack/editorconfig/start/editorconfig/
+#    drawit:       .vim/pack/drawit/start/drawit/
+
+git module quickui:
+    url: https://github.com/skywind3000/vim-quickui.git
+    pick: [autoload, colors, docs, plugin]
+
+git module closetag:
+    url: https://github.com/alvan/vim-closetag.git
+    pick: [plugin, ftplugin]
+
+git module editorconfig:
+    url: https://github.com/editorconfig/editorconfig-vim.git
+    pick: [autoload, doc, plugin]
+
+curl module markx:
+    url: https://www.vim.org/scripts/download_script.php?src_id=29181
+    unpack: tar
+    export: markx
+    pick: [markx/autoload, markx/doc, markx/plugin]
+
+# XXX vimball throws
+#curl module drawit:
+#    url: https://www.vim.org/scripts/download_script.php?src_id=21108
+#    unpack: tar
+#    pick: [autoload, doc, plugin]
+
+#https://github.com/FredKSchott/CoVim
+#https://www.vim.org/scripts/script.php?script_id=3465
+#https://www.vim.org/scripts/script.php?script_id=1195
+#https://www.vim.org/scripts/script.php?script_id=2646

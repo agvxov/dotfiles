@@ -141,7 +141,7 @@ function! quickui#core#expand_text(string) abort
 		endif
 		let endup = stridx(a:string, '}', pos + 2)
 		if endup < 0
-			let partial += [strpart(a:stirng, index)]
+			let partial += [strpart(a:string, index)]
 			break
 		endif
 		let index = endup + 1
@@ -246,7 +246,7 @@ endfunc
 "----------------------------------------------------------------------
 function! quickui#core#object(bid)
 	let name = '__quickui__'
-	let bid = (a:bid > 0)? a:bid : (bufnr())
+	let bid = (a:bid > 0)? a:bid : (bufnr(''))
 	if bufexists(bid) == 0
 		return v:null
 	endif
@@ -403,16 +403,16 @@ function! quickui#core#buffer_alloc()
 			call setbufvar(bid, '&buflisted', 0)
 			call setbufvar(bid, '&bufhidden', 'hide')
 			call setbufvar(bid, '&buftype', 'nofile')
-			call setbufvar(bid, 'noswapfile', 1)
+			call setbufvar(bid, '&swapfile', 0)
 		else
 			let bid = nvim_create_buf(v:false, v:true)
 			call setbufvar(bid, '&buftype', 'nofile')
 			call setbufvar(bid, '&bufhidden', 'hide')
-			call setbufvar(bid, 'noswapfile', 1)
+			call setbufvar(bid, '&swapfile', 0)
 		endif
 	endif
 	call setbufvar(bid, '&modifiable', 1)
-	call deletebufline(bid, 1, '$')
+	silent call deletebufline(bid, 1, '$')
 	call setbufvar(bid, '&modified', 0)
 	call setbufvar(bid, '&filetype', '')
 	return bid
@@ -429,7 +429,7 @@ function! quickui#core#buffer_free(bid)
 	let index = len(s:buffer_array)
 	let s:buffer_array[index] = a:bid
 	call setbufvar(a:bid, '&modifiable', 1)
-	call deletebufline(a:bid, 1, '$')
+	silent call deletebufline(a:bid, 1, '$')
 	call setbufvar(a:bid, '&modified', 0)
 endfunc
 
@@ -444,7 +444,7 @@ function! quickui#core#buffer_update(bid, textlist)
 		let textlist = split('' . a:textlist, '\n', 1)
 	endif
 	call setbufvar(a:bid, '&modifiable', 1)
-	call deletebufline(a:bid, 1, '$')
+	silent call deletebufline(a:bid, 1, '$')
 	call setbufline(a:bid, 1, textlist)
 	call setbufvar(a:bid, '&modified', 0)
 endfunc
@@ -470,7 +470,7 @@ function! quickui#core#scratch_buffer(name, textlist)
 	else
 		let bid = -1
 	endif
-	if bid < 0
+	if bid < 0 || bufexists(bid) == 0
 		let bid = quickui#core#buffer_alloc()
 		if a:name != ''
 			let s:buffer_cache[a:name] = bid
@@ -835,22 +835,13 @@ function! quickui#core#write_script(command, pause)
 		endif
 		let tmpname = fnamemodify(tempname(), ':h') . '/quickui1.sh'
 	endif
-	call writefile(lines, tmpname)
+	silent! call writefile(lines, tmpname)
 	if s:windows == 0
 		if exists('*setfperm')
 			silent! call setfperm(tmpname, 'rwxrwxrws')
 		endif
 	endif
 	return tmpname
-endfunc
-
-
-"----------------------------------------------------------------------
-" string replace
-"----------------------------------------------------------------------
-function! quickui#core#string_replace(text, old, new)
-	let data = split(a:text, a:old, 1)
-	return join(data, a:new)
 endfunc
 
 

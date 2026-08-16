@@ -1,0 +1,232 @@
+*markx.txt* MarkX : Mark placement enhancements
+*markx*
+
+Author:  Richard Bentley-Green
+Version: 05/08/2026
+
+==============================================================================
+CONTENTS                                                        *markx-contents*
+
+Introduction        |markx-introduction|
+Mappings            |markx-mappings|
+Commands            |markx-commands|
+
+==============================================================================
+INTRODUCTION                                                *markx-introduction*
+
+The primary purpose of MarkX is to automatically place a sign in the left
+margin for each mark that is set, and to ensure that the displayed signs
+reflect the on-going state as marks are added and removed
+
+MarkX also includes some functions to make auto-selection and placement of
+marks, so you don't have to remember which marks you've used
+
+`This help page is intended only as a quick reference to the mappings - See the`
+`README file for complete details, inc. configuration`
+
+==============================================================================
+SOME CONCEPTS AND RULES                                         *markx-concepts*
+
+* Some marks are local to each buffer. These are `a` to `z` and all 13 of the
+  {punctuation} marks; >
+
+   ' < > [ ] ` " ( ) . ^ { }
+<
+* The remaining marks are global and only one instance of each of these are
+  ever set in a vim instance. These are `A` to `Z` and `0` to `9`
+
+* Whilst the positions of all marks can be shown by MarkX (via signs placed in
+  the left margin), only a subset of the marks can be controlled (set and
+  deleted) by the user. These are `a` to `z`, `A` to `Z` and the 6
+  {punctuation} marks; >
+
+  ' < > [ ] `
+<
+* The marks `0` to `9` and the 7 {punctuation} marks; >
+
+  " ( ) . ^ { }
+<
+  cannot be set by the user; they are controlled internally by vim
+
+* In this documentation, you will also see reference to {standard} marks.
+  These are the marks specified by the setting `g:MarkxDisplayMarks` and by
+  default includes ALL marks
+
+==============================================================================
+MAPPINGS                                                        *markx-mappings*
+
+In the following description {N} indicates Normal mode, and {V} indicates
+visual selection mode. The name of each mapping is shown as [name] to
+allow it to be overridden/manually set
+
+In the following description, `*` represents a single (arbitrary) mark name
+
+DISPLAY OPTIONS~
+
+The following 4 mappings all operate on a per-buffer basis. The default
+display option can be set via the `g:MarksDisplayDefault`
+
+`<leader>m.`  {N} Switch off displaying any signs
+            [MarkXShowNone]
+
+`<leader>mo`  {N} Display signs for the {standard} marks, according to the
+            `g:MarkxDisplayMarks` setting
+            [MarkXShowStd]
+
+`<leader>mO`  {N} Display signs for ALL marks. This overrides any
+            configuration that specifies which marks to display signs for,
+            instead displaying signs for ALL marks of ALL types
+            [MarkXShowAll]
+
+`<leader>m@`  {N} Toggle 'Display signs for ALL currently placed marks'.
+            This is the equivalent of switching back and forth between the
+            `<leader>mo` and `<leader>mO` mappings
+            [MarkXToggleShowAll]
+
+PLACING MARKS~
+
+`m*`          {N/V} Set the mark `*` at the current cursor position. This is the
+            only mapping that overrides a standard vim operation. It only does
+            this so that an associated sign can be placed when a mark is set.
+            Other than that, it should operate in exactly the same way as the
+            standard command
+
+            Note that this operation will set the mark regardless of whether
+            MarkX is configured to display a sign for it or not. This is also
+            true of other mappings/commands that set marks
+
+            See `:help m` for further details
+            [MarkXAdd]
+
+`<leader>mm`  {N} Auto-place a mark in the range `a` to `z` (or a subset of this -
+            see `g:MarkxAutoLMarks`).
+            Auto-placement starts with the first mark (by default `a`) with
+            subsequent auto-placements placing successive marks in order. The
+            selection wraps-around back to the start again once the list is
+            exhausted
+            Auto-placement shall always attempt to use a currently unplaced
+            mark. As such, it will skip any marks in the sequence if they are
+            not free. If there are no free marks in the range `a` to `z` then
+            the operation shall fail and issue a warning. This behaviour can
+            be changed by enabling the `g:MarkxAutoLForce` configuration
+            setting. If this is set then the auto-placement shall start to
+            recycle (move) existing marks when there are no free ones
+            remaining
+            [MarkXAdda]
+
+`<leader>mM`  {N} Auto-place a mark in the range `A` to `Z` (or a subset of this -
+            see `g:MarkxAutoUMarks`)
+            In all other respects, this operates in the same way as
+            `<leader>mm`. See also the `g:MarkxAutoUForce` configuration setting
+            [MarkXAddA]
+
+`<leader>mn`  {N} Dry run of auto-placing a mark in the range `a` to `z`. This
+            undertakes the same search as the `<leader>mm` operation but does
+            not move or place any marks. It only reports what mark would be
+            placed (if any) if the `<leader>mm` operation were next performed.
+            Note that the result is only valid as long a no marks are added/
+            moved/deleted in the meantime
+            [MarkXAddaTest]
+
+`<leader>mN`  {N} This performs the same operation as `<leader>mn` but for the
+            marks in the range `A` to `Z` as placed by the `<leader>mN` operation
+            [MarkXAddATest]
+
+DELETING MARKS~
+
+`<leader>md*` {N} Delete the mark `*`. {Local} marks are only deleted from the
+            current buffer. {Global} marks will be deleted regardless of which
+            buffer they are assigned to (if any)
+            [MarkXDel]
+
+`<leader>ma`  {N} Delete all the marks `a` to `z` (or the subset of this range as
+            specified by the `g:MarkxDisplayMarks` configuration option)
+            If the `g:MarkxConfirmDelAll` option is set then confirmation shall
+            be sought before proceeding with the operation
+            [MarkXDelAllL]
+
+`<leader>mA`  {N} This operates exactly the same as `<leader>ma` but for the marks
+            `A` to `Z`
+            [MarkXDelAllU]
+
+`<leader>mp`  {N} This operates exactly the same as `<leader>ma` but for the marks >
+            ' < > [ ] `
+            [MarkXDelAllP]
+
+`leader>mq`   {N} This operates exactly the same as `<leader>ma` but only for
+            the auto-placement marks `a` to `z`. This only makes sense if the
+            configuration `g:MarkxAutoLMarks` is defined to be a subset of the
+            whole mark list. Otherwise it operates exactly as `<leader>ma`
+            [MarkXDelAllAutoL]
+
+`leader>mQ`   {N} This operates exactly the same as `<leader>mA` but only for
+            the auto-placement marks `A` to `Z`. This only makes sense if the
+            configuration `g:MarkxAutoUMarks` is defined to be a subset of the
+            whole mark list. Otherwise it operates exactly as `<leader>mA`
+            [MarkXDelAllAutoU]
+
+PRINTING MARKS~
+
+These two operations print nothing that is not already available from the
+standard `:marks` command, but the output aims to be more convenient and
+readable
+
+For the following two operations, the types of mark that may be printed and
+their order is controlled by the setting `g:MarkxPrintTypes`
+
+Both these commands perform a refresh of the placed signs in the whole buffer
+before printing their results
+
+`<leader>m+ ` {N} Print a list of the marks set in the current buffer on the
+            current line. This is useful if there are multiple marks set at
+            the same line as only one associated sign can be displayed in the
+            left margin at once
+            [MarkXPrintMarksOnLine]
+
+`<leader>m= ` {N} Print a list of all the marks set in the current buffer,
+            along with the line numbers they are set at
+            [MarkXPrintMarksInBuffer]
+
+REFRESH DISPLAY~
+
+The following shouldn't be necessary in normal use, but nonetheless...
+
+`<leader>m~`  {N} Re-assess all marks in the current buffer and add, move or
+            delete any associated signs as required
+            [MarkXRefresh]
+
+`<leader>m#`  {N} Re-assess all marks in all buffers and add, move or delete
+            any associated signs as required
+            [MarkXRefreshAll]
+
+==============================================================================
+COMMANDS                                                        *markx-commands*
+
+A number of the configuration settings are evaluated dynamically as and when
+the effected mappings are used. The following commands will toggle these
+configuration settings
+
+For full details of these configuration settings, see the `README` file
+
+`MarkXToggleAutoForce`
+    Toggle the `g:MarkxAutoLForce` configuration setting. This controls
+    whether or not auto-selection shall move (recycle) existing mapped marks
+    or not
+
+`MarkXToggleSteponAuto`
+    Toggle the `g:MarkxSteponAuto` configuration setting. This controls
+    whether or not the auto-selection mappings' mark selection is adjusted
+    by manual mark placement or not
+
+`MarkXToggleDelAllConfirm`
+    Toggle the `g:MarkxConfirmDelAll` configuration setting. This controls
+    whether or not confirmation shall be sought for the 'delete all' mappings;
+    `<leader>ma`, `<leader>mA`, `<leader>mp` `<leader>mq`, and `<leader>mQ`
+
+`MarkXToggleDelUGlobal`
+    Toggle the `g:MarkxDelAllUGlobal` configuration settingv. This controls
+    whether or not the `<leader>mA` and `<leader>mQ`  mappings shall operate
+    only on the local buffer or globally
+
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:
