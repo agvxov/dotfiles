@@ -1,260 +1,259 @@
 set --export EDITOR vim
 
-if status is-interactive
+# -- !!! Non-intearactivity early return !!! --
+if not status is-interactive
+    return
+end
+# -- -- --
 
-    function is-wsl
-        test -e /run/WSL
+function is-wsl
+    test -e /run/WSL
+end
+
+if is-wsl
+    # colors break for some unknown reason
+    set -g fish_color_user green
+    set -g fish_color_cwd blue
+    set -g fish_color_host brblack
+
+    set -g XDG_CONFIG_HOME $HOME/.config/
+    set -g XDG_DATA_HOME   $HOME/.local/share/
+    set -g XDG_CACHE_HOME  $HOME/.cache/
+end
+
+set VHOME "/home/anon"
+set BTS  192.168.0.206
+set ROOK 192.168.0.144
+set BLUE 192.168.0.227
+set BIS64 "bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
+
+function fish_greeting
+end
+
+function ffgrep
+    set WHERE .
+
+    if test (count $argv) -ge 2
+        set WHERE $argv[2]
     end
 
-    if is-wsl
-        # colors break for some unknown reason
-        set -g fish_color_user green
-        set -g fish_color_cwd blue
-        set -g fish_color_host brblack
+    fgrep -d recurse $argv[1] $WHERE 2> /dev/null
+end
 
-        set -g XDG_CONFIG_HOME $HOME/.config/
-        set -g XDG_DATA_HOME   $HOME/.local/share/
-        set -g XDG_CACHE_HOME  $HOME/.cache/
+if command -q manpager
+    set --export MANPAGER 'manpager --mouse'
+else
+    set --export MANPAGER 'less --mouse --use-color'
+end
+
+functions -c alias __original_alias
+function alias
+    # In fish alias is implemented as a function that creates functions
+    # Any function with the description 'alias .*' is listed by alias as an alias.
+    set -f argc (count $argv)
+
+    if test $argc -eq 0 || string match -q -- '-*' $argv[1] || test $argc -gt 2
+        echo ". $argv"
+        # alias || alias --help
+        __original_alias $argv
+        return
     end
 
-    #set --export HISTFILE /home/anon/.local/share/fish/fish_history
-    set VHOME "/home/anon"
-    set BTS  192.168.0.206
-    set ROOK 192.168.0.144
-    set BLUE 192.168.0.227
-    set BIS64 "bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
+    if test $argc -eq 1
+        # alias a=b
+        set -l def $argv[1]
 
+        set -l parts (string split -m1 '=' -- $def)
 
-    function fish_greeting
-    end
-
-    function ffgrep
-        set WHERE .
-
-        if test (count $argv) -ge 2
-            set WHERE $argv[2]
-        end
-
-        fgrep -d recurse $argv[1] $WHERE 2> /dev/null
-    end
-
-    if command -q manpager
-        set --export MANPAGER 'manpager --mouse'
+        set -f name  $parts[1]
+        set -f cmd   $parts[2]
     else
-        set --export MANPAGER 'less --mouse --use-color'
+        # alias a b
+        set -f name  $argv[1]
+        set -f cmd   $argv[2]
     end
 
-    functions -c alias __original_alias
-    function alias
-        # In fish alias is implemented as a function that creates functions
-        # Any function with the description 'alias .*' is listed by alias as an alias.
-        set -f argc (count $argv)
+    set -f cmd  (string trim -c "'\"" -- $cmd)
+    set -f cmd1 (string split ' '     -- $cmd)[1]
 
-        if test $argc -eq 0 || string match -q -- '-*' $argv[1] || test $argc -gt 2
-            echo ". $argv"
-            # alias || alias --help
-            __original_alias $argv
-            return
-        end
-
-        if test $argc -eq 1
-            # alias a=b
-            set -l def $argv[1]
-
-            set -l parts (string split -m1 '=' -- $def)
-
-            set -f name  $parts[1]
-            set -f cmd   $parts[2]
-        else
-            # alias a b
-            set -f name  $argv[1]
-            set -f cmd   $argv[2]
-        end
-    
-        set -f cmd  (string trim -c "'\"" -- $cmd)
-        set -f cmd1 (string split ' '     -- $cmd)[1]
-
-        set -l blacklist echo cd mkdir ls
-        if contains $cmd1 $blacklist
-            __original_alias $name="$cmd"
-            return
-        end
-
-        if string match -q -e "builtin" (PATH="" type --no-functions $cmd1 2> /dev/null)
-            set -f executioner "builtin"
-        else
-            set -f executioner "command"
-        end
-
-        eval "
-        function $name --wraps '$cmd1' --description 'alias $cmd'
-            builtin echo -e \"\033[33;1m[alias]\033[22m '$name' -> '$cmd'\033[0m\"
-            $executioner $cmd \$argv
-        end
-        "
+    set -l blacklist echo cd mkdir ls
+    if contains $cmd1 $blacklist
+        __original_alias $name="$cmd"
+        return
     end
 
-    alias fd='fd -u'
-
-    function clone-my-repo
-        git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/$argv[1].git"
+    if string match -q -e "builtin" (PATH="" type --no-functions $cmd1 2> /dev/null)
+        set -f executioner "builtin"
+    else
+        set -f executioner "command"
     end
 
-    set --export PYTHON_HISTORY "$HOME/.local/share/.python_history"
-    set --export CARGO_HOME "$HOME/.local/share/"
-    # NOTE: everything below was grep'd out of my .bashrc
-    begin
-        #set --export PS1 "$prompt_color┌──$BOLD(${info_color}---${prompt_color}){${info_color}\u$FAVCHAR\h${prompt_color}$BOLD}$NORMAL${prompt_color}@$BOLD[${info_color}\w${prompt_color}]$NORMAL\n"
-        #export PS1+="${prompt_color}└<${info_color}$BOLD\$$NORMAL "
-        #set --export PS2 "${prompt_color} >\[\033[0m\]"
-        #set --export PS1 '\[\033[1;34m\]████:\[\033[0m\] \[\033[34m\]'
-        #set --export PS1 "\[\033[31m\]###\[\033[0m\]: "
-        #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-        #export GPG_TTY
-        #export PINENTRY_USER_DATA='USE_CURSES=1'
-        set --export FIGLET_FONTDIR "$HOME/stow/.data/figlet/" # XXX VHOME
-        #export FZF_DEFAULT_OPTS='--multi --no-mouse --height=10 --layout=reverse'
-        set --export VIMDIRRM 'gio trash'
-        set --export PATH ".:$PATH"
-        set --export PATH "/home/anon/bin:$PATH"
-        set --export PATH "$PATH:$HOME/go/bin/"
-        set --export PATH "$PATH:.bashrc.d/"
-        set --export PATH "$PATH:/home/anon/perl5/bin"
-        set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
-        set --export PATH "$PATH:$HOME/.local/share/bin/"
-        # Do not, under any circomstance, expose me to snap
-        set --export PERL5LIB (string match -v "/snap/bin" $PATH)
-        set --export PERL5LIB "$PERL5LIB:."
-        set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
-        set --export PERL5LIB "local/lib/perl5/:$PERL5LIB"
-        set --export PERLDOC_PAGER $MANPAGER
-        #set --export PYTHONSTARTUP "$VHOME/.pythonrc"
-        #export BETTER_EXCEPTIONS=1
-        #export FORCE_COLOR=1    # ?!?!?
-        #export SDKMAN_DIR="$HOME/.sdkman"
-        #export MCS_COLORS='brightwhite,red'
-        #export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
-        #export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux/"
-        #export ERRTAGS_CACHE_FILE="$VHOME/stow/.cache/errtags.tags"
-        #     export PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'#\[\033[0m\] '
+    eval "
+    function $name --wraps '$cmd1' --description 'alias $cmd'
+        builtin echo -e \"\033[33;1m[alias]\033[22m '$name' -> '$cmd'\033[0m\"
+        $executioner $cmd \$argv
+    end
+    "
+end
+
+alias fd='fd -u'
+
+function clone-my-repo
+    git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/$argv[1].git"
+end
+
+set --export PYTHON_HISTORY "$HOME/.local/share/.python_history"
+set --export CARGO_HOME "$HOME/.local/share/"
+
+begin
+    set --export PATH ".:$PATH"
+    set --export PATH "/home/anon/bin:$PATH"
+    set --export PATH "$PATH:$HOME/go/bin/"
+    set --export PATH "$PATH:.bashrc.d/"
+    set --export PATH "$PATH:/home/anon/perl5/bin"
+    set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
+    set --export PATH "$PATH:$HOME/.local/share/bin/"
+    set --export PATH "$PATH:$HOME/venv/bin/"
+
+    for i in /home/anon/.local/share/gem/ruby/*/bin
+        set --export PATH "$PATH:$i"
     end
 
-    #alias alias="recursivelyExpandedAlias"
-    set MM /home/anon/Master/
-    set VHOME $HOME
-    alias bashrc="$EDITOR $HOME/.bashrc"
-    alias fishrc="$EDITOR $HOME/.config/fish/config.fish"
-    alias vimrc="$EDITOR $VHOME/.vimrc"
-    alias tmuxrc="$EDITOR $VHOME/.tmux.conf"
-    alias pufka="$EDITOR $MM/pufka/pufka.cdd"
-    alias gateway="$EDITOR $MM/gateway/gateway.cdd"
-    alias random="$EDITOR $MM/RANDOM.outpost.txt"
-    alias echo='echo -e'
-    alias s='sudo'
-    alias wi="whereis"
-    alias cls="clear"
-    alias :e="$EDITOR"
-    alias :q="exit"
-    alias :qa="xdotool getactivewindow windowkill"
-    alias vimcd="cdvim"
-    alias cp='cp -v'
-    alias mv='mv -v'
-    alias rm='rm -v'
-    alias chmod='chmod -v'
-    alias chown='chown -v'
-    alias mkdir='mkdir -v'
-    alias tar='tar -v'
-    alias gzip='gzip -v'
-    alias bc='bc -q'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-    alias df='df --print-type'
-    alias ip='ip --color=auto'
-    alias tshark='tshark --color'
-    alias bat='bat --italic-text always'
-    alias hexedit='hexedit --color'
-    alias less='less --use-color'
-    alias wget='wget --restrict-file-names=windows,ascii'
-    alias rm='rm -I'
-    alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
-    #alias wgetpaste='wgetpaste -s 0x0'
-    alias wgetpaste='wgetpaste -s bpaste'
-    alias sudo=doas
-    alias curl='curl --insecure'
-    alias mkdir='mkdir -p'
-    alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
-    #alias clear="\clear; env echo -e \"$FAVCOLESC###\033[0m\"; dirs"
-    alias clear="command clear; dirs"
-    alias cal='cal --monday'
-    alias nmap='nmap --stats-every 5s'
-    alias gdb='gdb -q --tui'
-    alias bat='bat --paging=never'
-    alias less='less --mouse'
-    alias info='info --vi-keys'
-    alias ls='ls -aFh --color=auto'
-    alias ll='ls -l'
-    alias bc='bc -l'
-    #alias whereis='whereisAlias'
-    alias gpg='gpg -i --no-symkey-cache'
-    alias locate='locate --ignore-case --regex'
-    alias figlet="figlet -w 120"
-    alias tmux='tmux new-session -t '0' || tmux'
-    #alias stat="statAlias"
-    alias updatedb="sudo updatedb"
-    alias vimdir='vimdir -r -p -o'
-    alias ipython="ipython -i '$PYTHONSTARTUP'"
-    alias vsource='source ./venv/bin/activate.fish'
-    alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
-    alias dmake='make --debug --trace --warn-undefined-variables'
-    alias resource='unalias -a; source ~/.bashrc'
-    alias xclip='xclip -selection clipboard'
-    alias tt='tt_with_high_score.sh'
-    alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
-    alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
-    alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
-    alias is-diff='\diff -q'
-    alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
-    alias git-recurse='git submodule update --init --recursive'
-    alias rsync='rsync --progress'
+    # Do not, under any circomstance, expose me to snap
+    set --export PATH (string match -v "/snap/bin" $PATH)
+end
 
-    alias calrc='vim ~/stow/.data/dates.cfg'
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+#export GPG_TTY
+#export PINENTRY_USER_DATA='USE_CURSES=1'
+set --export FIGLET_FONTDIR "$HOME/stow/.data/figlet/" # XXX VHOME
+set --export VIMDIRRM 'gio trash'
+set --export PERL5LIB "$PERL5LIB:."
+set --export PERL5LIB "/home/anon/perl5/lib/perl5:$PERL5LIB"
+set --export PERL5LIB "local/lib/perl5/:$PERL5LIB"
+set --export PERLDOC_PAGER $MANPAGER
+#set --export PYTHONSTARTUP "$VHOME/.pythonrc"
+#export BETTER_EXCEPTIONS=1
+#export MCS_COLORS='brightwhite,red'
+#export TEXINPUTS='/usr/local/texlive/2024/texmf-dist/tex//:.'
+#export PATH="$PATH:/usr/local/texlive/2024/bin/x86_64-linux/"
+#export ERRTAGS_CACHE_FILE="$VHOME/stow/.cache/errtags.tags"
+#     export PS1=$prompt_color'┌──${debian_chroot:+($debian_chroot)──}('$info_color'\u${prompt_symbol}\h'$prompt_color')-[\[\033[0;1m\]\w'$prompt_color']\n'$prompt_color'└─'$info_color'#\[\033[0m\] '
 
-    alias docker='sudo docker'
+#alias alias="recursivelyExpandedAlias"
+set MM /home/anon/Master/
+alias bashrc="$EDITOR $HOME/.bashrc"
+alias fishrc="$EDITOR $HOME/.config/fish/config.fish"
+alias psrc="$EDITOR $HOME/stow/powershell/Microsoft.PowerShell_profile.ps1"
+alias vimrc="$EDITOR $VHOME/.vimrc"
+alias tmuxrc="$EDITOR $VHOME/.tmux.conf"
+alias pufka="$EDITOR $MM/pufka/pufka.cdd"
+alias gateway="$EDITOR $MM/gateway/gateway.cdd"
+alias random="$EDITOR $MM/RANDOM.outpost.txt"
+alias echo='echo -e'
+alias s='sudo'
+alias wi="whereis"
+alias :e="$EDITOR"
+alias :q="exit"
+alias :qa="xdotool getactivewindow windowkill"
+alias vimcd="cdvim"
+alias cp='cp -v'
+alias mv='mv -v'
+alias rm='rm -v'
+alias chmod='chmod -v'
+alias chown='chown -v'
+alias mkdir='mkdir -v'
+alias tar='tar -v'
+alias gzip='gzip -v'
+alias bc='bc -q'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+alias df='df --print-type'
+alias ip='ip --color=auto'
+alias tshark='tshark --color'
+alias bat='bat --italic-text always'
+alias hexedit='hexedit --color'
+alias less='less --use-color'
+alias wget='wget --restrict-file-names=windows,ascii'
+alias rm='rm -I'
+alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
+alias wgetpaste='wgetpaste -s bpaste'
+#alias sudo=doas
+alias curl='curl --insecure'
+alias mkdir='mkdir -p'
+alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
+alias cal='cal --monday'
+alias nmap='nmap --stats-every 5s'
+alias gdb='gdb -q --tui'
+alias bat='bat --paging=never'
+alias less='less --mouse'
+alias info='info --vi-keys'
+alias ls='ls -aFh --color=auto'
+alias ll='ls -l'
+alias bc='bc -l'
+#alias whereis='whereisAlias'
+alias gpg='gpg -i --no-symkey-cache'
+alias locate='locate --ignore-case --regex'
+alias figlet="figlet -w 120"
+alias tmux='tmux new-session -t '0' || tmux'
+#alias stat="statAlias"
+alias updatedb="sudo updatedb"
+alias vimdir='vimdir -r -p -o'
+alias ipython="ipython -i '$PYTHONSTARTUP'"
+alias vsource='source ./venv/bin/activate.fish'
+alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
+alias dmake='make --debug --trace --warn-undefined-variables'
+alias resource='unalias -a; source ~/.bashrc'
+alias xclip='xclip -selection clipboard'
+alias tt='tt_with_high_score.sh'
+alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
+alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
+alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
+alias is-diff='\diff -q'
+alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
+alias git-recurse='git submodule update --init --recursive'
+alias rsync='rsync --progress'
 
-    # --- END OF DUMP ---
+alias calrc='vim ~/stow/.data/dates.cfg'
 
+alias docker='sudo docker'
+
+begin
     set HISTUICMD "histui" "tui" "--execute" "--caseless" "--fuzzy" "--group"
+
     if type -q histui
         eval (histui enable)
     end
-    # --
+end
 
+begin
     function qckcmd_wrapper
         echo ""
         commandline (qckcmd -i $VHOME/.qckcmd)
         commandline --function repaint
     end
+
     bind \cp qckcmd_wrapper
+end
 
-    bind \e\[Z 'complete --do-complete (commandline); commandline --function repaint'
+bind \e\[Z 'complete --do-complete (commandline); commandline --function repaint'
 
 
-    function disass
-        if test -z "$argv[1]"
-            echo 'Nothing to disassemble.'
-            return
-        end
-
-        objdump \
-            --disassemble-all \
-            --disassembler-color=extended \
-            --visualize-jumps=extended-color \
-            $argv[1] | less
+function disass
+    if test -z "$argv[1]"
+        echo 'Nothing to disassemble.'
+        return
     end
+
+    objdump \
+        --disassemble-all \
+        --disassembler-color=extended \
+        --visualize-jumps=extended-color \
+        $argv[1] | less
 end
 
 source ~/stow/fish/cd.fish
@@ -291,3 +290,11 @@ function git
         command git $argv
     end
 end
+
+function cls
+    clear
+    env echo -e "\033[36m###\033[0m"
+    dirs
+end
+
+alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
