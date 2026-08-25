@@ -269,6 +269,16 @@
 " ---------------
 " ### QUICKUI ###
 " ---------------
+call popup_dictionary#register('escape',
+    \ ['red',      'green',    'yellow',   'blue',     'magenta',  'cyan',     'black',    'white',    'bold',    'italics',  'normal',  'reverse'],
+    \ ['\033[31m', '\033[32m', '\033[33m', '\033[34m', '\033[35m', '\033[36m', '\033[30m', '\033[37m', '\033[1m', '\033[3m',  '\033[0m', '\033[7m']
+\ )
+
+call popup_dictionary#register('make',
+    \ ['target', 'star', 'first pre.', 'all new pre.', 'all pre.', 'uniq all pre.', 'basename target'],
+    \ ['$@',     '$%',   '$<',         '$?',           '$+',       '$^',            '$*']
+\ )
+
 call quickui#menu#install('&Edit', [
             \ [ '&Drawit', ':call Drawit_toggle()'],
             \ [ '&Expandtab', ':set expandtab!'],
@@ -285,8 +295,8 @@ call quickui#menu#install('&Modify', [
             \ [ 'De&cancer', ':call Decancer()'],
             \ ])
 call quickui#menu#install('&Development', [
-            \ [ '&Ascii Escape', ':ShowEscapeDictionary'],
-            \ [ '&Make special', ':ShowMakeDictionary'],
+            \ [ '&Ascii Escape', ':ShowDictionary escape'],
+            \ [ '&Make special', ':ShowDictionary make'],
             \ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
             \ [ '&Completion',   ':call Programming_mode_toggle()'],
             \ ])
