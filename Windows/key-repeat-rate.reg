@@ -2,7 +2,7 @@ Windows Registry Editor Version 5.00
 
 [HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response]
 "AutoRepeatDelay"="140"
-"AutoRepeatRate"="55"
+"AutoRepeatRate"="18"
 "DelayBeforeAcceptance"="0"
 "BounceTime"="0"
 "Flags"="59"
