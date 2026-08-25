@@ -231,7 +231,7 @@
           " F7:
           map <f7>  :!dos2unix %:p<CR><CR>
           " F8
-            " NOTHING YET
+            noremap <F11> <Nop>
 
         " ### Call once in a while island
           " F9: copy file contents to clipboard
