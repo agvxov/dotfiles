@@ -327,6 +327,13 @@ set formatoptions-=cro
 :command Pufka e /home/anon/Master/pufka/pufka.cdd
 :command Gateway e /home/anon/Master/gateway/gateway.cdd
 
+" XXX this guard is fucked, because the wrapper will always be present
+if executable('shellcheck')
+    autocmd FileType sh autocmd BufWritePost <buffer> call job_start(['shellcheck', expand('%:p')])
+endif
+
+command! -range FormatTable <line1>,<line2>!/home/anon/Swap/my-notes/align-md-table/align-md-table.pl
+
 " TEMP:
 highlight DiffChange ctermbg=3
 
