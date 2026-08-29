@@ -17,30 +17,32 @@ call prop_type_add('ErrtagsMessage', {
 
 " --- Main logic ---
 " #pragma region
-function! AddErrtagsNotice(lnum, col, message)
-  try " NOTE: the column might have been deleted, thats no excuse to halt and catch fire
+function! ErrtagsAddNotice(lnum, col, message)
+  try 
     call prop_add(a:lnum, a:col, {
           \ 'type': 'ErrtagsHighlight',
           \ 'length': 1
           \ })
-  catch /E964/ | endtry
+  catch /E964/ | catch /E966/ | endtry
 
+  try
     call prop_add(a:lnum, 0, {
           \ 'type': 'ErrtagsMessage',
           \ 'text': ' # E: ' . a:message,
           \ 'text_align': 'after'
           \ })
+  catch /E964/ | catch /E966/ | endtry
 endfunction
 
-function AddErrtagsNotices(notices)
+function ErrtagsAddNotices(notices)
     for l:notice in a:notices
         if fnamemodify(l:notice['fname'], ':t') == expand('%:t')
-            call AddErrtagsNotice(l:notice.lnum, l:notice.col, l:notice.text)
+            call ErrtagsAddNotice(l:notice.lnum, l:notice.col, l:notice.text)
         endif
     endfor
 endfunction
 
-function! ParseErrtagsNotices(lines)
+function! ErrtagsParseNotices(lines)
     let l:errors = []
 
     for l:line in a:lines
@@ -65,9 +67,18 @@ function! ParseErrtagsNotices(lines)
     return l:errors
 endfunction
 
-function! DoErrtagsNotices()
-    call prop_remove({ 'type': 'ErrtagsHighlight' })
-    call prop_remove({ 'type': 'ErrtagsMessage' })
+function! ErrtagsClearNotices()
+    call prop_remove({ 'all': 1, 'type': 'ErrtagsHighlight' })
+    call prop_remove({ 'all': 1, 'type': 'ErrtagsMessage' })
+endfunction
+
+function! ErrtagsCleanNotices()
+    call ErrtagsClearNotices()
+    call writefile([], g:errtags_cache)
+endfunction
+
+function! ErrtagsDoNotices()
+    call ErrtagsClearNotices()
 
     try
         let l:lines = readfile(g:errtags_cache)
@@ -75,9 +86,9 @@ function! DoErrtagsNotices()
         return
     endtry
 
-    let l:notices = ParseErrtagsNotices(l:lines)
+    let l:notices = ErrtagsParseNotices(l:lines)
 
-    call AddErrtagsNotices(l:notices)
+    call ErrtagsAddNotices(l:notices)
 endfunction
 " #pragma endregion
 
@@ -85,15 +96,19 @@ endfunction
 " #pragma region
 if exists('g:errtags_events')
 	for e in g:errtags_events
-		execute "autocmd " . e . " * DoErrtagsNotices"
+		execute "autocmd " . e . " * ErrtagsDoNotices"
 	endfor
 endif
 
 if expand('$ERRTAGS_CACHE_FILE') != '$ERRTAGS_CACHE_FILE'
     let g:errtags_cache = expand('$ERRTAGS_CACHE_FILE')
-else
+elseif expand('$XDG_CACHE_HOME') != '$XDG_CACHE_HOME'
     let g:errtags_cache = expand('$XDG_CACHE_HOME/errtags.tags')
+else
+    let g:errtags_cache = ""
+    echoerr "errtags: No cache; set $ERRTAGS_CACHE_FILE or $XDG_CACHE_HOME"
 endif
 
-command! DoErrtagsNotices :call DoErrtagsNotices()
+command! ErrtagsDoNotices    :call ErrtagsDoNotices()
+command! ErrtagsCleanNotices :call ErrtagsCleanNotices()
 " #pragma endregion
