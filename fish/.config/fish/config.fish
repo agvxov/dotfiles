@@ -300,3 +300,20 @@ function cls
 end
 
 alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
+
+function cd-previous-pane
+    set -l target (command tmux display-message -p -t ! '#{pane_current_path}' 2>/dev/null)
+
+    if test -z "$target"
+        echo "cd-previous-pane: Failed to query tmux"
+        return 1
+    end
+
+    if not test -d "$target"
+        echo "cd-previous-pane: Path '$target' is not a valid directory"
+        return 1
+    end
+
+    cd "$target"
+    commandline -f repaint
+end
