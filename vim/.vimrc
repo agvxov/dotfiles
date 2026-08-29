@@ -229,7 +229,7 @@
           " F6: compile with bake
           map <f6>  :!bake %:p<CR>
           " F7:
-          map <f7>  :!dos2unix %:p<CR><CR>
+          map <f7>  :!dos2unix --follow-symlink %:p<CR><CR>
           " F8
             noremap <F11> <Nop>
 
