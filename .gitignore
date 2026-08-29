@@ -6,8 +6,7 @@ vim/.vim/.netrwhist
 cache.db
 cache.db.lock
 
-tags.vim
-sigs.vim
+vim/.vim/pack/hitags/start/hitags/cache/*
 
 *.sqlite
 python/.ipython/profile_default/startup/README
