@@ -265,6 +265,7 @@ source ~/stow/fish/hitmarkers.fish
 
 # ----
 source /home/anon/Swap/termmon/poketerm.fish
+set --export PATH "/home/anon/Swap/termmon/:$PATH"
 # ----
 source /home/anon/Swap/termmon/bunker/bunker.fish
 set --export PATH "/home/anon/Swap/termmon/bunker/:$PATH"
