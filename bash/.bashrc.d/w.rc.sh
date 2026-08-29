@@ -11,7 +11,7 @@ function personal_watch(){
 
 	CMD+=("echo -e '\033[0m';")
 
-	CMD+=("trade.pl ;")
+	CMD+=("trade.pl;")
 
 	CMD+=("echo '';")
 
