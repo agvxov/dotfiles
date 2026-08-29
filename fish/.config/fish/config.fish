@@ -102,6 +102,10 @@ function clone-my-repo
     git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/$argv[1].git"
 end
 
+function git-log-short
+    git --no-pager log --pretty=format:'%C(yellow)%h%Creset %C(green)%ad%Creset %C(cyan)%an%Creset %s%C(auto)%d' --date=short
+end
+
 set --export PYTHON_HISTORY "$HOME/.local/share/.python_history"
 set --export CARGO_HOME "$HOME/.local/share/"
 
@@ -219,6 +223,8 @@ alias rsync='rsync --progress'
 alias calrc='vim ~/stow/.data/dates.cfg'
 
 alias docker='sudo docker'
+
+alias markdownlint='markdownlint --disable MD013 MD022 MD031 MD032 MD060 --'
 
 begin
     set HISTUICMD "histui" "tui" "--execute" "--caseless" "--fuzzy" "--group"
