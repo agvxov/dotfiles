@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+    echo "Usage: git-purge-file-from-history <file|dir>..."
+    echo "Description: Removes specified paths from git history using filter-branch."
+    exit 1
+fi
+
+while [ $# -gt 0 ]; do
+    arg="$1"
+    # --force to overwrite existing backups
+    git filter-branch --force --index-filter "git rm -rf --cached --ignore-unmatch $arg" HEAD
+    shift
+done
