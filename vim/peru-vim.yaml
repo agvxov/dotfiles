@@ -1,10 +1,15 @@
 imports:
+    hitags:       .vim/pack/hitags/start/hitags/
     fmt:          .vim/pack/fmt/start/fmt/
     quickui:      .vim/pack/quickui/start/quickui/
     closetag:     .vim/pack/closetag/start/closetag/
     markx:        .vim/pack/markx/start/markx/
     editorconfig: .vim/pack/editorconfig/start/editorconfig/
 #    drawit:       .vim/pack/drawit/start/drawit/
+
+git module hitags:
+    url: https://github.com/agvxov/Vim-HiTags.git
+    pick: [plugin, bin, cache]
 
 git module fmt:
     url: https://github.com/agvxov/vim-fmt.git
