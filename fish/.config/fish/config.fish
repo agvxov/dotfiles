@@ -16,9 +16,9 @@ if is-wsl
     set -g fish_color_cwd blue
     set -g fish_color_host brblack
 
-    set -g XDG_CONFIG_HOME $HOME/.config/
-    set -g XDG_DATA_HOME   $HOME/.local/share/
-    set -g XDG_CACHE_HOME  $HOME/.cache/
+    set -g --export XDG_CONFIG_HOME $HOME/.config/
+    set -g --export XDG_DATA_HOME   $HOME/.local/share/
+    set -g --export XDG_CACHE_HOME  $HOME/.cache/
 end
 
 set VHOME "/home/anon"
