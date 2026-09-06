@@ -10,29 +10,35 @@ imports:
 git module hitags:
     url: https://github.com/agvxov/Vim-HiTags.git
     pick: [plugin, bin, cache]
+    rev: ba61cd190e8d2b1ba478712e658ac2269de71994
 
 git module fmt:
     url: https://github.com/agvxov/vim-fmt.git
     export: .vim/
     pick: .vim/plugin
+    rev: 81045350314c9df4b9b07359cabeaed459e9826d
 
 git module quickui:
     url: https://github.com/skywind3000/vim-quickui.git
     pick: [autoload, colors, docs, plugin]
+    rev: 48aaa496633eb39eb8759921386e29e9867fb623
 
 git module closetag:
     url: https://github.com/alvan/vim-closetag.git
     pick: [plugin, ftplugin]
+    rev: d0a562f8bdb107a50595aefe53b1a690460c3822
 
 git module editorconfig:
     url: https://github.com/editorconfig/editorconfig-vim.git
     pick: [autoload, doc, plugin]
+    rev: c0227885a06b155d5aa5465e08b9800e8c939f70
 
 curl module markx:
     url: https://www.vim.org/scripts/download_script.php?src_id=29181
     unpack: tar
     export: markx
     pick: [markx/autoload, markx/doc, markx/plugin]
+    sha1: c3d02f8adcda08fba516b36184342e53c9fc2764
 
 # XXX vimball throws
 #curl module drawit:

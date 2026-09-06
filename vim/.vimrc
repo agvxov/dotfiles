@@ -242,7 +242,6 @@
             noremap <F11> <Nop>
           " F12: reload file
           map <F12> :e!<CR>
-          "noremap <F12> <Nop>
 
 "   Tagbar_plugin:
         nmap <C-W>m :TagbarToggle<CR>
@@ -253,8 +252,9 @@
 "------------------
 " ### VARIABLES ###
 "------------------
-    let g:hitags_events = ["BufWrite"]
-    let g:sigs_events   = ["BufWrite"]
+    let g:hitags_events        = ["BufWrite"]
+    let g:sigs_events          = ["BufWrite"]
+    let g:hitags_cpreprocessor = "fcpp"
 
     let g:errtags_events = ["BufEnter", "BufWrite"]
 
