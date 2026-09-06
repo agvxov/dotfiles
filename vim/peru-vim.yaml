@@ -5,6 +5,7 @@ imports:
     closetag:     .vim/pack/closetag/start/closetag/
     markx:        .vim/pack/markx/start/markx/
     editorconfig: .vim/pack/editorconfig/start/editorconfig/
+    hexokinase:   .vim/pack/hexokinase/start/hexokinase/
 #    drawit:       .vim/pack/drawit/start/drawit/
 
 git module hitags:
@@ -32,6 +33,12 @@ git module editorconfig:
     url: https://github.com/editorconfig/editorconfig-vim.git
     pick: [autoload, doc, plugin]
     rev: c0227885a06b155d5aa5465e08b9800e8c939f70
+
+git module hexokinase:
+    url: https://github.com/RRethy/vim-hexokinase.git
+    pick: [autoload, doc, plugin, hexokinase, Makefile]
+    recursive: true
+    rev: 62324b43ea858e268fb70665f7d012ae67690f43
 
 curl module markx:
     url: https://www.vim.org/scripts/download_script.php?src_id=29181

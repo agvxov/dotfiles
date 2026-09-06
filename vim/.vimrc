@@ -319,6 +319,14 @@ if exists('$TMUX')
     "set title          " already called
 endif
 
+" ---------------------
+" ### Small plugins ###
+" ---------------------
+" colorize color codes
+set termguicolors
+let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
+
 " ------------------
 
 
