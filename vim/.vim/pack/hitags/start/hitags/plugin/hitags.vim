@@ -8,23 +8,6 @@
 "  I do not recommend using '.' especially if you don't auto cd with vim
 let s:polution_directory = expand('<sfile>:p:h:h') . '/cache/'
 
-" Compiler_Collection_based_Preprocessing:
-if 0
-   "  Compiler to use for preprocessing C/C++, so headers are respected
-   "   Either use "clang" or "gcc" or something compatible,
-   "   alternatively you will have to edit s:preprocessor
-   let s:preprocessor_executable = "clang"
-   "let s:preprocessor_executable = "gcc"
-   let s:preprocessor            = s:preprocessor_executable . ' -fdirectives-only -E {input_} -o {output}'
-endif
-
-" Stand_alone_preprocessor:
-"  The only implementation i know is fcpp (https://github.com/bagder/fcpp.git)
-"  However, it has the major advantage that it will only warn on missing
-"  headers and not error. Meaning a tool chain using '-I' doesn't break
-"  everything.
-let s:preprocessor = "fcpp -I/usr/local/include -LL {input_} {output}"
-
 " --- --------------------------- ---
 " ---          Don't Touch        ---
 " ---             Unless          ---
@@ -36,21 +19,19 @@ let s:tags_scriptname    = 'tags.vim'
 let s:tags_script        = expand(s:polution_directory) . 'tags.vim'
 let s:sigs_script        = expand(s:polution_directory) . 'sigs.vim'
 "
-let s:generator_script   = expand('<sfile>:p:h:h') . '/bin/hitags.py'
+let s:generator_script   = expand('<sfile>:p:h:h') . '/bin/hitags.pl'
 let s:generation_command =
-                         \ 'python ' . s:generator_script .
-                         \ ' -i ' . '"' . expand('%:p')        . '"' .
-                         \ ' -p ' . '"' . s:preprocessor       . '"' .
-                         \ ' -t ' . '"' . s:polution_directory . '"' .
-                         \ ' hi ' .
-                         \ '  > ' . '"' . s:tags_script        . '"' .
+                         \ 'perl ' . s:generator_script .
+                         \ ' -i '  . '"' . expand('%:p')        . '"' .
+                         \ ' -t '  . '"' . s:polution_directory . '"' .
+                         \ ' hi '  .
+                         \ '  > '  . '"' . s:tags_script        . '"' .
                          \ ';' .
-                         \ 'python ' . s:generator_script .
-                         \ ' -i ' . '"' . expand('%:p')        . '"' .
-                         \ ' -p ' . '"' . s:preprocessor       . '"' .
-                         \ ' -t ' . '"' . s:polution_directory . '"' .
+                         \ 'perl ' . s:generator_script .
+                         \ ' -i '  . '"' . expand('%:p')        . '"' .
+                         \ ' -t '  . '"' . s:polution_directory . '"' .
                          \ ' sig ' .
-                         \ '  > ' . '"' . s:sigs_script        . '"'
+                         \ '  > '  . '"' . s:sigs_script        . '"'
 
 " --- Signature stuff ---
 function! SigDebug()
