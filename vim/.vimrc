@@ -32,12 +32,18 @@
     set wildmenu        "visual command auto complete
     set pumheight=10
 
-    se nostartofline    "Do not jump to first char of line when scolling
+    set nostartofline   "Do not jump to first char of line when scolling
 
     set colorcolumn=100 " visual pseudo-margin on the right
 
     "colorscheme knight
     colorscheme slate
+    " i have this problem where open and closed parens are
+    " hard to distinguish when hovered
+    " context:
+    "   set showmatch
+    "   hi MatchParen ctermfg=black ctermbg=yellow cterm=NONE
+    " the on im hovering is blue for some reason
 
     set signcolumn=no
 
