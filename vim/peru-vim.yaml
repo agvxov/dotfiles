@@ -5,6 +5,7 @@ imports:
     closetag:     .vim/pack/closetag/start/closetag/
     markx:        .vim/pack/markx/start/markx/
     editorconfig: .vim/pack/editorconfig/start/editorconfig/
+    squish:       .vim/pack/squish/start/squish/
 #    drawit:       .vim/pack/drawit/start/drawit/
 
 git module hitags:
@@ -27,6 +28,10 @@ git module closetag:
 git module editorconfig:
     url: https://github.com/editorconfig/editorconfig-vim.git
     pick: [autoload, doc, plugin]
+git module squish:
+    url: https://github.com/agvxov/vim-squish.git
+    pick: [autoload, ftdetect, plugin, syntax]
+    rev: d019069a46e3e74b0defdc790462ebd3c5554f2b
 
 curl module markx:
     url: https://www.vim.org/scripts/download_script.php?src_id=29181
