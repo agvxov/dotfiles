@@ -243,11 +243,19 @@ end
 begin
     function qckcmd_wrapper
         echo ""
-        commandline (qckcmd -i $VHOME/.qckcmd)
+        commandline (qckcmd -i $HOME/.qckcmd -r $HOME/.qckcmd-registers)
+        commandline --function repaint
+    end
+
+    function qckcmd_yank_wrapper
+        set --local cmd (commandline)
+        echo ""
+        QCKCMD_REGISTER_YANK_MODE=1 QCKCMD_REGISTER_YANK=$cmd qckcmd -i $HOME/.qckcmd -r $HOME/.qckcmd-registers
         commandline --function repaint
     end
 
     bind \cp qckcmd_wrapper
+    bind \co qckcmd_yank_wrapper
 end
 
 bind \e\[Z 'complete --do-complete (commandline); commandline --function repaint'
