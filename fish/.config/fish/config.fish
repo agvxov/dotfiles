@@ -31,14 +31,20 @@ function fish_greeting
 end
 
 function ffgrep
-    set WHERE .
+    set -l ignores .git node_modules obj object
 
-    if test (count $argv) -ge 2
-        set WHERE $argv[2]
-    end
-
-    fgrep -d recurse $argv[1] $WHERE 2> /dev/null
+    rg --no-ignore \
+       --hidden \
+       --smart-case \
+       --with-filename \
+       --color=always \
+       --line-number \
+       --no-heading \
+       "--glob="!$ignores \
+       -- \
+       $argv
 end
+
 
 if command -q manpager
     set --export MANPAGER 'manpager --mouse'
