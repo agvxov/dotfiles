@@ -1,0 +1,221 @@
+#!/usr/bin/env perl
+package ImportCollector;
+use strict;
+use warnings;
+use feature 'signatures';
+use Exporter 'import';
+use File::MimeInfo::Magic qw(mimetype);
+use File::Basename qw(basename);
+
+our @EXPORT_OK = qw(collect_imports);
+
+# -- Language specifications --
+my %HANDLERS = (
+    'text/x-csrc'        => [ \&get_c_cpath,  \&get_c_includes  ],
+    'text/x-c++src'      => [ \&get_c_cpath,  \&get_c_includes  ],
+    'text/x-chdr'        => [ \&get_c_cpath,  \&get_c_includes  ],
+    'application/x-perl' => [ \&get_pl_cpath, \&get_pl_includes ],
+    'text/x-python'      => [ \&get_py_cpath, \&get_py_includes ],
+);
+
+sub get_c_cpath($path) {
+    my @r = (
+        '/usr/include',
+        '/usr/local/include',
+    );
+
+    # Assume gcc's C++ headers live at the standard Gentoo layout:
+    #   /usr/lib/gcc/x86_64-pc-linux-gnu/VERSION/include/g++-vVERSION/
+    my $gcc_base = '/usr/lib/gcc/x86_64-pc-linux-gnu';
+    if (-d $gcc_base) {
+        if (opendir(my $dh, $gcc_base)) {
+            my @versions = grep { /^\d+$/ && -d "$gcc_base/$_" } readdir $dh;
+            closedir $dh;
+            if (@versions) {
+                my ($latest) = sort { $b <=> $a } @versions;
+                my $cxx_inc = "$gcc_base/$latest/include/g++-v$latest";
+                push @r, $cxx_inc if -d $cxx_inc;
+            }
+        }
+    }
+
+    if (defined $ENV{CPATH} && length $ENV{CPATH}) {
+        unshift @r, split /:/, $ENV{CPATH};
+    }
+
+    return \@r;
+}
+
+sub get_c_includes($fh) {
+    my @r;
+    while (my $line = <$fh>) {
+        if ($line =~ /^\s*\#\s*include\s*[<"]([^>"]+)[>"]/) {
+            push @r, $1;
+        }
+    }
+    return \@r;
+}
+
+sub get_pl_cpath($path) {
+    my @r;
+
+    push @r, './perl-modules';
+    push @r, './local/lib/perl5';
+    push @r, './local';
+
+    if (defined $ENV{HOME} && length $ENV{HOME}) {
+        push @r, "$ENV{HOME}/perl5/lib/perl5";
+    }
+
+    # Since we are in perl, @INC is already set up for us correctly.
+    push @r, @INC;
+
+    return \@r;
+}
+
+sub get_pl_includes($fh) {
+    my @r;
+    while (my $line = <$fh>) {
+        if ($line =~ /^\s*use\s+([A-Za-z][A-Za-z0-9_:]*)/) {
+            my $mod = $1;
+            # skip version pragmas ("use 5.036")
+            next if $mod =~ /^v?\d/;
+            (my $path = $mod) =~ s{::}{/}g;
+            push @r, "$path.pm";
+        }
+    }
+    return \@r;
+}
+
+sub get_py_cpath($path) {
+    my @r;
+
+    push @r, '.';
+
+    for my $venv (qw(.venv venv)) {
+        next unless -d $venv;
+        push @r, glob("$venv/lib/python*/site-packages");
+        push @r, glob("$venv/lib64/python*/site-packages");
+    }
+
+    if (defined $ENV{VIRTUAL_ENV} && length $ENV{VIRTUAL_ENV}) {
+        push @r, glob("$ENV{VIRTUAL_ENV}/lib/python*/site-packages");
+    }
+
+    if (defined $ENV{PYTHONPATH} && length $ENV{PYTHONPATH}) {
+        push @r, split /:/, $ENV{PYTHONPATH};
+    }
+
+    # Assume system packages live at the standard Gentoo layout.
+    #   /usr/lib64/pythonX.Y/                (stdlib)
+    #   /usr/lib64/pythonX.Y/site-packages/  (third-party)
+    # Use /usr/lib as a fallback for non-multilib setups.
+    for my $libdir (qw(/usr/lib64 /usr/lib)) {
+        push @r, glob("$libdir/python3.*/site-packages");
+        push @r, glob("$libdir/python3.*");
+    }
+
+    return \@r;
+}
+
+sub get_py_includes($fh) {
+    my @r;
+
+    sub mod_to_paths($mod) {
+        $mod =~ s/^\s+|\s+$//g;
+        return () unless length $mod;
+        (my $path = $mod) =~ s{\.}{/}g;
+        # could be a module file or a package directory
+        return ("$path.py", $path);
+    };
+
+    while (my $line = <$fh>) {
+        if ($line =~ /^\s*import\s+(\w+)/
+        ||  $line =~ /^\s*from\s+(\w+)/) {
+            push @r, mod_to_paths($1);
+        }
+    }
+
+    return \@r;
+}
+
+# -- General --
+sub find_imports($cpath, $files) {
+    my @r;
+    for my $name (@$files) {
+        for my $dir (@$cpath) {
+            my $candidate = "$dir/$name";
+            if (-e $candidate) {
+                push @r, $candidate;
+                last;
+            }
+        }
+    }
+    return \@r;
+}
+
+# ---
+sub collect_imports($file) {
+    return (undef, 'usage')
+        unless defined $file && length $file;
+
+    return (undef, 'nofile')
+        unless -e $file;
+
+    my $mime = mimetype($file);
+    return (undef, 'nomime')
+        unless defined $mime;
+
+    my $handler = $HANDLERS{$mime};
+    return (undef, 'unsupported', $mime)
+        unless $handler;
+
+    my $cpath = $handler->[0](basename($file));
+
+    open my $fh, '<', $file
+        or return (undef, 'noopen', $!);
+    my $imports = $handler->[1]($fh);
+    close $fh;
+
+    my $results = find_imports($cpath, $imports);
+    return ($results, undef);
+}
+
+sub main {
+    my ($file) = @_;
+
+    my ($results, $error, @extra) = collect_imports($file);
+
+    if ($error) {
+        if ($error eq 'usage') {
+            die "usage: $0 <source-file>\n";
+        }
+        elsif ($error eq 'nofile') {
+            die "$0: no such file: $file\n";
+        }
+        elsif ($error eq 'nomime') {
+            warn "$0: could not determine file type for '$file'\n";
+            exit 1;
+        }
+        elsif ($error eq 'unsupported') {
+            my ($mime) = @extra;
+            warn "$0: unsupported file type '$mime' for '$file'\n";
+            exit 0;
+        }
+        elsif ($error eq 'noopen') {
+            my ($errno) = @extra;
+            die "$0: cannot open '$file': $errno\n";
+        }
+        else {
+            die "$0: unknown error processing '$file'\n";
+        }
+    }
+
+    print "$_\n" for @$results;
+}
+
+unless (caller) {
+    main(@ARGV);
+}
+
+1;

@@ -248,7 +248,6 @@
             noremap <F11> <Nop>
           " F12: reload file
           map <F12> :e!<CR>
-          "noremap <F12> <Nop>
 
 "   Tagbar_plugin:
         nmap <C-W>m :TagbarToggle<CR>
@@ -259,8 +258,9 @@
 "------------------
 " ### VARIABLES ###
 "------------------
-    let g:hitags_events = ["BufWrite"]
-    let g:sigs_events   = ["BufWrite"]
+    let g:hitags_events        = ["BufWrite"]
+    let g:sigs_events          = ["BufWrite"]
+    let g:hitags_cpreprocessor = "fcpp"
 
     let g:errtags_events = ["BufEnter", "BufWrite"]
 
@@ -324,6 +324,14 @@ if exists('$TMUX')
     autocmd BufEnter * let &titlestring = expand("%:t")
     "set title          " already called
 endif
+
+" ---------------------
+" ### Small plugins ###
+" ---------------------
+" colorize color codes
+set termguicolors
+let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
 
 " ------------------
 
