@@ -1,15 +1,12 @@
-V: python -m venv venv
-v: vsource
-m: make
-t: make test
-T: sudo rc-service tor restart
-N: sudo rc-service NetworkManager restart
-p: git push
-P: cd-previous-pane
+.: thunar .
 4: ssh root@${ROOK}
 6: ssh ${BTS}
-c: clear; make clean; make
-D: export DEBUG=1
 B: export FORCE_BASH=1; bash
-n: newsboat
-.: thunar .
+D: export DEBUG=1
+N: sudo rc-service NetworkManager restart
+P: cd-previous-pane
+T: sudo rc-service tor restart
+V: python -m venv venv
+v: vsource
+r: rubocop
+R: rubocop -a
