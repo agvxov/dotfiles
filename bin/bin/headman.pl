@@ -27,7 +27,7 @@ Files are displayed using C<$HEADMAN_PAGER> or the user's preferred pager.
 "Cpath" is commonly used to refer to the -usually colon separated- list of directories
 in which C compilers will look for header files.
 Headman has a hardcoded default cpath,
-which can be expanded using C<--cpath>, C<$CPATH> and/or C<$HEADMAN_CPATH>.
+which can be appended using C<--cpath>, C<$CPATH> and/or C<$HEADMAN_CPATH>.
 
 Headman also tries to look inside the I<current project>,
 which will either be a resonably close parent that is a git repository,
@@ -39,8 +39,13 @@ The cache is managed automatically (i.e. created, updated).
 
 Many C libraries have their own conventions of what is considered private,
 such as C<bits/> or C<detail/>
-"Private" directories are emmited during cache creation.
+"Private" directories are omitted during cache creation.
 The list of private directory names are currently hardcoded.
+
+C++ destructors are also omitted during cache creation.
+
+Symbols are deduped, since only the first result will ever be opened anyways.
+This approximately halves the number of symbols in the cache.
 
 =head2 HISTORY
 
@@ -83,8 +88,19 @@ my $force_build = 0;
 my @cpath = ();
 my $symbol;
 my $cache_dir = cache_home("headman");
-my $database = $cache_dir . 'headman.tags';
-my $snapshot = $cache_dir . 'headman-snapshot.d/';
+my $database = "$cache_dir/headman.tags";
+my $snapshot = "$cache_dir/headman-snapshot.d/";
+
+# System directories to ignore during ctags file generation
+# Not respected during the fallback search in the current project
+my @private_dirs = (
+    'bits',     # glibc style
+    'detail',   # boost style
+    'private',  # Qt style
+    'impl',     # Qt style
+    'internal', # python style
+    'arch',     # architecture-specific
+);
 
 # ---
 
@@ -122,15 +138,6 @@ sub find_git_root($path, $max_height) {
 }
 
 sub look_in_directory($dir, $symbol) {
-    my @private_dirs = (
-        'bits',     # glibc style
-        'detail',   # boost style
-        'private',  # Qt style
-        'impl',     # Qt style
-        'internal', # python style
-        'arch',     # architecture-specific
-    );
-
     my @extensions     = qw(h hh hpp hxx inc inl);
     my @include_args   = map { "--include=*.$_" } @extensions;
     my $escaped_symbol = quotemeta($symbol);
@@ -252,9 +259,45 @@ do {
     } @cpath;
 };
 
-
 sub ctags_append($path) {
+    sub ctags_remove_destructors() {
+        open my $fh, '+<', $database or die "$database: $!";
+
+        look $fh, '~', 0, 0;
+
+        my $pos = tell $fh;
+
+        truncate $fh, $pos or die "$database: $!";
+
+        close $fh or die "$database: $!";
+    }
+    sub ctags_remove_duplicates() {
+        open my $in, '<', $database or die "$database: $!";
+
+        my $tmp = "$database.tmp";
+        open my $out, '>', $tmp or die "$tmp: $!";
+
+        my $prev = '';
+
+        while (my $line = <$in>) {
+            my ($name) = split "\t", $line, 2;
+
+            next if $name eq $prev;
+            print $out $line or die "$tmp: $!";
+
+            $prev = $name;
+        }
+
+        close $in or die "$database: $!";
+        close $out or die "$tmp: $!";
+
+        rename $tmp, $database or die "rename: $!";
+    }
+
     my $common_kinds = "+p-h-m";
+
+    my @excludes = map { "--exclude=$_" } @private_dirs;
+
     systemx(shellwords(qq(
         ctags
         --recurse
@@ -262,8 +305,12 @@ sub ctags_append($path) {
         --excmd=number
         --languages=C,C++
         --kinds-C=$common_kinds --kinds-C++=$common_kinds-M
+        @excludes
         -f $database $path
     )));
+
+    ctags_remove_destructors();
+    ctags_remove_duplicates();
 }
 
 sub ctags_remove($path) {
