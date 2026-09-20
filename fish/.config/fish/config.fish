@@ -275,7 +275,12 @@ function disass
 end
 
 source ~/stow/fish/cd.fish
-source ~/stow/fish/hitmarkers.fish
+
+# Under WSL, even given a beast of a machine, its so slow
+#  that its disturbing instead of rewarding.
+if ! is-wsl
+    source ~/stow/fish/hitmarkers.fish
+end
 
 # ----
 source /home/anon/Swap/termmon/poketerm.fish
