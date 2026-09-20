@@ -320,8 +320,13 @@ alias mpv-chud 'mpv https://radio.chud.cyou/'
 
 alias sbcl 'rlwrap sbcl'
 
-#alias powershell 'powershell.exe'
-alias powershell 'pwsh.exe'
+function powershell
+    if command -q pwsh.exe
+        pwsh.exe $argv
+    else
+        powershell.exe $argv
+    end
+end
 
 function git
     if test (count $argv) -gt 0; and test $argv[1] = pull
