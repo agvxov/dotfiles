@@ -1,0 +1,39 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Path::Tiny;
+
+my $path = $ARGV[0] // do { 
+    print STDERR "Usage: path-dump <path>\n";
+    exit 1;
+};
+
+$path = path($path)->realpath;
+
+my $wsl_path = qx(wslpath -u \Q$path\E 2> /dev/null);
+if ($? >> 8 != 0) {
+    $wsl_path = $path;
+} else {
+    chomp($wsl_path);
+}
+
+my $win_path = qx(wslpath -w \Q$path\E 2> /dev/null);
+if ($? >> 8 != 0) {
+    $win_path = $path;
+} else {
+    chomp($win_path);
+}
+
+my $wsl_url_path = $wsl_path;
+$wsl_url_path =~ s{^/*}{}g;
+$wsl_url_path = "file:///" . $wsl_url_path;
+
+my $win_url_path = $win_path;
+$win_url_path =~ s{\\}{/}g;
+$win_url_path =~ s{^/*}{}g;
+$win_url_path = "file://" . $win_url_path;
+
+print $wsl_path     . "\n";
+print $win_path     . "\n";
+print $wsl_url_path . "\n";
+print $win_url_path . "\n";
