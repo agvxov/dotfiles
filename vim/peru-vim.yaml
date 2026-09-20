@@ -1,13 +1,26 @@
 imports:
-    hitags:       .vim/pack/hitags/start/hitags/
-    fmt:          .vim/pack/fmt/start/fmt/
-    quickui:      .vim/pack/quickui/start/quickui/
-    closetag:     .vim/pack/closetag/start/closetag/
-    markx:        .vim/pack/markx/start/markx/
-    editorconfig: .vim/pack/editorconfig/start/editorconfig/
-    squish:       .vim/pack/squish/start/squish/
-    hexokinase:   .vim/pack/hexokinase/start/hexokinase/
+    asyncomplete:    .vim/pack/asyncomplete/start/asyncomplete/
+    swp-complete:    .vim/pack/swp-complete/start/swp-complete/
+    hitags:          .vim/pack/hitags/start/hitags/
+    fmt:             .vim/pack/fmt/start/fmt/
+    quickui:         .vim/pack/quickui/start/quickui/
+    closetag:        .vim/pack/closetag/start/closetag/
+    markx:           .vim/pack/markx/start/markx/
+    editorconfig:    .vim/pack/editorconfig/start/editorconfig/
+    squish:          .vim/pack/squish/start/squish/
+    hexokinase:      .vim/pack/hexokinase/start/hexokinase/
+    browse-oldfiles: .vim/pack/browse-oldfiles/start/browse-oldfiles/
 #    drawit:       .vim/pack/drawit/start/drawit/
+
+git module asyncomplete:
+    url: https://github.com/prabirshrestha/asyncomplete.vim.git
+    pick: [autoload, doc, plugin]
+    rev: 17b654a87a834d4e835fb7467e562b4421ad9310
+
+git module swp-complete:
+    url: https://github.com/agvxov/vim-complete.git
+    pick: [autoload, bin, debug]
+    rev: 4a1be033d0e8adce79723290611b3b20280ea8af
 
 git module hitags:
     url: https://github.com/agvxov/Vim-HiTags.git
@@ -33,15 +46,25 @@ git module closetag:
 git module editorconfig:
     url: https://github.com/editorconfig/editorconfig-vim.git
     pick: [autoload, doc, plugin]
+    rev: c0227885a06b155d5aa5465e08b9800e8c939f70
 
 git module squish:
     url: https://github.com/agvxov/vim-squish.git
     pick: [autoload, ftdetect, plugin, syntax]
+    rev: d019069a46e3e74b0defdc790462ebd3c5554f2b
+
+git module browse-oldfiles:
+    url: git@github.com:agvxov/vim-browse-oldfiles.git
+    pick: [plugin]
+    rev: e7cf9b9aa4655e68817a523d56a2a274e6a2e79d
+
+# ---
 
 git module hexokinase:
     url: https://github.com/RRethy/vim-hexokinase.git
     pick: [autoload, doc, plugin, hexokinase, Makefile]
     recursive: true
+    rev: 62324b43ea858e268fb70665f7d012ae67690f43
 
 curl module markx:
     url: https://www.vim.org/scripts/download_script.php?src_id=29181
