@@ -1,3 +1,5 @@
+set debuginfod enabled off
+
 set startup-quietly on
 
 set history save on
