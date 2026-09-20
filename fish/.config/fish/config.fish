@@ -11,14 +11,28 @@ function is-wsl
 end
 
 if is-wsl
-    # colors break for some unknown reason
-    set -g fish_color_user green
-    set -g fish_color_cwd blue
-    set -g fish_color_host brblack
-
     set -g --export XDG_CONFIG_HOME $HOME/.config/
     set -g --export XDG_DATA_HOME   $HOME/.local/share/
     set -g --export XDG_CACHE_HOME  $HOME/.cache/
+
+    # Fish colors break for some unknown reason
+    set -g fish_color_user green
+    set -g fish_color_cwd blue
+    set -g fish_color_host brblack
+    set -g fish_color_command blue
+    set -g fish_color_param normal
+    set -g fish_color_quote yellow
+    set -g fish_color_redirection cyan
+    set -g fish_color_end normal
+    set -g fish_color_error red --bold
+    set -g fish_color_escape bryellow
+    set -g fish_color_operator cyan
+    set -g fish_color_comment brblack
+    set -g fish_color_autosuggestion brblack
+    set -g fish_color_cancel red
+    set -g fish_color_search_match --background=yellow
+    set -g fish_color_selection --background=blue
+    set -g fish_color_normal normal
 end
 
 set VHOME "/home/anon"
