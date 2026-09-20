@@ -305,6 +305,9 @@ set termguicolors
 let g:Hexokinase_highlighters = [ 'backgroundfull' ]
 let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
 
+" Open interactive oldfiles buffer
+nnoremap go :BrowseOldfiles<CR>
+
 " ------------------
 
 
