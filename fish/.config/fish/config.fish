@@ -296,12 +296,15 @@ if ! is-wsl
     source ~/stow/fish/hitmarkers.fish
 end
 
+set --export BUNKER_SUCCESS_CALLBACK '_give-item stone'
 # ----
 source /home/anon/Swap/termmon/poketerm.fish
 set --export PATH "/home/anon/Swap/termmon/:$PATH"
 # ----
 source /home/anon/Swap/termmon/bunker/bunker.fish
 set --export PATH "/home/anon/Swap/termmon/bunker/:$PATH"
+# ----
+set --export PATH "/home/anon/Swap/termmon/stone-soup/:$PATH"
 # ----
 
 #fish_vi_key_bindings
