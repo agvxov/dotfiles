@@ -141,33 +141,6 @@
         endif
     endfunction
 
-    let s:programming_mode_boolean = 0
-    function! Programming_mode_toggle()
-        if !s:programming_mode_boolean
-            let s:programming_mode_boolean = 1
-
-            set completeopt=menu,menuone,noselect
-            augroup ProgrammingModeGroup
-                autocmd InsertCharPre * call timer_start(100, {->pumvisible() ? '' : feedkeys("\<C-n>", 'n')})
-            augroup END
-        else
-            let s:programming_mode_boolean = 0
-
-            augroup ProgrammingModeGroup
-              autocmd!
-            augroup END
-        endif
-    endfunction
-    " --- XXX
-    "autocmd BufReadPost,BufNewFile *
-    "      \ if line2byte(1000) > 0 || &filetype ==# 'cpp' |
-    "      \     let s:programming_mode_boolean = 1 |
-    "      \     call Programming_mode_toggle() |
-    "      \ elseif !s:programming_mode_boolean |
-    "      \     call Programming_mode_toggle() |
-    "      \ endif
-    " ---
-
     function! Spell_toggle()
         if !exists("s:spell_boolean")
             let s:spell_boolean = 0
@@ -304,7 +277,6 @@ call quickui#menu#install('&Development', [
             \ [ '&Ascii Escape', ':ShowDictionary escape'],
             \ [ '&Make special', ':ShowDictionary make'],
             \ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
-            \ [ '&Completion',   ':call Programming_mode_toggle()'],
             \ ])
 
 " ------------
