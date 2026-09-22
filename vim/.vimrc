@@ -154,12 +154,29 @@
         endif
     endfunction
 
-    function! Decancer()
+    function! Decancer() abort
+        " Preserve viewport, cursor position, and search history
+        let l:view = winsaveview()
+        let l:search_reg = @/
+    
         :%s/\n\W*{/ {/e
-        :%s/public /public\r/e
+    
         :%s/override /override\r/e
         :%s/static inline/static inline\r/e
         :%s/static\s\+\ze\%(.*[)}]\)\@=/static\r/e
+    
+        if &filetype =~# '^\%(cpp\|hpp\|cxx\)$'
+            :%s/^\s*\(public\|protected\|private\):/  \1:/e
+            :%s/^\s*\(public\|protected\|private\)\%(\s\+slots\)\?:/  \1\2:/e
+            :%s/^\s*signals:/  signals:/e
+        endif
+    
+        if &filetype =~# '^\%(cs\|java\)$'
+            :%s/\<\(public\|protected\|private\)\s\+/\1\r/e
+        endif
+    
+        let @/ = l:search_reg
+        call winrestview(l:view)
     endfunction
 
     function! GitBlame()
@@ -276,8 +293,8 @@ call quickui#menu#install('&Modify', [
 call quickui#menu#install('&Development', [
             \ [ '&Ascii Escape', ':ShowDictionary escape'],
             \ [ '&Make special', ':ShowDictionary make'],
-            \ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
             \ ])
+"\ [ '&Symbol map',   ':TagbarToggle', '<C-W>m'],
 
 " ------------
 " ### TMUX ###
@@ -302,11 +319,18 @@ endif
 " ---------------------
 " colorize color codes
 set termguicolors
-let g:Hexokinase_highlighters = [ 'backgroundfull' ]
-let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
+"let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+"let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
 
 " Open interactive oldfiles buffer
 nnoremap go :BrowseOldfiles<CR>
+
+" Register the source
+call asyncomplete#register_source(asyncomplete#sources#anon#get_source_options({
+    \ 'name': 'anon',
+    \ 'allowlist': ['*'],
+    \ 'completor': function('asyncomplete#sources#anon#completor'),
+    \ }))
 
 " ------------------
 
