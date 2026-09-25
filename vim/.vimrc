@@ -330,8 +330,8 @@ endif
 " ---------------------
 " colorize color codes
 set termguicolors
-let g:Hexokinase_highlighters = [ 'backgroundfull' ]
-let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
+"let g:Hexokinase_highlighters = [ 'backgroundfull' ]
+"let g:Hexokinase_ftEnabled    = ['txt', 'cdd', 'md', 'css', 'html', 'javascript']
 
 " ------------------
 
