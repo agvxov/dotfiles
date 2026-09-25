@@ -347,6 +347,26 @@ function cls
     dirs
 end
 
+function tree --wraps 'tree' --description 'alias tree -a -I my-ignore-list'
+    builtin echo -e "\033[33;1m[alias]\033[22m 'tree' -> 'tree -a -I my-ignore-list'\033[0m"
+
+    set -l ignore_list \
+        .git \
+        node_modules \
+        build \
+        .squish \
+        .venv \
+        venv \
+        __pycache__
+
+    # Tree has its own regex
+    set -l pattern (string join '|' $ignore_list)
+
+    # -a: Show hidden files
+    # -I: Apply the ignore pattern
+    command tree -a -I "$pattern" $argv
+end
+
 alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
 
 function cd-previous-pane
