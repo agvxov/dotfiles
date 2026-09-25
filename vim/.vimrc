@@ -158,12 +158,16 @@
         " Preserve viewport, cursor position, and search history
         let l:view = winsaveview()
         let l:search_reg = @/
+
+        :retab
     
+        :%s/\n{\s*\(.*\)/ {\r    \1/e
         :%s/\n\W*{/ {/e
     
         :%s/override /override\r/e
-        :%s/static inline/static inline\r/e
+        :%s/static inline\s*/static inline\r/e
         :%s/static\s\+\ze\%(.*[)}]\)\@=/static\r/e
+        :%s/\(for|while|if\)(/\1 (/e
     
         if &filetype =~# '^\%(cpp\|hpp\|cxx\)$'
             :%s/^\s*\(public\|protected\|private\):/  \1:/e
