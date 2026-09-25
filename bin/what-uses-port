@@ -1,0 +1,11 @@
+#!/bin/sh
+# what-uses-ports [port-glob]
+# Show which processes are using TCP/UDP ports. Unix sockets are skipped.
+# Globs: * and ? work on port numbers, e.g. 80, 80*, 30??
+
+glob=${1:-*}
+
+# glob -> regex: * = any digits, ? = one digit, anything else is dropped
+re=$(printf '%s' "$glob" | sed 's/[^0-9*?]//g; s/\*/[0-9]*/g; s/?/[0-9]/g')
+
+ss -tulnp | grep -E "^Netid|:${re}[[:space:]]"
