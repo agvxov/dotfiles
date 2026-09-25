@@ -11,14 +11,28 @@ function is-wsl
 end
 
 if is-wsl
-    # colors break for some unknown reason
-    set -g fish_color_user green
-    set -g fish_color_cwd blue
-    set -g fish_color_host brblack
-
     set -g --export XDG_CONFIG_HOME $HOME/.config/
     set -g --export XDG_DATA_HOME   $HOME/.local/share/
     set -g --export XDG_CACHE_HOME  $HOME/.cache/
+
+    # Fish colors break for some unknown reason
+    set -g fish_color_user green
+    set -g fish_color_cwd blue
+    set -g fish_color_host brblack
+    set -g fish_color_command blue
+    set -g fish_color_param normal
+    set -g fish_color_quote yellow
+    set -g fish_color_redirection cyan
+    set -g fish_color_end normal
+    set -g fish_color_error red --bold
+    set -g fish_color_escape bryellow
+    set -g fish_color_operator cyan
+    set -g fish_color_comment brblack
+    set -g fish_color_autosuggestion brblack
+    set -g fish_color_cancel red
+    set -g fish_color_search_match --background=yellow
+    set -g fish_color_selection --background=blue
+    set -g fish_color_normal normal
 end
 
 set VHOME "/home/anon"
@@ -275,7 +289,12 @@ function disass
 end
 
 source ~/stow/fish/cd.fish
-source ~/stow/fish/hitmarkers.fish
+
+# Under WSL, even given a beast of a machine, its so slow
+#  that its disturbing instead of rewarding.
+if ! is-wsl
+    source ~/stow/fish/hitmarkers.fish
+end
 
 set --export BUNKER_SUCCESS_CALLBACK '_give-item stone'
 # ----
@@ -304,8 +323,13 @@ alias mpv-chud 'mpv https://radio.chud.cyou/'
 
 alias sbcl 'rlwrap sbcl'
 
-#alias powershell 'powershell.exe'
-alias powershell 'pwsh.exe'
+function powershell
+    if command -q pwsh.exe
+        pwsh.exe $argv
+    else
+        powershell.exe $argv
+    end
+end
 
 function git
     if test (count $argv) -gt 0; and test $argv[1] = pull
@@ -321,6 +345,26 @@ function cls
     clear
     env echo -e "\033[36m###\033[0m"
     dirs
+end
+
+function tree --wraps 'tree' --description 'alias tree -a -I my-ignore-list'
+    builtin echo -e "\033[33;1m[alias]\033[22m 'tree' -> 'tree -a -I my-ignore-list'\033[0m"
+
+    set -l ignore_list \
+        .git \
+        node_modules \
+        build \
+        .squish \
+        .venv \
+        venv \
+        __pycache__
+
+    # Tree has its own regex
+    set -l pattern (string join '|' $ignore_list)
+
+    # -a: Show hidden files
+    # -I: Apply the ignore pattern
+    command tree -a -I "$pattern" $argv
 end
 
 alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
