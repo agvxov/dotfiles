@@ -55,9 +55,10 @@ set worker [thread::create {
     proc filter_words {query words max} {
         if {$query eq ""} { return "" }
 
-        # Hardcoded to smart for now as requested
+        # XXX Hardcoded to smart for now as requested
         set filtered [filter_words_smart $query $words]
         
+        # XXX wastes ordering; might be relevant in the future
         set deduped [lsort -unique $filtered]
         
         return [join [lrange $deduped 0 [expr {$max - 1}]] " "]

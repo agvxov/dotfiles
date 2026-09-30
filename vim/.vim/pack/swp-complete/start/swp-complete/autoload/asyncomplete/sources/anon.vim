@@ -1,4 +1,4 @@
-source /home/anon/.vim/autoload/swp-completion.vim
+execute 'source ' . expand('<sfile>:p:h:h:h:h') . '/autoload/swp-completion.vim'
 
 function! asyncomplete#sources#anon#get_source_options(opts)
     return extend({
@@ -30,7 +30,7 @@ function! asyncomplete#sources#anon#completor(opt, ctx) abort
     let l:kwlen    = len(l:kw)
     let l:startcol = l:col - l:kwlen
 
-    call CompletionQuery(l:typed)
+    call CompletionConfig(l:typed)
 
     let [l:status, l:words] = CompletionPoll()
 
@@ -45,7 +45,7 @@ function! asyncomplete#sources#anon#completor(opt, ctx) abort
         " It seems to have been partially implemented.
         " `asyncomplete-lsp.vim` seems to use it anyways, I do wonder if they have noticed.
         let s:timer_id = timer_start(100, {
-        \     timer-> asyncomplete#sources#anon#completor(a:opt, a:ctx)}
+        \     timer-> asyncomplete#sources#anon#completor(a:opt, asyncomplete#context())}
         \ )
         return
     endif

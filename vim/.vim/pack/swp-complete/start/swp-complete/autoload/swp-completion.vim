@@ -40,7 +40,7 @@ function! CompletionPush()
     call ch_sendraw(s:completion_channel, "< \n")
 endfunction
 
-function! CompletionQuery(filter)
+function! CompletionConfig(filter)
     if s:open_channel() | return | endif
 
     call ch_sendraw(s:completion_channel, '? ' . a:filter . "\n")

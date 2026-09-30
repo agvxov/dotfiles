@@ -179,10 +179,10 @@ endfunction
 call TextEnableCodeSnip('html')
 call TextEnableCodeSnip('php')
 call TextEnableCodeSnip('sql')
-
-
-
-
+call TextEnableCodeSnip('sh')
+call TextEnableCodeSnip('python')
+call TextEnableCodeSnip('perl')
+call TextEnableCodeSnip('tex')
 
 " vim:set sw=2:
 "hi def Strike				term=strikethrough cterm=strikethrough gui=strikethrough
