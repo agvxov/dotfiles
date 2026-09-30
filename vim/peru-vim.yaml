@@ -1,4 +1,5 @@
 imports:
+    cdd:             .vim/pack/cdd/start/cdd/
     asyncomplete:    .vim/pack/asyncomplete/start/asyncomplete/
     swp-complete:    .vim/pack/swp-complete/start/swp-complete/
     hitags:          .vim/pack/hitags/start/hitags/
@@ -12,6 +13,12 @@ imports:
     browse-oldfiles: .vim/pack/browse-oldfiles/start/browse-oldfiles/
 #    drawit:       .vim/pack/drawit/start/drawit/
 
+git module cdd:
+    url: https://github.com/agvxov/cdd.git
+    export: .vim
+    pick: [.vim/ftdetect, .vim/syntax]
+    rev: 823e0bc89a278100c1b3c8a2605e8851787a7c08
+
 git module asyncomplete:
     url: https://github.com/prabirshrestha/asyncomplete.vim.git
     pick: [autoload, doc, plugin]
@@ -20,7 +27,7 @@ git module asyncomplete:
 git module swp-complete:
     url: https://github.com/agvxov/vim-complete.git
     pick: [autoload, bin, debug]
-    rev: 4a1be033d0e8adce79723290611b3b20280ea8af
+    rev: 964bb259385bb020e5e822d2a88d846752083d47
 
 git module hitags:
     url: https://github.com/agvxov/Vim-HiTags.git
