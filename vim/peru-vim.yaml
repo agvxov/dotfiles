@@ -9,7 +9,7 @@ imports:
     markx:           .vim/pack/markx/start/markx/
     editorconfig:    .vim/pack/editorconfig/start/editorconfig/
     squish:          .vim/pack/squish/start/squish/
-    hexokinase:      .vim/pack/hexokinase/start/hexokinase/
+    hexokinase:      .vim/pack/hexokinase/opt/hexokinase/
     browse-oldfiles: .vim/pack/browse-oldfiles/start/browse-oldfiles/
 #    drawit:       .vim/pack/drawit/start/drawit/
 
@@ -17,7 +17,7 @@ git module cdd:
     url: https://github.com/agvxov/cdd.git
     export: .vim
     pick: [.vim/ftdetect, .vim/syntax]
-    rev: 59ac886a08c94b0055693a4da4c7568b3820ccd6
+    rev: f1d88978f0ba3640600fed81766d700b12b50388
 
 git module asyncomplete:
     url: https://github.com/prabirshrestha/asyncomplete.vim.git
@@ -61,7 +61,7 @@ git module squish:
     rev: d019069a46e3e74b0defdc790462ebd3c5554f2b
 
 git module browse-oldfiles:
-    url: git@github.com:agvxov/vim-browse-oldfiles.git
+    url: https://github.com/agvxov/vim-browse-oldfiles.git
     pick: [plugin]
     rev: e7cf9b9aa4655e68817a523d56a2a274e6a2e79d
 
