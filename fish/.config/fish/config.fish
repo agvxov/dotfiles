@@ -6,6 +6,8 @@ if not status is-interactive
 end
 # -- -- --
 
+set -g __t0 (date +%s%N)
+
 function is-wsl
     test -e /run/WSL
 end
@@ -41,11 +43,10 @@ set ROOK 192.168.0.144
 set BLUE 192.168.0.227
 set BIS64 "bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion"
 
-function fish_greeting
-end
+set -g fish_greeting
 
 function ffgrep
-    set -l ignores .git node_modules obj object
+    set -l ignores .git .venv venv node_modules obj object
 
     rg --no-ignore \
        --hidden \
@@ -133,7 +134,6 @@ begin
     set --export PATH ".:$PATH"
     set --export PATH "/home/anon/bin:$PATH"
     set --export PATH "$PATH:$HOME/go/bin/"
-    set --export PATH "$PATH:.bashrc.d/"
     set --export PATH "$PATH:/home/anon/perl5/bin"
     set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
     set --export PATH "$PATH:$HOME/.local/share/bin/"
@@ -182,13 +182,13 @@ alias :qa="xdotool getactivewindow windowkill"
 alias vimcd="cdvim"
 alias cp='cp -v'
 alias mv='mv -v'
-alias rm='rm -v'
+alias rm='rm --verbose -I'
 alias chmod='chmod -v'
 alias chown='chown -v'
-alias mkdir='mkdir -v'
+alias mkdir='mkdir --verbose --parents'
 alias tar='tar -v'
 alias gzip='gzip -v'
-alias bc='bc -q'
+alias bc='bc -q -l'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -198,26 +198,21 @@ alias vdir='vdir --color=auto'
 alias df='df --print-type'
 alias ip='ip --color=auto'
 alias tshark='tshark --color'
-alias bat='bat --italic-text always'
+alias bat='bat --paging=never --italic-text always'
 alias hexedit='hexedit --color'
-alias less='less --use-color'
+alias less='less --use-color --mouse'
 alias wget='wget --restrict-file-names=windows,ascii'
-alias rm='rm -I'
 alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
 alias wgetpaste='wgetpaste -s bpaste'
 #alias sudo=doas
 alias curl='curl --insecure'
-alias mkdir='mkdir -p'
 alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
 alias cal='cal --monday'
 alias nmap='nmap --stats-every 5s'
 alias gdb='gdb -q --tui'
-alias bat='bat --paging=never'
-alias less='less --mouse'
 alias info='info --vi-keys'
 alias ls='ls -aFh --color=auto'
 alias ll='ls -l'
-alias bc='bc -l'
 alias gpg='gpg -i --no-symkey-cache'
 alias locate='locate --ignore-case --regex'
 alias figlet="figlet -w 120"
@@ -296,15 +291,8 @@ if ! is-wsl
     source ~/stow/fish/hitmarkers.fish
 end
 
-set --export BUNKER_SUCCESS_CALLBACK '_give-item stone'
 # ----
-source /home/anon/Swap/termmon/poketerm.fish
-set --export PATH "/home/anon/Swap/termmon/:$PATH"
-# ----
-source /home/anon/Swap/termmon/bunker/bunker.fish
-set --export PATH "/home/anon/Swap/termmon/bunker/:$PATH"
-# ----
-set --export PATH "/home/anon/Swap/termmon/stone-soup/:$PATH"
+#source /home/anon/Swap/termventure/termventure.fish
 # ----
 
 #fish_vi_key_bindings
@@ -385,3 +373,6 @@ function cd-previous-pane
     cd "$target"
     commandline -f repaint
 end
+
+set -l __t1 (date +%s%N)
+echo "config.fish: "(math --scale 0 "($__t1 - $__t0) / 1000000")" ms"

@@ -168,6 +168,10 @@
         :%s/static inline\s*/static inline\r/e
         :%s/static\s\+\ze\%(.*[)}]\)\@=/static\r/e
         :%s/\(for|while|if\)(/\1 (/e
+
+        :%s/char \*\(\w\)/char * \1/
+
+        :%s/^\(\s*\)\(if\|for\|while\) (\(.*\)) return \(.*\);/\1\2 (\3) {\r\1    return \4;\r\1}/
     
         if &filetype =~# '^\%(cpp\|hpp\|cxx\)$'
             :%s/^\s*\(public\|protected\|private\):/  \1:/e
