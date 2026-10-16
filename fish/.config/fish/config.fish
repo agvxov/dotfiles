@@ -94,6 +94,8 @@ function alias
         set -f cmd   $argv[2]
     end
 
+    set -ga __alias_names $name
+
     set -f cmd  (string trim -c "'\"" -- $cmd)
     set -f cmd1 (string split ' '     -- $cmd)[1]
 
@@ -178,82 +180,91 @@ set --export PERLDOC_PAGER $MANPAGER
 
 #alias alias="recursivelyExpandedAlias"
 set MM /home/anon/Master/
-alias bashrc="$EDITOR $HOME/.bashrc"
-alias fishrc="$EDITOR $HOME/.config/fish/config.fish"
-alias psrc="$EDITOR $HOME/stow/powershell/Microsoft.PowerShell_profile.ps1"
-alias vimrc="$EDITOR $VHOME/.vimrc"
-alias tmuxrc="$EDITOR $VHOME/.tmux.conf"
-alias pufka="$EDITOR $MM/pufka/pufka.cdd"
-alias gateway="$EDITOR $MM/gateway/gateway.cdd"
-alias random="$EDITOR $MM/RANDOM.outpost.txt"
-alias echo='echo -e'
-alias s='sudo'
-alias :e="$EDITOR"
-alias :q="exit"
-alias :qa="xdotool getactivewindow windowkill"
-alias vimcd="cdvim"
-alias cp='cp -v'
-alias mv='mv -v'
-alias rm='rm --verbose -I'
-alias chmod='chmod -v'
-alias chown='chown -v'
-alias mkdir='mkdir --verbose --parents'
-alias tar='tar -v'
-alias gzip='gzip -v'
-alias bc='bc -q -l'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias df='df --print-type'
-alias ip='ip --color=auto'
-alias tshark='tshark --color'
-alias bat='bat --paging=never --italic-text always'
-alias hexedit='hexedit --color'
-alias less='less --use-color --mouse'
-alias wget='wget --restrict-file-names=windows,ascii'
-alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
-alias wgetpaste='wgetpaste -s bpaste'
-#alias sudo=doas
-alias curl='curl --insecure'
-alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
-alias cal='cal --monday'
-alias nmap='nmap --stats-every 5s'
-alias gdb='gdb -q --tui'
-alias info='info --vi-keys'
-alias ls='ls -aFh --color=auto'
-alias ll='ls -l'
-alias info='info --vi-keys'
-alias ls='ls -aFh --color=auto'
-alias ll='ls -l'
-alias gpg='gpg -i --no-symkey-cache'
-alias locate='locate --ignore-case --regex'
-alias figlet="figlet -w 120"
-alias tmux='tmux new-session -t '0' || tmux'
-#alias stat="statAlias"
-alias updatedb="sudo updatedb"
-alias vimdir='vimdir -r -p -o'
-alias ipython="ipython -i '$PYTHONSTARTUP'"
-alias vsource='source ./venv/bin/activate.fish'
-alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
-alias dmake='make --debug --trace --warn-undefined-variables'
-alias resource='unalias -a; source ~/.bashrc'
-alias xclip='xclip -selection clipboard'
-alias tt='tt_with_high_score.sh'
-alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
-alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
-alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
-alias is-diff='\diff -q'
-alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
-alias rsync='rsync --progress'
 
-alias calrc='vim ~/stow/.data/dates.cfg'
+set -l __alias_cache ~/.cache/fish/aliases.fish
 
-alias docker='sudo docker'
+if test -f $__alias_cache; and test $__alias_cache -nt (status filename)
+    source $__alias_cache
+else
+    alias bashrc="$EDITOR $HOME/.bashrc"
+    alias fishrc="$EDITOR $HOME/.config/fish/config.fish"
+    alias psrc="$EDITOR $HOME/stow/powershell/Microsoft.PowerShell_profile.ps1"
+    alias vimrc="$EDITOR $VHOME/.vimrc"
+    alias tmuxrc="$EDITOR $VHOME/.tmux.conf"
+    alias pufka="$EDITOR $MM/pufka/pufka.cdd"
+    alias gateway="$EDITOR $MM/gateway/gateway.cdd"
+    alias random="$EDITOR $MM/RANDOM.outpost.txt"
+    alias echo='echo -e'
+    alias s='sudo'
+    alias :e="$EDITOR"
+    alias :q="exit"
+    alias :qa="xdotool getactivewindow windowkill"
+    alias vimcd="cdvim"
+    alias cp='cp -v'
+    alias mv='mv -v'
+    alias rm='rm --verbose -I'
+    alias chmod='chmod -v'
+    alias chown='chown -v'
+    alias mkdir='mkdir --verbose --parents'
+    alias tar='tar -v'
+    alias gzip='gzip -v'
+    alias bc='bc -q -l'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='diff -s -y -t --color=auto'		# report identical; side-by-side; expand tabs; color
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+    alias df='df --print-type'
+    alias ip='ip --color=auto'
+    alias tshark='tshark --color'
+    alias bat='bat --paging=never --italic-text always'
+    alias hexedit='hexedit --color'
+    alias less='less --use-color --mouse'
+    alias wget='wget --restrict-file-names=windows,ascii'
+    alias yt-dlp='yt-dlp --restrict-filenames --no-overwrites'
+    alias wgetpaste='wgetpaste -s bpaste'
+    #alias sudo=doas
+    alias curl='curl --insecure'
+    alias lsblk='lsblk -o LABEL,NAME,SIZE,FSUSE%,RM,RO,TYPE,FSTYPE,MOUNTPOINTS'
+    alias cal='cal --monday'
+    alias nmap='nmap --stats-every 5s'
+    alias gdb='gdb -q --tui'
+    alias info='info --vi-keys'
+    alias ls='ls -aFh --color=auto'
+    alias ll='ls -l'
+    alias info='info --vi-keys'
+    alias ls='ls -aFh --color=auto'
+    alias ll='ls -l'
+    alias gpg='gpg -i --no-symkey-cache'
+    alias locate='locate --ignore-case --regex'
+    alias figlet="figlet -w 120"
+    alias tmux='tmux new-session -t '0' || tmux'
+    #alias stat="statAlias"
+    alias updatedb="sudo updatedb"
+    alias vimdir='vimdir -r -p -o'
+    alias ipython="ipython -i '$PYTHONSTARTUP'"
+    alias vsource='source ./venv/bin/activate.fish'
+    alias cbash='bash --norc --noprofile --init-file <(echo "unset HISTFILE")'
+    alias dmake='make --debug --trace --warn-undefined-variables'
+    alias resource='unalias -a; source ~/.bashrc'
+    alias xclip='xclip -selection clipboard'
+    alias tt='tt_with_high_score.sh'
+    alias darkTheme='cp ~/.xThemeDark ~/.xTheme; xrdb -merge ~/.Xresources'
+    alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
+    alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
+    alias is-diff='\diff -q'
+    alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
+    alias rsync='rsync --progress'
+    alias calrc='vim ~/stow/.data/dates.cfg'
+    alias docker='sudo docker'
+    alias markdownlint='markdownlint --disable MD013 MD022 MD031 MD032 MD060 --'
+    alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
 
-alias markdownlint='markdownlint --disable MD013 MD022 MD031 MD032 MD060 --'
+    # ---
+    mkdir -p (path dirname $__alias_cache)
+    functions (printf '%s\n' $__alias_names | sort -u) > $__alias_cache
+end
 
 begin
     set HISTUICMD "histui" "tui" "--execute" "--caseless" "--fuzzy" "--group"
@@ -369,8 +380,6 @@ function tree --wraps 'tree' --description 'alias tree -a -I my-ignore-list'
     command tree -a -I "$pattern" $argv
 end
 
-alias vim-peru "peru --file=$HOME/stow/vim/peru-vim.yaml --sync-dir=$HOME/stow/vim/"
-
 function cd-previous-pane
     set -l target (command tmux display-message -p -t ! '#{pane_current_path}' 2>/dev/null)
 
@@ -393,4 +402,4 @@ set --export PATH "/home/anon/Swap/symbol-rename-tool:$PATH"
 set --export PATH "/home/anon/Swap/my-notes/bish/:$PATH"
 
 set -l __t1 (date +%s%N)
-echo "config.fish: "(math --scale 0 "($__t1 - $__t0) / 1000000")" ms"
+echo "Loading config.fish took: "(math --scale 0 "($__t1 - $__t0) / 1000000")" ms"
