@@ -110,13 +110,20 @@ function alias
 
     eval "
     function $name --wraps '$cmd1' --description 'alias $cmd'
-        builtin echo -e \"\033[33;1m[alias]\033[22m '$name' -> '$cmd'\033[0m\"
+        builtin echo -e \"\033[33;1m[alias]\033[22m '$name' -> '$cmd'\033[0m\" 1>&2
         $executioner $cmd \$argv
     end
     "
 end
 
-alias fd='fd -u'
+if command -v fd &> /dev/null
+    alias fd='fd --unrestricted --glob'
+end
+
+# XXX i hate ubuntu
+if command -v fdfind &> /dev/null
+    alias fd='fdfind --unrestricted --glob'
+end
 
 function clone-my-repo
     git clone "https://bis64wqhh3louusbd45iyj76kmn4rzw5ysawyan5bkxwyzihj67c5lid.onion/~anon/$argv[1].git"
@@ -124,6 +131,10 @@ end
 
 function git-log-short
     git --no-pager log --pretty=format:'%C(yellow)%h%Creset %C(green)%ad%Creset %C(cyan)%an%Creset %s%C(auto)%d' --date=short
+end
+
+function git-tree
+    git log --graph --oneline --all --decorate
 end
 
 set --export PYTHON_HISTORY "$HOME/.local/share/.python_history"
@@ -136,6 +147,7 @@ begin
     set --export PATH "$PATH:.bashrc.d/"
     set --export PATH "$PATH:/home/anon/perl5/bin"
     set --export PATH "$PATH:$CARGO_HOME/.cargo/bin/"
+    set --export PATH "$HOME/.zvm/bin/:$HOME/.zvm/self/:$PATH"
     set --export PATH "$PATH:$HOME/.local/share/bin/"
     set --export PATH "$PATH:$HOME/venv/bin/"
 
@@ -237,7 +249,6 @@ alias lightTheme='cp ~/.xThemeLight ~/.xTheme; xrdb -merge ~/.Xresources'
 alias totp='watch -n 1 --color --precise --no-title firejail --quiet --net=none gauth'
 alias is-diff='\diff -q'
 alias make='make --no-builtin-rules -k -j(nproc) -l(math 1 + (nproc))'
-alias git-recurse='git submodule update --init --recursive'
 alias rsync='rsync --progress'
 
 alias calrc='vim ~/stow/.data/dates.cfg'
@@ -348,7 +359,7 @@ function cls
 end
 
 function tree --wraps 'tree' --description 'alias tree -a -I my-ignore-list'
-    builtin echo -e "\033[33;1m[alias]\033[22m 'tree' -> 'tree -a -I my-ignore-list'\033[0m"
+    builtin echo -e "\033[33;1m[alias]\033[22m 'tree' -> 'tree -a -I my-ignore-list'\033[0m" 1>&2
 
     set -l ignore_list \
         .git \
@@ -385,3 +396,7 @@ function cd-previous-pane
     cd "$target"
     commandline -f repaint
 end
+
+# XXX
+set --export PATH "/home/anon/Swap/symbol-rename-tool:$PATH"
+set --export PATH "/home/anon/Swap/my-notes/bish/:$PATH"
